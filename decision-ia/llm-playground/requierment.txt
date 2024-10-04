@@ -1,0 +1,7 @@
+ipykernel
+jupyter
+numpy
+pandas
+plotly
+python-decouple
+markdownify
