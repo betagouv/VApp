@@ -1,0 +1,49 @@
+name: 🌍 Deploy demo
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  cancel-in-progress: true
+  group: deploy-${{ github.ref }}
+
+jobs:
+  build:
+    name: Deployment demo on gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: |
+          yarn --immutable
+
+      - name: Build
+        env:
+          NODE_ENV: production # JS build mode
+          PRODUCTION: true # for environment (ex: robots.txt)
+          SENTRY_URL: https://sentry.incubateur.net
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: betagouv
+          SENTRY_PROJECT: template-nextjs
+          SENTRY_RELEASE_UPLOAD: true
+        run: |
+          yarn build
+          touch out/.nojekyll
+
+      # deploy build to gh-pages
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.9
+        with:
+          branch: gh-pages
+          folder: out
