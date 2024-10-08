@@ -114,8 +114,8 @@ const bottomLinks = [
         process.env.NEXT_PUBLIC_APP_VERSION
           ? `/releases/tag/v${process.env.NEXT_PUBLIC_APP_VERSION}`
           : process.env.NEXT_PUBLIC_APP_VERSION_COMMIT
-          ? `/commit/${process.env.NEXT_PUBLIC_APP_VERSION}`
-          : ""
+            ? `/commit/${process.env.NEXT_PUBLIC_APP_VERSION}`
+            : ""
       }`,
     },
   },

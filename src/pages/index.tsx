@@ -28,8 +28,8 @@ const Home: NextPage = () => {
           recommandées chez betagouv et peut vous faire <b>gagner du temps</b>.
           <br />
           <br />
-          Il permet de déployer rapidement une application web qui respecte nos standards de{" "}
-          <b>conformité, accessibilité et sécurité</b>.
+          Il permet de déployer rapidement une application web qui respecte nos
+          standards de <b>conformité, accessibilité et sécurité</b>.
           <br />
           <br />
           Vous pouvez vous en servir comme base de départ ou comme référence

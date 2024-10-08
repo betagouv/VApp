@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`suggerer aide usecase > returns a list of suggestions 1`] = `
+{
+  "aideId": Any<String>,
+  "note": Any<Number>,
+}
+`;
+
+exports[`suggerer aide usecase > returns a list of suggestions 2`] = `
+{
+  "aideId": Any<String>,
+  "note": Any<Number>,
+}
+`;
+
+exports[`suggerer aide usecase > returns a list of suggestions 3`] = `
+{
+  "aideId": Any<String>,
+  "note": Any<Number>,
+}
+`;
+
+exports[`suggerer aide usecase > returns a list of suggestions 4`] = `
+{
+  "aideId": Any<String>,
+  "note": Any<Number>,
+}
+`;

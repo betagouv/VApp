@@ -15,6 +15,6 @@ test("has proper headers", async ({ page }) => {
     await page
       .getByRole("heading", { level: 1 })
       .getByText("Statistiques d'impact")
-      .count()
+      .count(),
   ).toBe(1);
 });

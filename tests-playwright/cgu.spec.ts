@@ -6,7 +6,7 @@ test("has title", async ({ page }) => {
   await page.goto(url);
 
   await expect(page).toHaveTitle(
-    /Conditions générales d'utilisation | template/
+    /Conditions générales d'utilisation | template/,
   );
 });
 
@@ -15,7 +15,7 @@ test("has proper headers", async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Conditions générales d'utilisation"
+    "Conditions générales d'utilisation",
   );
 
   const requiredHeaders = [
@@ -27,8 +27,8 @@ test("has proper headers", async ({ page }) => {
   await Promise.all(
     requiredHeaders.map(async (text) =>
       expect(
-        await page.getByRole("heading", { level: 2 }).getByText(text).count()
-      ).toBe(1)
-    )
+        await page.getByRole("heading", { level: 2 }).getByText(text).count(),
+      ).toBe(1),
+    ),
   );
 });

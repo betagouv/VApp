@@ -12,7 +12,7 @@ test("has proper headers", async ({ page }) => {
   await page.goto(url);
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Politique de confidentialité"
+    "Politique de confidentialité",
   );
 
   const requiredHeaders = [
@@ -23,8 +23,8 @@ test("has proper headers", async ({ page }) => {
   await Promise.all(
     requiredHeaders.map(async (text) =>
       expect(
-        await page.getByRole("heading", { level: 2 }).getByText(text).count()
-      ).toBe(1)
-    )
+        await page.getByRole("heading", { level: 2 }).getByText(text).count(),
+      ).toBe(1),
+    ),
   );
 });

@@ -7,6 +7,6 @@ test("is a health page", async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "App is up and running"
+    "App is up and running",
   );
 });

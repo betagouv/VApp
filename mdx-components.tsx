@@ -28,10 +28,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       ) {
         const [head, body] = props.children;
         const headers = head.props.children.props.children.map(
-          (child: any) => child.props.children
+          (child: any) => child.props.children,
         );
         const data = body.props.children.map((row: any) =>
-          row.props.children.map((cell: any) => cell.props.children)
+          row.props.children.map((cell: any) => cell.props.children),
         );
         return <Table headers={headers} data={data} />;
       }
