@@ -18,7 +18,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Template | beta.gouv.fr</title>
+        <title>VApp | beta.gouv.fr</title>
       </Head>
 
       <div className={fr.cx("fr-grid-row", "fr-grid-row--center")}>
