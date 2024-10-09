@@ -128,7 +128,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <MuiDsfrThemeProvider>
       <Head>
-        <title>Template | beta.gouv.fr</title>
+        <title>VApp | beta.gouv.fr</title>
         {contentSecurityPolicy && (
           <meta
             httpEquiv="Content-Security-Policy"
@@ -156,8 +156,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
       />
       <Header
         brandTop={brandTop}
-        serviceTitle="Nom du service numérique"
-        serviceTagline="Description du service numérique"
+        serviceTitle="VApp"
+        serviceTagline="Le service numérique qui vous aide à trouver des aides pour vos projets"
         homeLinkProps={homeLinkPops}
         navigation={[
           {
