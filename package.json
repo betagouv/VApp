@@ -1,6 +1,6 @@
 {
-  "name": "@betagouv/template-nextjs",
-  "version": "1.15.8",
+  "name": "@betagouv/vapp",
+  "version": "0.0.1",
   "private": true,
   "license": "Apache-2.0",
   "engines": {
