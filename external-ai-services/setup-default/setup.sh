@@ -24,10 +24,14 @@ User=root
 WantedBy=multi-user.target
 EOL
 
+
+sleep 10
 # Activer et démarrer le service Ollama
 sudo systemctl daemon-reload
 sudo systemctl enable ollama.service
 sudo systemctl start ollama.service
+
+sleep 5
 
 # Attendre que Ollama soit prêt (vous pouvez ajuster les délais selon vos besoins)
 echo "Attente de l'initialisation d'Ollama..."
