@@ -1,0 +1,11 @@
+#cloud-config
+
+users:
+  - name: ubuntu
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC... user1@example.com
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQB... user2@example.com
+runcmd:
+  - export BEARER_TOKEN="YOUR_BEARER_TOKEN"
+  - echo $BEARER_TOKEN
+  - curl -fsSL https://raw.githubusercontent.com/betagouv/VApp/refs/heads/init-instance-ai/external-ai-services/setup-default/setup.sh | sh
