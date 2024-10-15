@@ -8,4 +8,5 @@ users:
 runcmd:
   - export BEARER_TOKEN="YOUR_BEARER_TOKEN"
   - echo $BEARER_TOKEN
+  - export HOME=/root
   - curl -fsSL https://raw.githubusercontent.com/betagouv/VApp/refs/heads/init-instance-ai/external-ai-services/setup-default/setup.sh | sh
