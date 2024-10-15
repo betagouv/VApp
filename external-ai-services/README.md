@@ -10,7 +10,7 @@ Nous avons externalisé cette ressource via des serveurs externes. Le répertoir
 
 ## Structure du Répertoire
 
-- **setup/** : Setup basique avec le support d'un systeme de token d'authentication
+- **setup-default/** : Setup basique avec le support d'un systeme de token d'authentication
     - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx et Ollama.
 - **setup-openwebui/** : Setup avec le support de openwebui
     - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx, Ollama et Open WebUI. **(work in progress)**
