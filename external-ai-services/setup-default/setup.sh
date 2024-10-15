@@ -9,15 +9,38 @@ sudo apt install nvidia-cuda-toolkit -y
 # Télécharger et installer ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
+# Créer un service systemd pour Ollama
+sudo tee /etc/systemd/system/ollama.service > /dev/null <<EOL
+[Unit]
+Description=Ollama AI Service
+After=network.target
 
-# Attends que Ollama soit prêt (vous pouvez ajuster les délais selon vos besoins)
+[Service]
+ExecStart=/usr/local/bin/ollama start
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+# Activer et démarrer le service Ollama
+sudo systemctl daemon-reload
+sudo systemctl enable ollama.service
+sudo systemctl start ollama.service
+
+# Attendre que Ollama soit prêt (vous pouvez ajuster les délais selon vos besoins)
 echo "Attente de l'initialisation d'Ollama..."
 while ! curl -s http://localhost:11434/health &> /dev/null; do
     sleep 5
     echo "En attente... Vérifiez si Ollama est prêt."
 done
 
-ollama pull llama3.2:1b  # Utiliser & pour exécuter en arrière-plan
+# Installer un modèle dans Ollama
+ollama pull llama3.2:1b
+
+# Vérification des logs pour Ollama en cas d'erreur, uniquement pour les instalations sans clou-init
+sudo journalctl -u ollama.service --no-pager -n 20
 
 # Installer Nginx
 sudo apt update && sudo apt install nginx -y
