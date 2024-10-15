@@ -3,39 +3,47 @@
 # Mettre à jour les paquets et mettre à niveau le système
 sudo apt update && sudo apt upgrade -y
 
-# Installer CUDA Toolkit pour NVIDIA
-sudo apt install nvidia-cuda-toolkit -y
+# Installer Docker
+sudo apt install docker.io -y
 
-# Télécharger et installer ollama
-curl -fsSL https://ollama.com/install.sh | sh
+# Installer NVIDIA container toolkit pour Docker (si ce n'est pas déjà fait)
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
+
+# Installer Ollama via Docker
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 
 
-# Attends que Ollama soit prêt (vous pouvez ajuster les délais selon vos besoins)
-echo "Attente de l'initialisation d'Ollama..."
-while ! curl -s http://localhost:11434/health &> /dev/null; do
-    sleep 5
-    echo "En attente... Vérifiez si Ollama est prêt."
-done
+# Installer OpenWebUI via Docker avec un compte admin par défaut
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway \
+    -v open-webui:/app/backend/data --name open-webui --restart always \
+    ghcr.io/open-webui/open-webui:cuda
 
-ollama pull llama3.2:1b  # Utiliser & pour exécuter en arrière-plan
+# Attendre quelques secondes pour s'assurer que les conteneurs démarrent
+sleep 5
 
 # Installer Nginx
 sudo apt update && sudo apt install nginx -y
 
-# Configurer Nginx
+# Configurer Nginx pour rediriger vers Ollama et OpenWebUI
 IP=$(hostname -I | awk '{print $1}')
 TOKEN=$BEARER_TOKEN
 
-cat <<EOL | sudo tee /etc/nginx/sites-available/ollama
+cat <<EOL | sudo tee /etc/nginx/sites-available/ollama_openwebui
 upstream ollama {
     server localhost:11434;
+}
+
+upstream openwebui {
+    server localhost:3000;
 }
 
 server {
     listen 80;
     server_name ${IP};
 
-    location / {
+    location /ollama/ {
         # Check if the Authorization header is present and has the correct Bearer token / API Key
         set \$token "Bearer $TOKEN";
         if (\$http_authorization != \$token) {
@@ -47,20 +55,24 @@ server {
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
 
-        # Configuration des timeouts pour les requêtes
-        proxy_read_timeout 300s;
-        proxy_send_timeout 300s;
-
-        # Forward request to the actual web service
+        # Forward request to the actual Ollama service
         proxy_pass http://ollama;
+    }
+
+    location /openwebui/ {
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+
+        # Forward request to the actual OpenWebUI service
+        proxy_pass http://openwebui;
     }
 }
 EOL
 
 # Activer la configuration Nginx
-sudo ln -s /etc/nginx/sites-available/ollama /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/ollama_openwebui /etc/nginx/sites-enabled/
 
 # Redémarrer Nginx pour appliquer les changements
 sudo systemctl restart nginx
-
-echo "Setup completed successfully!"
