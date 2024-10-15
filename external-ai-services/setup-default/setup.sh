@@ -9,16 +9,7 @@ sudo apt install nvidia-cuda-toolkit -y
 # Télécharger et installer ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
-sleep 5
-
-# Attendre que Ollama soit prêt (vous pouvez ajuster les délais selon vos besoins)
-echo "Attente de l'initialisation d'Ollama..."
-while ! ollama --version &> /dev/null; do
-    sleep 5
-    echo "En attente... Vérifiez si Ollama est prêt."
-done
-
-echo "Ollama est prêt et fonctionne correctement."
+sleep 10
 
 # Installer un modèle dans Ollama
 ollama pull llama3.2:1b
