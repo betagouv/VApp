@@ -5,5 +5,7 @@
     "plugin:jsx-a11y/recommended",
     "prettier"
   ],
-  "rules": { "react/no-unescaped-entities": "warn" }
+  "rules": {
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "\"", "}"] }]
+  }
 }
