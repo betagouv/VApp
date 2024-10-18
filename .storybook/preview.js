@@ -1,114 +1,112 @@
-import { darkTheme, lightTheme } from "./customTheme";
-import { CustomDocsContainer } from "./DocsContainer";
+import { darkTheme, lightTheme } from './customTheme';
+import { CustomDocsContainer } from './DocsContainer';
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
-      date: /Date$/,
-    },
+      date: /Date$/
+    }
   },
   backgrounds: { disable: true },
   darkMode: {
     light: lightTheme,
-    dark: darkTheme,
+    dark: darkTheme
   },
-  viewMode: "docs",
+  viewMode: 'docs',
   docs: {
-    container: CustomDocsContainer,
+    container: CustomDocsContainer
   },
   viewport: {
     viewports: {
-      "1440p": {
-        name: "1440p",
+      '1440p': {
+        name: '1440p',
         styles: {
-          width: "2560px",
-          height: "1440px",
-        },
+          width: '2560px',
+          height: '1440px'
+        }
       },
       fullHD: {
-        name: "Full HD",
+        name: 'Full HD',
         styles: {
-          width: "1920px",
-          height: "1080px",
-        },
+          width: '1920px',
+          height: '1080px'
+        }
       },
       macBookProBig: {
-        name: "MacBook Pro Big",
+        name: 'MacBook Pro Big',
         styles: {
-          width: "1024px",
-          height: "640px",
-        },
+          width: '1024px',
+          height: '640px'
+        }
       },
       macBookProMedium: {
-        name: "MacBook Pro Medium",
+        name: 'MacBook Pro Medium',
         styles: {
-          width: "1440px",
-          height: "900px",
-        },
+          width: '1440px',
+          height: '900px'
+        }
       },
       macBookProSmall: {
-        name: "MacBook Pro Small",
+        name: 'MacBook Pro Small',
         styles: {
-          width: "1680px",
-          height: "1050px",
-        },
+          width: '1680px',
+          height: '1050px'
+        }
       },
       pcAgent: {
-        name: "PC Agent",
+        name: 'PC Agent',
         styles: {
-          width: "960px",
-          height: "540px",
-        },
+          width: '960px',
+          height: '540px'
+        }
       },
       iphone12Pro: {
-        name: "Iphone 12 pro",
+        name: 'Iphone 12 pro',
         styles: {
-          width: "390px",
-          height: "844px",
-        },
+          width: '390px',
+          height: '844px'
+        }
       },
       iphone5se: {
-        name: "Iphone 5/SE",
+        name: 'Iphone 5/SE',
         styles: {
-          width: "320px",
-          height: "568px",
-        },
+          width: '320px',
+          height: '568px'
+        }
       },
       ipadPro: {
-        name: "Ipad pro",
+        name: 'Ipad pro',
         styles: {
-          width: "1240px",
-          height: "1366px",
-        },
+          width: '1240px',
+          height: '1366px'
+        }
       },
-      "Galaxy s9+": {
-        name: "Galaxy S9+",
+      'Galaxy s9+': {
+        name: 'Galaxy S9+',
         styles: {
-          width: "320px",
-          height: "658px",
-        },
-      },
-    },
+          width: '320px',
+          height: '658px'
+        }
+      }
+    }
   },
   options: {
     storySort: (a, b) => {
       const orderedPagesPrefix = [
-        "🇫🇷 Introduction",
+        '🇫🇷 Introduction',
         //"components",
-        "components/Header",
-        "components/Footer",
-        "components/Alert",
-        "components/Tabs",
-        "components/Stepper",
-        "components/Button",
+        'components/Header',
+        'components/Footer',
+        'components/Alert',
+        'components/Tabs',
+        'components/Stepper',
+        'components/Button'
       ];
       function getHardCodedWeight(kind) {
         for (let i = 0; i < orderedPagesPrefix.length; i++) {
-          if (
-            kind.toLowerCase().startsWith(orderedPagesPrefix[i].toLowerCase())
-          ) {
+          if (kind.toLowerCase().startsWith(orderedPagesPrefix[i].toLowerCase())) {
             return orderedPagesPrefix.length - i;
           }
         }
@@ -116,6 +114,6 @@ export const parameters = {
         return 0;
       }
       return getHardCodedWeight(b.title) - getHardCodedWeight(a.title);
-    },
-  },
+    }
+  }
 };

@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { DocsContainer } from "@storybook/blocks";
-import { useDarkMode } from "storybook-dark-mode";
-import { darkTheme, lightTheme } from "./customTheme";
-import "@codegouvfr/react-dsfr/dsfr/dsfr.css";
+import React, { useEffect } from 'react';
+import { DocsContainer } from '@storybook/blocks';
+import { useDarkMode } from 'storybook-dark-mode';
+import { darkTheme, lightTheme } from './customTheme';
+import '@codegouvfr/react-dsfr/dsfr/dsfr.css';
 // Module parse failed: Maximum call stack size exceeded : File was processed with these loaders:
 //import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons.min.css";
-import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
-import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
-import { useColors } from "@codegouvfr/react-dsfr/useColors";
+import { useIsDark } from '@codegouvfr/react-dsfr/useIsDark';
+import { startReactDsfr } from '@codegouvfr/react-dsfr/spa';
+import { useColors } from '@codegouvfr/react-dsfr/useColors';
 
 startReactDsfr({
-  defaultColorScheme: "system",
-  langIfNoProvider: "fr",
+  defaultColorScheme: 'system',
+  langIfNoProvider: 'fr'
 });
 
 export const CustomDocsContainer = (props) => {
@@ -44,10 +44,7 @@ export const CustomDocsContainer = (props) => {
 
             `}</style>
 
-      <DocsContainer
-        {...props}
-        theme={isStorybookUiDark ? darkTheme : lightTheme}
-      />
+      <DocsContainer {...props} theme={isStorybookUiDark ? darkTheme : lightTheme} />
     </>
   );
 };

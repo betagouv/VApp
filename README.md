@@ -48,4 +48,3 @@ yarn storybook
 | [sneko/dsfr-connect](https://github.com/sneko/dsfr-connect)                             | Themes DSFR pour bootstrap, vuetify, mui, infima, emails... |
 | [laruiss/create-vue-dsfr](https://github.com/laruiss/create-vue-dsfr)                   | Un starter Vue.js + Nuxt3 + DSFR                            |
 | [socialgouv/template](https://github.com/socialgouv/template)                           | Version initiale de ce template                             |
-
