@@ -1,8 +1,21 @@
-import { ProjetEntity } from '../entities/projet.entity';
+import { Projet } from '../models/projet';
 import { UsecaseInterface } from './usecase.interface';
+import { ProjetRepositoryInterface } from '../repositories/projet.repository.interface';
+import { RechercherAidesUsecase } from './rechercher-aides.usecase';
 
 export class DemarrerProjetUsecase implements UsecaseInterface {
-  public execute(description: string = '') {
-    return ProjetEntity.create(description);
+  constructor(
+    public rechercherAidesUseCase: RechercherAidesUsecase,
+    public projetRepository: ProjetRepositoryInterface
+  ) {}
+
+  public async execute(description: string = '') {
+    const projet = Projet.create(description);
+    const recommendations = await this.rechercherAidesUseCase.execute(projet);
+    projet.recommendations = recommendations;
+
+    await this.projetRepository.add(projet);
+
+    return projet;
   }
 }

@@ -1,5 +1,6 @@
-import { AideEntity } from '../entities/aide.entity';
+import { Aide } from '../models/aide';
 
 export interface AideRepositoryInterface {
-  getAll(): Promise<AideEntity[]>;
+  all(): Promise<Aide[]>;
+  fromUuid(uuid: string): Promise<Aide>;
 }

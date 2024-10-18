@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Script from 'next/script';
 import { StatTile } from '../components/StatTile';
 
-import { fetchMatomoData, MatomoResult } from '../lib';
+import { fetchMatomoData, MatomoResult } from '../infra/matomo';
 
 import { ScatterChart, PieChart } from '../components/DsFrChart';
 
