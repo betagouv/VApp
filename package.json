@@ -22,7 +22,12 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "husky",
+    "prettier": "prettier . --write"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^1.9.5",
@@ -70,12 +75,14 @@
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-storybook": "^0.8.0",
-    "husky": "^9.0.11",
+    "husky": "^9.1.6",
     "jsdom": "^24.0.0",
-    "lint-staged": "^15.2.2",
+    "lint-staged": "^15.2.10",
     "node-talisman": "^1.29.11",
+    "prettier": "3.3.3",
     "start-server-and-test": "^2.0.3",
     "storybook": "^7.6.17",
     "storybook-dark-mode": "^3.0.3",
