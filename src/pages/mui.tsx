@@ -1,74 +1,74 @@
-import * as React from "react";
-import { MuiDsfrThemeProvider } from "@codegouvfr/react-dsfr/mui";
-import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+import * as React from 'react';
+import { MuiDsfrThemeProvider } from '@codegouvfr/react-dsfr/mui';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { useIsDark } from '@codegouvfr/react-dsfr/useIsDark';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ContentCut from "@mui/icons-material/ContentCut";
-import ContentCopy from "@mui/icons-material/ContentCopy";
-import ContentPaste from "@mui/icons-material/ContentPaste";
-import Cloud from "@mui/icons-material/Cloud";
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ContentCut from '@mui/icons-material/ContentCut';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import ContentPaste from '@mui/icons-material/ContentPaste';
+import Cloud from '@mui/icons-material/Cloud';
 
-import dayjs, { Dayjs } from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
-import Box from "@mui/material/Box";
-import Badge from "@mui/material/Badge";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import MailIcon from "@mui/icons-material/Mail";
+import Box from '@mui/material/Box';
+import Badge from '@mui/material/Badge';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import MailIcon from '@mui/icons-material/Mail';
 
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
-import Link from "@mui/material/Link";
+import Link from '@mui/material/Link';
 
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const muiDefaultDarkTheme = createTheme({
   palette: {
-    mode: "dark",
-  },
+    mode: 'dark'
+  }
 });
 
 const muiDefaultLightTheme = createTheme({
   palette: {
-    mode: "light",
-  },
+    mode: 'light'
+  }
 });
 
 export default function Mui() {
@@ -83,7 +83,7 @@ export default function Mui() {
           <Switch
             checked={isProviderEnabled}
             onChange={(event) => setIsProviderEnabled(event.target.checked)}
-            inputProps={{ "aria-label": "controlled" }}
+            inputProps={{ 'aria-label': 'controlled' }}
           />
         }
         label="Is provider enabled"
@@ -94,7 +94,7 @@ export default function Mui() {
           <Switch
             checked={isDark}
             onChange={(event) => setIsDark(event.target.checked)}
-            inputProps={{ "aria-label": "controlled" }}
+            inputProps={{ 'aria-label': 'controlled' }}
           />
         }
         label="Dark mode"
@@ -142,131 +142,130 @@ const { ComboBox } = (() => {
 
   // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
   const top100Films = [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
-    { label: "The Dark Knight", year: 2008 },
-    { label: "12 Angry Men", year: 1957 },
+    { label: 'The Shawshank Redemption', year: 1994 },
+    { label: 'The Godfather', year: 1972 },
+    { label: 'The Godfather: Part II', year: 1974 },
+    { label: 'The Dark Knight', year: 2008 },
+    { label: '12 Angry Men', year: 1957 },
     { label: "Schindler's List", year: 1993 },
-    { label: "Pulp Fiction", year: 1994 },
+    { label: 'Pulp Fiction', year: 1994 },
     {
-      label: "The Lord of the Rings: The Return of the King",
-      year: 2003,
+      label: 'The Lord of the Rings: The Return of the King',
+      year: 2003
     },
-    { label: "The Good, the Bad and the Ugly", year: 1966 },
-    { label: "Fight Club", year: 1999 },
+    { label: 'The Good, the Bad and the Ugly', year: 1966 },
+    { label: 'Fight Club', year: 1999 },
     {
-      label: "The Lord of the Rings: The Fellowship of the Ring",
-      year: 2001,
+      label: 'The Lord of the Rings: The Fellowship of the Ring',
+      year: 2001
     },
     {
-      label: "Star Wars: Episode V - The Empire Strikes Back",
-      year: 1980,
+      label: 'Star Wars: Episode V - The Empire Strikes Back',
+      year: 1980
     },
-    { label: "Forrest Gump", year: 1994 },
-    { label: "Inception", year: 2010 },
+    { label: 'Forrest Gump', year: 1994 },
+    { label: 'Inception', year: 2010 },
     {
-      label: "The Lord of the Rings: The Two Towers",
-      year: 2002,
+      label: 'The Lord of the Rings: The Two Towers',
+      year: 2002
     },
     { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
-    { label: "Goodfellas", year: 1990 },
-    { label: "The Matrix", year: 1999 },
-    { label: "Seven Samurai", year: 1954 },
+    { label: 'Goodfellas', year: 1990 },
+    { label: 'The Matrix', year: 1999 },
+    { label: 'Seven Samurai', year: 1954 },
     {
-      label: "Star Wars: Episode IV - A New Hope",
-      year: 1977,
+      label: 'Star Wars: Episode IV - A New Hope',
+      year: 1977
     },
-    { label: "City of God", year: 2002 },
-    { label: "Se7en", year: 1995 },
-    { label: "The Silence of the Lambs", year: 1991 },
+    { label: 'City of God', year: 2002 },
+    { label: 'Se7en', year: 1995 },
+    { label: 'The Silence of the Lambs', year: 1991 },
     { label: "It's a Wonderful Life", year: 1946 },
-    { label: "Life Is Beautiful", year: 1997 },
-    { label: "The Usual Suspects", year: 1995 },
-    { label: "Léon: The Professional", year: 1994 },
-    { label: "Spirited Away", year: 2001 },
-    { label: "Saving Private Ryan", year: 1998 },
-    { label: "Once Upon a Time in the West", year: 1968 },
-    { label: "American History X", year: 1998 },
-    { label: "Interstellar", year: 2014 },
-    { label: "Casablanca", year: 1942 },
-    { label: "City Lights", year: 1931 },
-    { label: "Psycho", year: 1960 },
-    { label: "The Green Mile", year: 1999 },
-    { label: "The Intouchables", year: 2011 },
-    { label: "Modern Times", year: 1936 },
-    { label: "Raiders of the Lost Ark", year: 1981 },
-    { label: "Rear Window", year: 1954 },
-    { label: "The Pianist", year: 2002 },
-    { label: "The Departed", year: 2006 },
-    { label: "Terminator 2: Judgment Day", year: 1991 },
-    { label: "Back to the Future", year: 1985 },
-    { label: "Whiplash", year: 2014 },
-    { label: "Gladiator", year: 2000 },
-    { label: "Memento", year: 2000 },
-    { label: "The Prestige", year: 2006 },
-    { label: "The Lion King", year: 1994 },
-    { label: "Apocalypse Now", year: 1979 },
-    { label: "Alien", year: 1979 },
-    { label: "Sunset Boulevard", year: 1950 },
+    { label: 'Life Is Beautiful', year: 1997 },
+    { label: 'The Usual Suspects', year: 1995 },
+    { label: 'Léon: The Professional', year: 1994 },
+    { label: 'Spirited Away', year: 2001 },
+    { label: 'Saving Private Ryan', year: 1998 },
+    { label: 'Once Upon a Time in the West', year: 1968 },
+    { label: 'American History X', year: 1998 },
+    { label: 'Interstellar', year: 2014 },
+    { label: 'Casablanca', year: 1942 },
+    { label: 'City Lights', year: 1931 },
+    { label: 'Psycho', year: 1960 },
+    { label: 'The Green Mile', year: 1999 },
+    { label: 'The Intouchables', year: 2011 },
+    { label: 'Modern Times', year: 1936 },
+    { label: 'Raiders of the Lost Ark', year: 1981 },
+    { label: 'Rear Window', year: 1954 },
+    { label: 'The Pianist', year: 2002 },
+    { label: 'The Departed', year: 2006 },
+    { label: 'Terminator 2: Judgment Day', year: 1991 },
+    { label: 'Back to the Future', year: 1985 },
+    { label: 'Whiplash', year: 2014 },
+    { label: 'Gladiator', year: 2000 },
+    { label: 'Memento', year: 2000 },
+    { label: 'The Prestige', year: 2006 },
+    { label: 'The Lion King', year: 1994 },
+    { label: 'Apocalypse Now', year: 1979 },
+    { label: 'Alien', year: 1979 },
+    { label: 'Sunset Boulevard', year: 1950 },
     {
-      label:
-        "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
-      year: 1964,
+      label: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
+      year: 1964
     },
-    { label: "The Great Dictator", year: 1940 },
-    { label: "Cinema Paradiso", year: 1988 },
-    { label: "The Lives of Others", year: 2006 },
-    { label: "Grave of the Fireflies", year: 1988 },
-    { label: "Paths of Glory", year: 1957 },
-    { label: "Django Unchained", year: 2012 },
-    { label: "The Shining", year: 1980 },
-    { label: "WALL·E", year: 2008 },
-    { label: "American Beauty", year: 1999 },
-    { label: "The Dark Knight Rises", year: 2012 },
-    { label: "Princess Mononoke", year: 1997 },
-    { label: "Aliens", year: 1986 },
-    { label: "Oldboy", year: 2003 },
-    { label: "Once Upon a Time in America", year: 1984 },
-    { label: "Witness for the Prosecution", year: 1957 },
-    { label: "Das Boot", year: 1981 },
-    { label: "Citizen Kane", year: 1941 },
-    { label: "North by Northwest", year: 1959 },
-    { label: "Vertigo", year: 1958 },
+    { label: 'The Great Dictator', year: 1940 },
+    { label: 'Cinema Paradiso', year: 1988 },
+    { label: 'The Lives of Others', year: 2006 },
+    { label: 'Grave of the Fireflies', year: 1988 },
+    { label: 'Paths of Glory', year: 1957 },
+    { label: 'Django Unchained', year: 2012 },
+    { label: 'The Shining', year: 1980 },
+    { label: 'WALL·E', year: 2008 },
+    { label: 'American Beauty', year: 1999 },
+    { label: 'The Dark Knight Rises', year: 2012 },
+    { label: 'Princess Mononoke', year: 1997 },
+    { label: 'Aliens', year: 1986 },
+    { label: 'Oldboy', year: 2003 },
+    { label: 'Once Upon a Time in America', year: 1984 },
+    { label: 'Witness for the Prosecution', year: 1957 },
+    { label: 'Das Boot', year: 1981 },
+    { label: 'Citizen Kane', year: 1941 },
+    { label: 'North by Northwest', year: 1959 },
+    { label: 'Vertigo', year: 1958 },
     {
-      label: "Star Wars: Episode VI - Return of the Jedi",
-      year: 1983,
+      label: 'Star Wars: Episode VI - Return of the Jedi',
+      year: 1983
     },
-    { label: "Reservoir Dogs", year: 1992 },
-    { label: "Braveheart", year: 1995 },
-    { label: "M", year: 1931 },
-    { label: "Requiem for a Dream", year: 2000 },
-    { label: "Amélie", year: 2001 },
-    { label: "A Clockwork Orange", year: 1971 },
-    { label: "Like Stars on Earth", year: 2007 },
-    { label: "Taxi Driver", year: 1976 },
-    { label: "Lawrence of Arabia", year: 1962 },
-    { label: "Double Indemnity", year: 1944 },
+    { label: 'Reservoir Dogs', year: 1992 },
+    { label: 'Braveheart', year: 1995 },
+    { label: 'M', year: 1931 },
+    { label: 'Requiem for a Dream', year: 2000 },
+    { label: 'Amélie', year: 2001 },
+    { label: 'A Clockwork Orange', year: 1971 },
+    { label: 'Like Stars on Earth', year: 2007 },
+    { label: 'Taxi Driver', year: 1976 },
+    { label: 'Lawrence of Arabia', year: 1962 },
+    { label: 'Double Indemnity', year: 1944 },
     {
-      label: "Eternal Sunshine of the Spotless Mind",
-      year: 2004,
+      label: 'Eternal Sunshine of the Spotless Mind',
+      year: 2004
     },
-    { label: "Amadeus", year: 1984 },
-    { label: "To Kill a Mockingbird", year: 1962 },
-    { label: "Toy Story 3", year: 2010 },
-    { label: "Logan", year: 2017 },
-    { label: "Full Metal Jacket", year: 1987 },
-    { label: "Dangal", year: 2016 },
-    { label: "The Sting", year: 1973 },
-    { label: "2001: A Space Odyssey", year: 1968 },
+    { label: 'Amadeus', year: 1984 },
+    { label: 'To Kill a Mockingbird', year: 1962 },
+    { label: 'Toy Story 3', year: 2010 },
+    { label: 'Logan', year: 2017 },
+    { label: 'Full Metal Jacket', year: 1987 },
+    { label: 'Dangal', year: 2016 },
+    { label: 'The Sting', year: 1973 },
+    { label: '2001: A Space Odyssey', year: 1968 },
     { label: "Singin' in the Rain", year: 1952 },
-    { label: "Toy Story", year: 1995 },
-    { label: "Bicycle Thieves", year: 1948 },
-    { label: "The Kid", year: 1921 },
-    { label: "Inglourious Basterds", year: 2009 },
-    { label: "Snatch", year: 2000 },
-    { label: "3 Idiots", year: 2009 },
-    { label: "Monty Python and the Holy Grail", year: 1975 },
+    { label: 'Toy Story', year: 1995 },
+    { label: 'Bicycle Thieves', year: 1948 },
+    { label: 'The Kid', year: 1921 },
+    { label: 'Inglourious Basterds', year: 2009 },
+    { label: 'Snatch', year: 2000 },
+    { label: '3 Idiots', year: 2009 },
+    { label: 'Monty Python and the Holy Grail', year: 1975 }
   ];
 
   return { ComboBox: MyComboBox };
@@ -338,7 +337,7 @@ function BasicChips() {
 
 function IconMenu() {
   return (
-    <Paper sx={{ width: 320, maxWidth: "100%", mt: 7 }}>
+    <Paper sx={{ width: 320, maxWidth: '100%', mt: 7 }}>
       <MenuList>
         <MenuItem>
           <ListItemIcon>
@@ -380,9 +379,7 @@ function IconMenu() {
 }
 
 function MaterialUIPickers() {
-  const [value, setValue] = React.useState<Dayjs | null>(
-    dayjs("2014-08-18T21:11:54")
-  );
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2014-08-18T21:11:54'));
 
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue);
@@ -433,15 +430,15 @@ function BadgeVisibility() {
     <Box
       sx={{
         mt: 7,
-        color: "action.active",
-        display: "flex",
-        flexDirection: "column",
-        "& > *": {
-          marginBottom: 2,
+        color: 'action.active',
+        display: 'flex',
+        flexDirection: 'column',
+        '& > *': {
+          marginBottom: 2
         },
-        "& .MuiBadge-root": {
-          marginRight: 4,
-        },
+        '& .MuiBadge-root': {
+          marginRight: 4
+        }
       }}
     >
       <div>
@@ -472,10 +469,8 @@ function BadgeVisibility() {
           <MailIcon />
         </Badge>
         <FormControlLabel
-          sx={{ color: "text.primary" }}
-          control={
-            <Switch checked={!invisible} onChange={handleBadgeVisibility} />
-          }
+          sx={{ color: 'text.primary' }}
+          control={<Switch checked={!invisible} onChange={handleBadgeVisibility} />}
           label="Show Badge"
         />
       </div>
@@ -484,11 +479,7 @@ function BadgeVisibility() {
 }
 
 const { HorizontalLinearStepper } = (() => {
-  const steps = [
-    "Select campaign settings",
-    "Create an ad group",
-    "Create an ad",
-  ];
+  const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
   function MyHorizontalLinearStepper() {
     const [activeStep, setActiveStep] = React.useState(0);
@@ -537,7 +528,7 @@ const { HorizontalLinearStepper } = (() => {
     };
 
     return (
-      <Box sx={{ width: "100%", mt: 7 }}>
+      <Box sx={{ width: '100%', mt: 7 }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const stepProps: { completed?: boolean } = {};
@@ -545,9 +536,7 @@ const { HorizontalLinearStepper } = (() => {
               optional?: React.ReactNode;
             } = {};
             if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
-              );
+              labelProps.optional = <Typography variant="caption">Optional</Typography>;
             }
             if (isStepSkipped(index)) {
               stepProps.completed = false;
@@ -561,35 +550,26 @@ const { HorizontalLinearStepper } = (() => {
         </Stepper>
         {activeStep === steps.length ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
+            <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+              <Box sx={{ flex: '1 1 auto' }} />
               <Button onClick={handleReset}>Reset</Button>
             </Box>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+              <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
                 Back
               </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
+              <Box sx={{ flex: '1 1 auto' }} />
               {isStepOptional(activeStep) && (
                 <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                   Skip
                 </Button>
               )}
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
+              <Button onClick={handleNext}>{activeStep === steps.length - 1 ? 'Finish' : 'Next'}</Button>
             </Box>
           </React.Fragment>
         )}
@@ -602,52 +582,51 @@ const { HorizontalLinearStepper } = (() => {
 
 const { DataGridDemo } = (() => {
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: 'id', headerName: 'ID', width: 90 },
     {
-      field: "firstName",
-      headerName: "First name",
+      field: 'firstName',
+      headerName: 'First name',
       width: 150,
-      editable: true,
+      editable: true
     },
     {
-      field: "lastName",
-      headerName: "Last name",
+      field: 'lastName',
+      headerName: 'Last name',
       width: 150,
-      editable: true,
+      editable: true
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
+      field: 'age',
+      headerName: 'Age',
+      type: 'number',
       width: 110,
-      editable: true,
+      editable: true
     },
     {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
+      field: 'fullName',
+      headerName: 'Full name',
+      description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 160,
-      valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    },
+      valueGetter: (params: GridValueGetterParams) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
+    }
   ];
 
   const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
   ];
 
   function MyDataGridDemo() {
     return (
-      <Box sx={{ height: 400, width: "100%", mt: 7 }}>
+      <Box sx={{ height: 400, width: '100%', mt: 7 }}>
         <DataGrid rows={rows} columns={columns} />
       </Box>
     );
@@ -657,18 +636,17 @@ const { DataGridDemo } = (() => {
 })();
 
 const { Links } = (() => {
-  const preventDefault = (event: React.SyntheticEvent) =>
-    event.preventDefault();
+  const preventDefault = (event: React.SyntheticEvent) => event.preventDefault();
 
   function MyLinks() {
     return (
       <Box
         sx={{
-          typography: "body1",
-          "& > :not(style) + :not(style)": {
-            ml: 2,
+          typography: 'body1',
+          '& > :not(style) + :not(style)': {
+            ml: 2
           },
-          mt: 7,
+          mt: 7
         }}
         onClick={preventDefault}
       >
@@ -698,11 +676,11 @@ const { RecipeReviewCard } = (() => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
   })(({ theme, expand }) => ({
-    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
   }));
 
   function MyRecipeReviewCard() {
@@ -736,9 +714,8 @@ const { RecipeReviewCard } = (() => {
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
+            This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup
+            of frozen peas along with the mussels, if you like.
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -748,12 +725,7 @@ const { RecipeReviewCard } = (() => {
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
+          <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
             <ExpandMoreIcon />
           </ExpandMore>
         </CardActions>
@@ -761,32 +733,22 @@ const { RecipeReviewCard } = (() => {
           <CardContent>
             <Typography paragraph>Method:</Typography>
             <Typography paragraph>
-              Heat 1/2 cup of the broth in a pot until simmering, add saffron
-              and set aside for 10 minutes.
+              Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.
             </Typography>
             <Typography paragraph>
-              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-              over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-              stirring occasionally until lightly browned, 6 to 8 minutes.
-              Transfer shrimp to a large plate and set aside, leaving chicken
-              and chorizo in the pan. Add pimentón, bay leaves, garlic,
-              tomatoes, onion, salt and pepper, and cook, stirring often until
-              thickened and fragrant, about 10 minutes. Add saffron broth and
-              remaining 4 1/2 cups chicken broth; bring to a boil.
+              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high heat. Add chicken,
+              shrimp and chorizo, and cook, stirring occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp
+              to a large plate and set aside, leaving chicken and chorizo in the pan. Add pimentón, bay leaves, garlic,
+              tomatoes, onion, salt and pepper, and cook, stirring often until thickened and fragrant, about 10 minutes.
+              Add saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
             </Typography>
             <Typography paragraph>
-              Add rice and stir very gently to distribute. Top with artichokes
-              and peppers, and cook without stirring, until most of the liquid
-              is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add
-              reserved shrimp and mussels, tucking them down into the rice, and
-              cook again without stirring, until mussels have opened and rice is
-              just tender, 5 to 7 minutes more. (Discard any mussels that
-              don&apos;t open.)
+              Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook without stirring,
+              until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
+              mussels, tucking them down into the rice, and cook again without stirring, until mussels have opened and
+              rice is just tender, 5 to 7 minutes more. (Discard any mussels that don&apos;t open.)
             </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then
-              serve.
-            </Typography>
+            <Typography>Set aside off of the heat to let rest for 10 minutes, and then serve.</Typography>
           </CardContent>
         </Collapse>
       </Card>

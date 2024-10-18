@@ -2,9 +2,9 @@ name: 🤖 Playwright Tests
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
       - name: Build app
         run: yarn build
         env:
-          NEXT_PUBLIC_BASE_PATH: ""
+          NEXT_PUBLIC_BASE_PATH: ''
           NODE_ENV: production
       - name: Run Playwright tests
         run: yarn playwright test
