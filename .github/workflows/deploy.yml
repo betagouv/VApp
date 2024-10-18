@@ -2,9 +2,9 @@ name: 🌍 Deploy demo
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 concurrency:
   cancel-in-progress: true
@@ -21,8 +21,8 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "yarn"
+          node-version: '20'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: |

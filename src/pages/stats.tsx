@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Script from "next/script";
-import { StatTile } from "../components/StatTile";
+import React, { useEffect } from 'react';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Script from 'next/script';
+import { StatTile } from '../components/StatTile';
 
-import { fetchMatomoData, MatomoResult } from "../lib";
+import { fetchMatomoData, MatomoResult } from '../lib';
 
-import { ScatterChart, PieChart } from "../components/DsFrChart";
+import { ScatterChart, PieChart } from '../components/DsFrChart';
 
 const Stats: NextPage = () => {
   // fetch stats from public matomo
   const [matomoData, setMatomoData] = React.useState<MatomoResult>({
     nbPageViews: 0,
     nbVisits: 0,
-    nbUniqPageViews: 0,
+    nbUniqPageViews: 0
   });
 
   useEffect(() => {
@@ -56,19 +56,16 @@ const Stats: NextPage = () => {
         <ScatterChart
           x={JSON.stringify([
             [1, 5, 8],
-            [1, 2, 15],
+            [1, 2, 15]
           ])}
           y={JSON.stringify([
             [30, 10, 20],
-            [10, 20, 30],
+            [10, 20, 30]
           ])}
         ></ScatterChart>
         <br />
         <br />
-        <PieChart
-          x={JSON.stringify([1, 2, 3])}
-          y={JSON.stringify([10, 20, 30])}
-        ></PieChart>
+        <PieChart x={JSON.stringify([1, 2, 3])} y={JSON.stringify([10, 20, 30])}></PieChart>
         <br />
         <br />
       </div>

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 const MiseryWrapper = (props: any) => {
   const [ready, setReady] = useState(false);
   const check = () => {
     // @ts-ignore
-    if ("dsfr" in window && window.dsfr.colors) {
+    if ('dsfr' in window && window.dsfr.colors) {
       setReady(true);
     } else {
       setTimeout(check, 50);
@@ -26,8 +26,8 @@ const MiseryWrapper = (props: any) => {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      "scatter-chart": ScatterChartAttributes;
-      "pie-chart": PieChartAttributes;
+      'scatter-chart': ScatterChartAttributes;
+      'pie-chart': PieChartAttributes;
     }
   }
 }

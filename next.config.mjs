@@ -1,15 +1,15 @@
-import { withSentryConfig } from "@sentry/nextjs";
-import createMDX from "@next/mdx";
-import remarkGfm from "remark-gfm";
-import ContentSecurityPolicy from "./csp.config.mjs";
+import { withSentryConfig } from '@sentry/nextjs';
+import createMDX from '@next/mdx';
+import remarkGfm from 'remark-gfm';
+import ContentSecurityPolicy from './csp.config.mjs';
 
-import pkg from "./package.json" with { type: "json" };
+import pkg from './package.json' with { type: 'json' };
 
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [],
-  },
+    rehypePlugins: []
+  }
 });
 
 const version = pkg.version;
@@ -17,14 +17,14 @@ const version = pkg.version;
 /** @type {import('next').NextConfig} */
 const moduleExports = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   reactStrictMode: true,
   swcMinify: true,
-  output: "export",
+  output: 'export',
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(woff2|webmanifest)$/,
-      type: "asset/resource",
+      type: 'asset/resource'
     });
 
     return config;
@@ -36,11 +36,11 @@ const moduleExports = {
   env: {
     NEXT_PUBLIC_APP_VERSION: version,
     NEXT_PUBLIC_APP_VERSION_COMMIT: process.env.GITHUB_SHA,
-    CONTENT_SECURITY_POLICY: ContentSecurityPolicy,
+    CONTENT_SECURITY_POLICY: ContentSecurityPolicy
   },
-  transpilePackages: ["@codegouvfr/react-dsfr", "tss-react"],
+  transpilePackages: ['@codegouvfr/react-dsfr', 'tss-react']
 };
 
 export default {
-  ...withMDX(withSentryConfig(moduleExports, { silent: true })),
+  ...withMDX(withSentryConfig(moduleExports, { silent: true }))
 };

@@ -1,39 +1,39 @@
-import { ReactNode, useEffect } from "react";
-import type { AppProps } from "next/app";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { ReactNode, useEffect } from 'react';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import { createEmotionSsrAdvancedApproach } from "tss-react/next";
-import { createNextDsfrIntegrationApi } from "@codegouvfr/react-dsfr/next-pagesdir";
-import { Footer } from "@codegouvfr/react-dsfr/Footer";
-import { fr } from "@codegouvfr/react-dsfr";
-import { Header } from "@codegouvfr/react-dsfr/Header";
-import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
-import { SkipLinks } from "@codegouvfr/react-dsfr/SkipLinks";
-import { MuiDsfrThemeProvider } from "@codegouvfr/react-dsfr/mui";
+import { createEmotionSsrAdvancedApproach } from 'tss-react/next';
+import { createNextDsfrIntegrationApi } from '@codegouvfr/react-dsfr/next-pagesdir';
+import { Footer } from '@codegouvfr/react-dsfr/Footer';
+import { fr } from '@codegouvfr/react-dsfr';
+import { Header } from '@codegouvfr/react-dsfr/Header';
+import { headerFooterDisplayItem } from '@codegouvfr/react-dsfr/Display';
+import { SkipLinks } from '@codegouvfr/react-dsfr/SkipLinks';
+import { MuiDsfrThemeProvider } from '@codegouvfr/react-dsfr/mui';
 
-import { init } from "@socialgouv/matomo-next";
+import { init } from '@socialgouv/matomo-next';
 
-import pkg from "../../package.json";
+import pkg from '../../package.json';
 
-declare module "@codegouvfr/react-dsfr/next-pagesdir" {
+declare module '@codegouvfr/react-dsfr/next-pagesdir' {
   interface RegisterLink {
     Link: typeof Link;
   }
 }
 
-declare module "@codegouvfr/react-dsfr" {
+declare module '@codegouvfr/react-dsfr' {
   interface RegisterLink {
     Link: typeof Link;
   }
 }
 
 const { withDsfr, dsfrDocumentApi } = createNextDsfrIntegrationApi({
-  defaultColorScheme: "system",
+  defaultColorScheme: 'system',
   Link,
   useLang: () => {
-    const { locale = "fr" } = useRouter();
+    const { locale = 'fr' } = useRouter();
     return locale;
   },
 
@@ -42,23 +42,22 @@ const { withDsfr, dsfrDocumentApi } = createNextDsfrIntegrationApi({
   preloadFonts: [
     //"Marianne-Light",
     //"Marianne-Light_Italic",
-    "Marianne-Regular",
+    'Marianne-Regular',
     //"Marianne-Regular_Italic",
-    "Marianne-Medium",
+    'Marianne-Medium',
     //"Marianne-Medium_Italic",
-    "Marianne-Bold",
+    'Marianne-Bold'
     //"Marianne-Bold_Italic",
     //"Spectral-Regular",
     //"Spectral-ExtraBold"
-  ],
+  ]
 });
 
 export { dsfrDocumentApi };
 
-const { withAppEmotionCache, augmentDocumentWithEmotionCache } =
-  createEmotionSsrAdvancedApproach({
-    key: "css",
-  });
+const { withAppEmotionCache, augmentDocumentWithEmotionCache } = createEmotionSsrAdvancedApproach({
+  key: 'css'
+});
 
 export { augmentDocumentWithEmotionCache };
 
@@ -71,54 +70,53 @@ const brandTop = (
 );
 
 const homeLinkPops = {
-  href: "/",
-  title:
-    "Accueil - Nom de l’entité (ministère, secrétariat d'état, gouvernement)",
+  href: '/',
+  title: "Accueil - Nom de l’entité (ministère, secrétariat d'état, gouvernement)"
 };
 
 const bottomLinks = [
   {
     text: "Conditions d'utilisation",
     linkProps: {
-      href: "/cgu",
-    },
+      href: '/cgu'
+    }
   },
   {
-    text: "Statistiques",
+    text: 'Statistiques',
     linkProps: {
-      href: "/stats",
-    },
+      href: '/stats'
+    }
   },
   {
-    text: "Budget",
+    text: 'Budget',
     linkProps: {
-      href: "/budget",
-    },
+      href: '/budget'
+    }
   },
   {
-    text: "Politique de confidentialité",
+    text: 'Politique de confidentialité',
     linkProps: {
-      href: "/politique-confidentialite",
-    },
+      href: '/politique-confidentialite'
+    }
   },
   {
-    text: "Aide",
+    text: 'Aide',
     linkProps: {
-      href: "/aide",
-    },
+      href: '/aide'
+    }
   },
   {
-    text: "Contribuer sur GitHub",
+    text: 'Contribuer sur GitHub',
     linkProps: {
       href: `${process.env.NEXT_PUBLIC_APP_REPOSITORY_URL}${
         process.env.NEXT_PUBLIC_APP_VERSION
           ? `/releases/tag/v${process.env.NEXT_PUBLIC_APP_VERSION}`
           : process.env.NEXT_PUBLIC_APP_VERSION_COMMIT
-          ? `/commit/${process.env.NEXT_PUBLIC_APP_VERSION}`
-          : ""
-      }`,
-    },
-  },
+            ? `/commit/${process.env.NEXT_PUBLIC_APP_VERSION}`
+            : ''
+      }`
+    }
+  }
 ];
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -129,29 +127,24 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <MuiDsfrThemeProvider>
       <Head>
         <title>VApp | beta.gouv.fr</title>
-        {contentSecurityPolicy && (
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content={contentSecurityPolicy}
-          ></meta>
-        )}
+        {contentSecurityPolicy && <meta httpEquiv="Content-Security-Policy" content={contentSecurityPolicy}></meta>}
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Template Next.js beta.gouv.fr" />
       </Head>
       <SkipLinks
         links={[
           {
-            anchor: "#fr-header-main-navigation",
-            label: "Menu",
+            anchor: '#fr-header-main-navigation',
+            label: 'Menu'
           },
           {
-            anchor: "#content",
-            label: "Contenu",
+            anchor: '#content',
+            label: 'Contenu'
           },
           {
-            anchor: "#fr-footer",
-            label: "Pied de page",
-          },
+            anchor: '#fr-footer',
+            label: 'Pied de page'
+          }
         ]}
       />
       <Header
@@ -161,40 +154,37 @@ const Layout = ({ children }: { children: ReactNode }) => {
         homeLinkProps={homeLinkPops}
         navigation={[
           {
-            text: "Accueil",
+            text: 'Accueil',
             linkProps: {
-              href: "/",
+              href: '/'
             },
-            isActive: router.asPath === "/",
+            isActive: router.asPath === '/'
           },
           {
-            text: "DSFR playground",
+            text: 'DSFR playground',
             linkProps: {
-              href: "/dsfr",
+              href: '/dsfr'
             },
-            isActive: router.asPath === "/dsfr",
+            isActive: router.asPath === '/dsfr'
           },
           {
-            text: "Mui playground",
+            text: 'Mui playground',
             linkProps: {
-              href: "/mui",
+              href: '/mui'
             },
-            isActive: router.asPath === "/mui",
+            isActive: router.asPath === '/mui'
           },
           {
-            text: "Article",
+            text: 'Article',
             linkProps: {
-              href: "/article",
+              href: '/article'
             },
-            isActive: router.asPath === "/article",
-          },
+            isActive: router.asPath === '/article'
+          }
         ]}
         quickAccessItems={[headerFooterDisplayItem]}
       />
-      <div
-        className={fr.cx("fr-container", "fr-container--fluid", "fr-p-5w")}
-        id="content"
-      >
+      <div className={fr.cx('fr-container', 'fr-container--fluid', 'fr-p-5w')} id="content">
         {children}
       </div>
       <Footer
@@ -208,8 +198,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 `}
         homeLinkProps={homeLinkPops}
         license={`Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous licence ${pkg.license}`}
-        accessibilityLinkProps={{ href: "/accessibilite" }}
-        termsLinkProps={{ href: "/mentions-legales" }}
+        accessibilityLinkProps={{ href: '/accessibilite' }}
+        termsLinkProps={{ href: '/mentions-legales' }}
         bottomItems={[...bottomLinks, headerFooterDisplayItem]}
       />
     </MuiDsfrThemeProvider>
@@ -219,17 +209,17 @@ const Layout = ({ children }: { children: ReactNode }) => {
 function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     init({
-      url: process.env.NEXT_PUBLIC_MATOMO_URL ?? "",
-      siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? "",
+      url: process.env.NEXT_PUBLIC_MATOMO_URL ?? '',
+      siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? ''
     });
   }, []);
 
   return (
     <div
       style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       <Layout>

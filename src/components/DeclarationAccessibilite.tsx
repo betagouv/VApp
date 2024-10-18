@@ -1,17 +1,16 @@
 export const DeclarationAccessibilite = ({
-  produit = "[PRODUIT]",
-  organisme = "[SPONSOR]",
-  date = "9 décembre 2021",
-  conformite = "non conforme",
+  produit = '[PRODUIT]',
+  organisme = '[SPONSOR]',
+  date = '9 décembre 2021',
+  conformite = 'non conforme',
   audited = false,
-  email = "contact@xxx.fr",
+  email = 'contact@xxx.fr'
 }) => {
   return (
     <div>
       <h1>Déclaration d’accessibilité</h1>
       <p>
-        <span>{produit}</span> s’engage à rendre son service accessible,
-        conformément à{" "}
+        <span>{produit}</span> s’engage à rendre son service accessible, conformément à{' '}
         <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000037388867/">
           l’article 47 de la loi n° 2005-102 du 11 février 2005.
         </a>
@@ -27,7 +26,7 @@ export const DeclarationAccessibilite = ({
       <h2>Contenus non accessibles</h2>
       <h2>Établissement de cette déclaration d’accessibilité</h2>
       <p>
-        Cette déclaration a été établie le{" "}
+        Cette déclaration a été établie le{' '}
         <b>
           <span>{date}</span>
         </b>
@@ -35,10 +34,9 @@ export const DeclarationAccessibilite = ({
       </p>
       <h2>Amélioration et contact</h2>
       <p>
-        Si vous n’arrivez pas à accéder à un contenu ou à un service, vous
-        pouvez contacter le responsable de <span>{organisme}</span> pour être
-        orienté vers une alternative accessible ou obtenir le contenu sous une
-        autre forme.
+        Si vous n’arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de{' '}
+        <span>{organisme}</span> pour être orienté vers une alternative accessible ou obtenir le contenu sous une autre
+        forme.
       </p>
       <ul className="basic-information feedback h-card">
         <li>
@@ -47,21 +45,17 @@ export const DeclarationAccessibilite = ({
       </ul>
       <h2>Voie de recours</h2>
       <p>
-        Cette procédure est à utiliser dans le cas suivant : vous avez signalé
-        au responsable du site internet un défaut d’accessibilité qui vous
-        empêche d’accéder à un contenu ou à un des services du portail et vous
-        n’avez pas obtenu de réponse satisfaisante.
+        Cette procédure est à utiliser dans le cas suivant : vous avez signalé au responsable du site internet un défaut
+        d’accessibilité qui vous empêche d’accéder à un contenu ou à un des services du portail et vous n’avez pas
+        obtenu de réponse satisfaisante.
       </p>
       <p>Vous pouvez :</p>
       <ul>
         <li>
-          Écrire un message au{" "}
-          <a href="https://formulaire.defenseurdesdroits.fr/">
-            Défenseur des droits
-          </a>
+          Écrire un message au <a href="https://formulaire.defenseurdesdroits.fr/">Défenseur des droits</a>
         </li>
         <li>
-          Contacter{" "}
+          Contacter{' '}
           <a href="https://www.defenseurdesdroits.fr/saisir/delegues">
             le délégué du Défenseur des droits dans votre région
           </a>
