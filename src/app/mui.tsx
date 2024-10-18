@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { MuiDsfrThemeProvider } from '@codegouvfr/react-dsfr/mui';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';

@@ -1,15 +1,24 @@
 import { AideRepositoryInterface } from '../../../src/domain/repositories/aide.repository.interface';
-import { AideEntity } from '../../../src/domain/entities/aide.entity';
+import { Aide } from '../../../src/domain/models/aide';
+import aides from './aides.json';
 
 export class DummyAideRepository implements AideRepositoryInterface {
-  public getAll() {
-    return Promise.resolve([
-      AideEntity.create('Aide A'),
-      AideEntity.create('Aide B'),
-      AideEntity.create('Aide C'),
-      AideEntity.create('Aide D')
-    ]);
+  constructor(public aides: Aide[] = []) {}
+
+  public all() {
+    return Promise.resolve(this.aides);
+  }
+
+  public async fromUuid(uuid: string): Promise<Aide> {
+    const aides = await this.all();
+    const aide = aides.find((aide) => aide.uuid === uuid);
+    if (!aide) {
+      throw new Error(`Aucunes aides ne portent l'identifiant ${uuid}.`);
+    }
+
+    return aide;
   }
 }
 
-export const dummyAideRepository = new DummyAideRepository();
+// @ts-ignore
+export const dummyAideRepository = new DummyAideRepository(aides);

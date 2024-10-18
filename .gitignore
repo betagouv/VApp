@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -61,3 +62,10 @@ robots.txt
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/.gitignore
+/.idea/modules.xml
+/.idea/VApp.iml
+/.idea/vcs.xml
+/tests-vitest/domain/usecases/__snapshots__/demarrer-projet.usecase.spec.ts.snap
+/tests-vitest/domain/usecases/__snapshots__/suggerer-aides.usecase.spec.ts.snap

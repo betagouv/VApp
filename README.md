@@ -1,30 +1,51 @@
-# template-nextjs
+# VApp
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/betagouv/template/main)
 ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/betagouv/template)
 
-Template minimal avec Next.js qui intègre les recommandations tech beta.gouv.fr.
+## Développement
 
-> ⚠️ Le [Système de Design de l'État](https://www.systeme-de-design.gouv.fr/) s'adresse **uniquement** aux développeurs et aux concepteurs, qu'ils soient agents publics ou prestataires pour des sites Internet de l'État (Ministères, Administrations centrales, Préfectures, Ambassades, etc.). cf [conditions d'utilisation](https://www.systeme-de-design.gouv.fr/utilisation-et-organisation/perimetre-d-application).
+Créer un fichier `.env` basé sur `.env.development` :
 
-👉 Démo: https://betagouv.github.io/template-nextjs
+```sh
+cp .env.development .env`
+```
 
-## Lancer le code
+Lancer le conteneur de BDD :
 
-Après avoir cloné le projet :
+```sh
+docker compose up
+```
 
-### Développement
+Installer les dépendences et lancer l'app :
 
-```bash
+```sh
 yarn # to install dependencies
 yarn dev # to run in dev mode
 ```
 
-Point your browser to [http://127.0.0.1:3000/template](http://127.0.0.1:3000/template) and start playing.
+Ouvrir la page d'accueil [http://127.0.0.1:3000/](http://127.0.0.1:3000/template) and start playing.
 
-### Tests
+### Migrations
 
+Pour les modifications de BDD :
+
+Créer le fichier de migration et completer le `up` et le `down` :
+
+```sh
+yarn kysely migrate make MIGRATION_NAME
 ```
+
+Executer la migration et mettre les types:
+
+```sh
+yarn kysely migrate latest
+yarn kysely-codegen
+```
+
+## Tests
+
+```sh
 # run unit tests with vitest
 yarn test
 
@@ -37,14 +58,5 @@ yarn storybook
 
 ## Projets connexes
 
-| projet                                                                                  | description                                                 |
-| --------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [inclusion-numerique/stack](https://github.com/inclusion-numerique/stack)               | Stack DSFR + Next.js + OIDC                                 |
-| [InseeFrLab/vite-insee-starter](https://github.com/InseeFrLab/vite-insee-starter)       | Starter SPA Vite + DSFR + OIDC                              |
-| [betagouv/rails-template](https://github.com/betagouv/rails-template)                   | Template DSFR pour Ruby on Rails                            |
-| [betagouv/django-template](https://github.com/betagouv/django-template)                 | Template DSFR pour Django                                   |
-| [codegouvfr/eleventy-dsfr](https://github.com/codegouvfr/eleventy-dsfr)                 | Template DSFR pour [eleventy](https://www.11ty.dev/)        |
-| [codegouvfr/docsify-dsfr-template](https://github.com/codegouvfr/docsify-dsfr-template) | Template DSFR pour [docsify](https://docsify.js.org/#/)     |
-| [sneko/dsfr-connect](https://github.com/sneko/dsfr-connect)                             | Themes DSFR pour bootstrap, vuetify, mui, infima, emails... |
-| [laruiss/create-vue-dsfr](https://github.com/laruiss/create-vue-dsfr)                   | Un starter Vue.js + Nuxt3 + DSFR                            |
-| [socialgouv/template](https://github.com/socialgouv/template)                           | Version initiale de ce template                             |
+- https://github.com/MTES-MCT/aides-territoires
+- https://github.com/betagouv/mon-espace-collectivite
