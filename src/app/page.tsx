@@ -6,14 +6,11 @@ import Link from "next/link";
 
 import { push as matomoPush } from "@socialgouv/matomo-next";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
-import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { fr } from "@codegouvfr/react-dsfr";
+import {RechercherAidesForm} from "../components/forms/RechercherAidesForm";
 
 const Home: NextPage = () => {
-  const onClick1 = () => {
-    throw new Error("Hello, sentry");
-  };
 
   return (
     <>
@@ -24,33 +21,36 @@ const Home: NextPage = () => {
       <div className={fr.cx("fr-grid-row", "fr-grid-row--center")}>
         <div className={fr.cx()}>
           <h1>Template</h1>
+
+
+
           Ce template minimal en Next.js met en oeuvre les pratiques
           recommandées chez betagouv et peut vous faire <b>gagner du temps</b>.
-          <br />
-          <br />
+          <br/>
+          <br/>
           Il permet de déployer rapidement une application web qui respecte nos standards de{" "}
           <b>conformité, accessibilité et sécurité</b>.
-          <br />
-          <br />
+          <br/>
+          <br/>
           Vous pouvez vous en servir comme base de départ ou comme référence
           d&apos;implémentation.{" "}
           <b>
             <a
-              href="https://github.com/betagouv/template-nextjs"
-              target="_blank"
-              rel="noreferrer noopener"
+                href="https://github.com/betagouv/template-nextjs"
+                target="_blank"
+                rel="noreferrer noopener"
             >
               Les contributions sont bienvenues.
             </a>
           </b>
-          <br />
-          <br />
+          <br/>
+          <br/>
           <Accordion label="🇫🇷 Système de design de l'état (DSFR)" titleAs="h2">
             Intègre la dernière version du kit{" "}
             <a
-              href="https://github.com/codegouvfr/react-dsfr"
-              target="_blank"
-              rel="noreferrer noopener"
+                href="https://github.com/codegouvfr/react-dsfr"
+                target="_blank"
+                rel="noreferrer noopener"
             >
               @codegouvfr/react-dsfr
             </a>
@@ -58,13 +58,13 @@ const Home: NextPage = () => {
             <a href="https://mui.com" target="_blank" rel="noreferrer noopener">
               la librairie MUI
             </a>
-            .<br />
-            <br />
+            .<br/>
+            <br/>
           </Accordion>
           <Accordion label="📊 Matomo Analytics" titleAs="h2">
-            Intègre le tracker matomo pour analyser l&apos;usage du service.
-            <br />
-            <br />
+            Intègre le tracker matomo pour analyser l&apos;usage du service.
+            <br/>
+            <br/>
             Le lien de désinscription réglementaire est intégré dans la
             politique de confidentialité.
           </Accordion>
@@ -99,9 +99,9 @@ const Home: NextPage = () => {
               <li>
                 <Link href="/stats">Page de statistiques</Link> avec{" "}
                 <a
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://github.com/GouvernementFR/dsfr-chart"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://github.com/GouvernementFR/dsfr-chart"
                 >
                   dsfr-chart
                 </a>{" "}
@@ -128,9 +128,9 @@ const Home: NextPage = () => {
               <li>
                 Testing de bout-en-bout avec{" "}
                 <a
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://playwright.dev"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://playwright.dev"
                 >
                   Playwright
                 </a>
@@ -138,18 +138,18 @@ const Home: NextPage = () => {
               <li>
                 Tests unitaires avec{" "}
                 <a
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://vitest.dev"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://vitest.dev"
                 >
                   vitest
                 </a>
               </li>
               <li>
                 <a
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://storybook.js.org/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://storybook.js.org/"
                 >
                   Storybook
                 </a>{" "}
@@ -163,9 +163,9 @@ const Home: NextPage = () => {
               <li>
                 Workflows de release automatisés (
                 <a
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://github.com/semantic-release/semantic-release"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://github.com/semantic-release/semantic-release"
                 >
                   semantic-release
                 </a>
@@ -183,7 +183,6 @@ const Home: NextPage = () => {
       <Stack spacing={2} sx={{ mt: 2 }} direction="row">
         <Button
           title="Trigger sentry event"
-          onClick={onClick1}
           priority="secondary"
         >
           Déclencher une erreur Sentry
@@ -191,9 +190,6 @@ const Home: NextPage = () => {
         <Button
           title="Trigger matomo event"
           priority="secondary"
-          onClick={() => {
-            matomoPush(["trackEvent", "click", "home"]);
-          }}
         >
           Déclencher un évènement Matomo
         </Button>

@@ -25,7 +25,7 @@ const Error500: NextPage = () => {
               Nos équipes ont été notifiées et interviendront dans les meilleurs
               délais.
               <br />
-              Ré-essayez en passant par la <Link href="/">Page d'accueil</Link>.
+              Ré-essayez en passant par la <Link href="/public">Page d'accueil</Link>.
             </p>
           </div>
           <div className="fr-server__image fr-col-12 fr-col-md-3">

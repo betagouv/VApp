@@ -1,6 +1,6 @@
 import short, {SUUID} from "short-uuid";
 
-export class AideEntity {
+export class Aide {
     public uuid: SUUID;
     public nom: string;
     public description?: string;
@@ -12,7 +12,7 @@ export class AideEntity {
     }
 
     public static create(nom:string, description = '') {
-        return new AideEntity(
+        return new Aide(
             short.generate(),
             nom,
             description
