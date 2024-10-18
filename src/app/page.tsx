@@ -8,16 +8,13 @@ import { push as matomoPush } from '@socialgouv/matomo-next';
 import { Accordion } from '@codegouvfr/react-dsfr/Accordion';
 import { Button } from '@codegouvfr/react-dsfr/Button';
 import { fr } from '@codegouvfr/react-dsfr';
+import { RechercherAidesForm } from '../components/forms/RechercherAidesForm';
 
 const Home: NextPage = () => {
-  const onClick1 = () => {
-    throw new Error('Hello, sentry');
-  };
-
   return (
     <>
       <Head>
-        <title>VApp | beta.gouv.fr</title>
+        <title>Template | beta.gouv.fr</title>
       </Head>
 
       <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
@@ -52,7 +49,7 @@ const Home: NextPage = () => {
             <br />
           </Accordion>
           <Accordion label="📊 Matomo Analytics" titleAs="h2">
-            Intègre le tracker matomo pour analyser l&apos;usage du service.
+            Intègre le tracker matomo pour analyser l&apos;usage du service.
             <br />
             <br />
             Le lien de désinscription réglementaire est intégré dans la politique de confidentialité.
@@ -147,16 +144,10 @@ const Home: NextPage = () => {
 
       <h2 className={fr.cx('fr-mt-15w')}>Exemples d&apos;intégrations</h2>
       <Stack spacing={2} sx={{ mt: 2 }} direction="row">
-        <Button title="Trigger sentry event" onClick={onClick1} priority="secondary">
+        <Button title="Trigger sentry event" priority="secondary">
           Déclencher une erreur Sentry
         </Button>
-        <Button
-          title="Trigger matomo event"
-          priority="secondary"
-          onClick={() => {
-            matomoPush(['trackEvent', 'click', 'home']);
-          }}
-        >
+        <Button title="Trigger matomo event" priority="secondary">
           Déclencher un évènement Matomo
         </Button>
       </Stack>

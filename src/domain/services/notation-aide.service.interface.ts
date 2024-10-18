@@ -1,6 +1,6 @@
-import { ProjetEntity } from '../entities/projet.entity';
-import { AideEntity } from '../entities/aide.entity';
+import { Projet } from '../models/projet';
+import { Aide } from '../models/aide';
 
 export interface NotationAideServiceInterface {
-  noterAide(aide: AideEntity, projet: ProjetEntity): Promise<number>;
+  noterAide(aide: Aide, projet: Projet): Promise<number>;
 }
