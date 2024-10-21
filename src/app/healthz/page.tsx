@@ -1,7 +1,6 @@
-import type { NextPage } from 'next';
 import React from 'react';
 
-const HealthZ: NextPage = () => {
+export default async function Page() {
   return (
     <>
       <div className="fr-container fr-my-6w">
@@ -9,6 +8,4 @@ const HealthZ: NextPage = () => {
       </div>
     </>
   );
-};
-
-export default HealthZ;
+}

@@ -2,11 +2,12 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { projetRepository } from '../infra/repositories/projet.repository';
-import { DemarrerProjetUsecase } from '../domain/usecases/demarrer-projet.usecase';
-import { RechercherAidesUsecase } from '../domain/usecases/rechercher-aides.usecase';
-import { dummyAideRepository } from '../../tests-vitest/infra/repository/dummy-aide.repository';
-import { randomNotationAideService } from '../../tests-vitest/infra/services/random-notation-aide.service';
+
+import { projetRepository } from '@/infra/repositories/projet.repository';
+import { DemarrerProjetUsecase } from '@/domain/usecases/demarrer-projet.usecase';
+import { RechercherAidesUsecase } from '@/domain/usecases/rechercher-aides.usecase';
+import { dummyAideRepository } from 'tests-vitest/infra/repository/dummy-aide.repository';
+import { randomNotationAideService } from 'tests-vitest/infra/services/random-notation-aide.service';
 
 const demarrerProjetUsecase = new DemarrerProjetUsecase(
   new RechercherAidesUsecase(randomNotationAideService, dummyAideRepository),
@@ -28,7 +29,7 @@ export async function demarrerProjet(
   });
 
   if (!parse.success) {
-    return { message: 'Failed to create projet' };
+    return { message: 'Vous devez fournir une description de projet' };
   }
 
   const data = parse.data;
