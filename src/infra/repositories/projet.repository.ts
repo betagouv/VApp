@@ -1,8 +1,8 @@
 import type { Kysely, Selectable } from "kysely";
 import { SUUID } from "short-uuid";
 import { DB, ProjetTable } from "../database/types";
-import { Projet } from "../../domain/models/projet";
-import { ProjetRepositoryInterface } from "../../domain/repositories/projet.repository.interface";
+import { Projet } from "@/domain/models/projet";
+import { ProjetRepositoryInterface } from "@/domain/repositories/projet.repository.interface";
 import { db } from "../database";
 
 export class ProjetRepository implements ProjetRepositoryInterface {
@@ -50,12 +50,10 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       "uuid" | "description" | "recommendations"
     >,
   ): Projet {
-    console.log(selectableProjet.recommendations);
-    // @ts-ignore
-
     return new Projet(
       selectableProjet.uuid as SUUID,
       selectableProjet.description,
+      // @ts-ignore
       selectableProjet.recommendations,
     );
   }
