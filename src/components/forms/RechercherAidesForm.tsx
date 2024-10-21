@@ -3,9 +3,12 @@
 import * as React from 'react';
 import { useFormState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
-import { demarrerProjet } from '../../app/actions';
+import { demarrerProjet } from '@/app/actions';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
+import Input from '@codegouvfr/react-dsfr/Input';
+import Alert from '@codegouvfr/react-dsfr/Alert';
+import { Button } from '@codegouvfr/react-dsfr/Button';
 
 const initialState = {
   message: '',
@@ -16,9 +19,9 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" aria-disabled={pending}>
+    <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
       Rechercher des aides
-    </button>
+    </Button>
   );
 }
 
@@ -32,10 +35,18 @@ export function RechercherAidesForm() {
 
   return (
     <form action={formAction}>
-      <label htmlFor="todo">Description </label>
-      <input type="text" id="description" name="description" required />
+      {formState?.message && <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />}
+      <Input
+        label="Description"
+        textArea
+        id="description"
+        hintText="hint text"
+        nativeTextAreaProps={{
+          name: 'description'
+        }}
+      />
       <SubmitButton />
-      {formState?.uuid}
+
       <p aria-live="polite" className="sr-only" role="status">
         {formState?.message}
       </p>

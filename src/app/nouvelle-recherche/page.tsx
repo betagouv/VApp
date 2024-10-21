@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Metadata } from 'next';
 import { fr } from '@codegouvfr/react-dsfr';
-import { RechercherAidesForm } from '../../components/forms/RechercherAidesForm';
+
+import { RechercherAidesForm } from '@/components/forms/RechercherAidesForm';
 
 export const metadata: Metadata = {
   title: 'Nouvelle recherche | VApp | beta.gouv.fr'
