@@ -17,7 +17,7 @@ describe('suggerer aide usecase', () => {
     const suggestions = await suggererAides.execute(projet);
     suggestions.forEach((suggestion) =>
       expect(suggestion).toMatchSnapshot({
-        note: expect.any(Number),
+        eligibilite: expect.any(Number),
         aideId: expect.any(String)
       })
     );
