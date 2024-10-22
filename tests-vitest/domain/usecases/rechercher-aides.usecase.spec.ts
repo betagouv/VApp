@@ -1,8 +1,8 @@
 import { it, describe, expect } from 'vitest';
-import { RechercherAidesUsecase } from '../../../src/domain/usecases/rechercher-aides.usecase';
+import { RechercherAidesUsecase } from '@/domain/usecases/rechercher-aides.usecase';
+import { Projet } from '@/domain/models/projet';
 import { dummyAideRepository } from '../../infra/repository/dummy-aide.repository';
 import { randomNotationAideService } from '../../infra/services/random-notation-aide.service';
-import { Projet } from '../../../src/domain/models/projet';
 
 describe('suggerer aide usecase', () => {
   it('throws when the project description is empty', async () => {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Metadata } from 'next';
+import Image from 'next/image';
 import { fr } from '@codegouvfr/react-dsfr';
 import RadioButtons from '@codegouvfr/react-dsfr/RadioButtons';
 import { Projet } from '@/domain/models/projet';
@@ -29,7 +30,7 @@ export default async function Page({ params: { uuid } }: { params: { uuid: strin
           legend="Légende pour l’ensemble de champs"
           name="radio"
           options={recommendations.map(({ eligibilite, aide }) => ({
-            illustration: <img alt={String(eligibilite)} src="https://placehold.it/100x100" />,
+            illustration: <Image alt={String(eligibilite)} src="https://placehold.it/100x100" />,
             label: aide.nom,
             nativeInputProps: {
               value: aide.uuid
