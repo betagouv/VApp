@@ -7,6 +7,9 @@ loadEnvConfig(process.cwd());
 export default defineConfig({
   plugins: [react()],
   test: {
+    alias: {
+      '@/': new URL('./src/', import.meta.url).pathname
+    },
     environment: 'jsdom',
     exclude: ['node_modules', 'tests-playwright/*']
   }

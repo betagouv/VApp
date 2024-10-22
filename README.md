@@ -48,12 +48,18 @@ yarn kysely-codegen
 ```sh
 # run unit tests with vitest
 yarn test
+```
+
+```sh
+# run storybook
+yarn storybook
+```
+
+```
+docker compose --env-file .env.test up
 
 # build, serve and launch playwright interactive end-to-end tests
 yarn e2e --ui
-
-# run storybook
-yarn storybook
 ```
 
 ## Projets connexes

@@ -1,5 +1,5 @@
-import { AideRepositoryInterface } from '../../../src/domain/repositories/aide.repository.interface';
-import { Aide } from '../../../src/domain/models/aide';
+import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
+import { Aide } from '@/domain/models/aide';
 import aides from './aides.json';
 
 export class DummyAideRepository implements AideRepositoryInterface {
