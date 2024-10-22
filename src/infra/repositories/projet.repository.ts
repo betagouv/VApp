@@ -45,10 +45,12 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   }
 
   static toProjet(selectableProjet: Pick<Selectable<ProjetTable>, 'uuid' | 'description' | 'recommendations'>): Projet {
-    console.log(selectableProjet.recommendations);
-    // @ts-ignore
-
-    return new Projet(selectableProjet.uuid as SUUID, selectableProjet.description, selectableProjet.recommendations);
+    return new Projet(
+      selectableProjet.uuid as SUUID,
+      selectableProjet.description,
+      // @ts-ignore
+      selectableProjet.recommendations
+    );
   }
 }
 
