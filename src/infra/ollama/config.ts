@@ -1,20 +1,34 @@
 import { system } from './prompts/system';
-import type { CreateRequest as OllamaCreateRequest } from 'ollama/src/interfaces';
-import { Ollama } from 'ollama';
-
-export type CreateRequest = OllamaCreateRequest & {
-  stream?: false;
-};
+import { PullRequest, ChatRequest, Ollama, CreateRequest } from 'ollama';
 
 const modelfile = `
-FROM llama3.2:1b
+FROM ${process.env.OLLAMA_MODEL_NAME || 'llama3.2:1b'}
 SYSTEM "${system}"
 `;
 
-export const modelCreationRequest: CreateRequest = {
-  model: 'example',
-  modelfile,
-  stream: false,
+export const modelRequest: CreateRequest = {
+  model: 'assistagent',
+  modelfile
 };
 
-export const ollama = new Ollama({ host: process.env.OLLAMA_HOST })
+const tools: ChatRequest['tools'] = [
+  {
+    type: 'function',
+    function: {
+      name: 'calculer_eligibilite',
+      description: "Calcul le score d'éligibilité à une aide.",
+      parameters: {
+        type: 'object',
+        properties: {
+          eligibilite: {
+            type: 'number',
+            description: "Le score d'éligibilité à une aide."
+          }
+        },
+        required: ['eligibilite']
+      }
+    }
+  }
+];
+
+export const ollama = new Ollama({ host: process.env.OLLAMA_HOST });

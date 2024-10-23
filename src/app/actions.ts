@@ -6,11 +6,11 @@ import { z } from 'zod';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import { DemarrerProjetUsecase } from '@/domain/usecases/demarrer-projet.usecase';
 import { RechercherAidesUsecase } from '@/domain/usecases/rechercher-aides.usecase';
-import { dummyAideRepository } from 'tests-vitest/infra/repository/dummy-aide.repository';
-import { randomNotationAideService } from 'tests-vitest/infra/services/random-notation-aide.service';
+import { notationAideService } from '@/infra/ollama/notation-aide.service';
+import { aideRepository } from '@/infra/repositories/aide.repository';
 
 const demarrerProjetUsecase = new DemarrerProjetUsecase(
-  new RechercherAidesUsecase(randomNotationAideService, dummyAideRepository),
+  new RechercherAidesUsecase(notationAideService, aideRepository),
   projetRepository
 );
 

@@ -12,6 +12,10 @@ export class Aide {
   }
 
   public static create(nom: string, description = '') {
-    return new Aide(short.generate(), nom, description);
+    return new Aide(Aide.createUuid(), nom, description);
+  }
+
+  public static createUuid() {
+    return short.generate();
   }
 }
