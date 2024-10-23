@@ -15,8 +15,9 @@ export class RechercherAidesUsecase implements UsecaseInterface {
       throw new Error('La description du projet est vide.');
     }
 
+    await this.notationAideService.initialize();
     const aides = await this.aideRepository.all();
-    const notes = await Promise.all(aides.map((aide) => this.notationAideService.noterAide(aide, projet)));
+    const notes = await Promise.all(aides.slice(0, 3).map((aide) => this.notationAideService.noterAide(aide, projet)));
 
     return notes
       .map((note, i) => new Recommendation(note, aides[i].uuid))
