@@ -20,7 +20,6 @@ export async function up(db: Kysely<any>): Promise<void> {
 }
 
 export async function down(db: Kysely<any>): Promise<void> {
-  console.log('dzda');
   await db.schema.dropTable('projet').execute();
   await db.schema.dropTable('agent').execute();
 }
