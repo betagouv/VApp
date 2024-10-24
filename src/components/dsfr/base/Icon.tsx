@@ -1,7 +1,7 @@
 import { type FrIconClassName } from '@codegouvfr/react-dsfr';
 import { cx, type CxArg } from '@codegouvfr/react-dsfr/tools/cx';
 
-import { isBrowser } from '@/lib/utils/browser';
+import { isBrowser } from '@/libs/utils/browser';
 
 import { type TextColorStyle } from '../utils/color-styles';
 import { IconStyleJsx } from './client/IconStyleJsx';
