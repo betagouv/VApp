@@ -3,12 +3,13 @@
 import * as React from 'react';
 import { useFormState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
-import { demarrerProjet } from '@/actions/demarrerProjet';
+import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
 import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
+import { CircularProgress } from '@mui/material';
 
 const initialState = {
   message: '',
@@ -26,7 +27,8 @@ function SubmitButton() {
 }
 
 export function RechercherAidesForm() {
-  const [formState, formAction] = useFormState(demarrerProjet, initialState);
+  const [formState, formAction] = useFormState(demarrerProjetAction, initialState);
+  const { pending } = useFormStatus();
   useEffect(() => {
     if (formState?.uuid) {
       redirect(`/projets/${formState?.uuid}`);
@@ -35,7 +37,10 @@ export function RechercherAidesForm() {
 
   return (
     <form action={formAction}>
-      {formState?.message && <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />}
+      {pending && <CircularProgress />}
+      {formState?.message && !pending && (
+        <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
+      )}
       <Input
         label="Description"
         textArea

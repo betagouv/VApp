@@ -26,6 +26,11 @@ yarn dev # to run in dev mode
 
 Ouvrir la page d'accueil [http://127.0.0.1:3000/](http://127.0.0.1:3000/template) and start playing.
 
+### Storybook
+
+> Use React DSFR Storybook :
+> https://components.react-dsfr.codegouv.studio 
+
 ### Migrations
 
 Pour les modifications de BDD :
