@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { config } from '@/config';
-import { useConsent } from '@/consentManagement';
+import { useConsent } from '@/components/consentManagement';
 
 export type MatomoProps = Pick<typeof config, 'env'> & { nonce?: string };
 

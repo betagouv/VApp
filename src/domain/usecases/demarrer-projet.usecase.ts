@@ -9,13 +9,10 @@ export class DemarrerProjetUsecase implements UsecaseInterface {
     public projetRepository: ProjetRepositoryInterface
   ) {}
 
-  public async execute(description: string = '') {
-    const projet = Projet.create(description);
+  public async execute(projet: Projet): Promise<void> {
     const recommendations = await this.rechercherAidesUseCase.execute(projet);
     projet.recommendations = recommendations;
 
     await this.projetRepository.add(projet);
-
-    return projet;
   }
 }

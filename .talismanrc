@@ -19,7 +19,8 @@ fileignoreconfig:
   checksum: 6abf5e975d1c958713eda4fc0045ce76d28b25861c46b45a4dd5c498a3ad0b5a
 - filename: README.md
   checksum: 7c55475ff28dbfa46c9c5715918add6a0202eafddca3cf9d35ebcdd443d76ffd
-
+- filename: src/infra/uscases.ts
+  checksum: 2ea76ec79f49254cfc1930c49794005a7a4b93130ea71a165ffd4bb459e2d5b9
 
 scopeconfig:
 - scope: node

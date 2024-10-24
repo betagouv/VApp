@@ -7,6 +7,9 @@ export class RandomNotationAideService implements NotationAideServiceInterface {
   public noterAide(aide: Aide, projet: Projet) {
     return Promise.resolve(Math.floor(Math.random() * NOTE_MAX) + NOTE_MIN);
   }
+  initialize(): Promise<void> {
+    return Promise.resolve();
+  }
 }
 
 export const randomNotationAideService = new RandomNotationAideService();

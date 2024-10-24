@@ -5,7 +5,7 @@ import { fr } from '@codegouvfr/react-dsfr';
 import RadioButtons from '@codegouvfr/react-dsfr/RadioButtons';
 import { Projet } from '@/domain/models/projet';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { aideRepository } from '@/infra/repositories/aide.repository';
+import { useRecommendationsAvecAides } from '@/presentation/useRecommendationsAvecAides';
 
 export const metadata: Metadata = {
   title: 'Nouvelle recherche | VApp | beta.gouv.fr'
@@ -19,8 +19,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params: { uuid } }: { params: { uuid: string } }) {
   const projet = await projetRepository.fromUuid(uuid);
-  const aides = await Promise.all(projet.recommendations.map(({ aideId }) => aideRepository.fromUuid(aideId)));
-  const recommendations = projet.recommendations.map(({ eligibilite }, index) => ({ eligibilite, aide: aides[index] }));
+  const recommendationsAvecAides = useRecommendationsAvecAides(projet);
 
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
@@ -29,7 +28,7 @@ export default async function Page({ params: { uuid } }: { params: { uuid: strin
         <RadioButtons
           legend="Légende pour l’ensemble de champs"
           name="radio"
-          options={recommendations.map(({ eligibilite, aide }) => ({
+          options={recommendationsAvecAides.map(({ eligibilite, aide }) => ({
             illustration: <img alt={String(eligibilite)} src="https://placehold.it/100x100" />,
             label: aide.nom,
             nativeInputProps: {
