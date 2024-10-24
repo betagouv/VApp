@@ -7,7 +7,7 @@ import { isZodError } from '@/libs/utils/zod';
 import { NouveauProjetFormDto } from '@/presentation/dtos/nouveau-projet-form.dto';
 import { ProjetAdapter } from '@/presentation/adapter/projet.adapter';
 
-export async function demarrerProjet(
+export async function demarrerProjetAction(
   prevState: {
     message: string;
     uuid?: string;
@@ -23,6 +23,7 @@ export async function demarrerProjet(
     revalidatePath('/');
     return { message: 'Projet créé.', uuid: projet.uuid };
   } catch (e) {
+    console.error(e);
     let message = 'Impossible de créer le projet.';
     if (isZodError(e)) {
       message = e.message;
