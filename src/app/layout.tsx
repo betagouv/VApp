@@ -15,10 +15,10 @@ import { fr } from '@codegouvfr/react-dsfr';
 import { Footer } from '@codegouvfr/react-dsfr/Footer';
 import { Matomo } from '@/components/matomo/Matomo';
 import { config } from '@/config';
-import { ConsentBannerAndConsentManagement } from '@/consentManagement';
+import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
 
 import { defaultColorScheme } from '../defaultColorScheme';
-import { StartDsfr } from '../StartDsfr';
+import { StartDsfr } from 'src/components/StartDsfr';
 import { sharedMetadata } from './shared-metadata';
 import pkg from 'package.json';
 
@@ -159,7 +159,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
                 contentDescription={`
     Ce message est à remplacer par les informations de votre site.
 
-    Comme exemple de contenu, vous pouvez indiquer les informations 
+    Comme exemple de contenu, vous pouvez indiquer les informations
     suivantes : Le site officiel d’information administrative pour les entreprises.
                 `}
                 homeLinkProps={homeLinkPops}
