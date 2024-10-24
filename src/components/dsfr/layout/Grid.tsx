@@ -2,7 +2,7 @@ import { fr } from '@codegouvfr/react-dsfr';
 import { cx, type CxArg } from '@codegouvfr/react-dsfr/tools/cx';
 import { forwardRef, type PropsWithChildren } from 'react';
 
-import { type OmitStartsWith } from '@/lib/utils/types';
+import { type OmitStartsWith } from '@/libs/utils/types';
 
 import { type MarginProps, type PaddingProps } from '../utils/spacing';
 

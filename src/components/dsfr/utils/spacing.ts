@@ -1,6 +1,6 @@
 import { type FrCxArg, type SpacingToken } from '@codegouvfr/react-dsfr';
 
-import { type OmitStartsWith } from '@/lib/utils/types';
+import { type OmitStartsWith } from '@/libs/utils/types';
 
 export type SpacingProps = {
   m?: SpacingToken | '0' | 'auto';
