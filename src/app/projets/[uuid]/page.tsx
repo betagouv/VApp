@@ -5,10 +5,11 @@ import { fr } from '@codegouvfr/react-dsfr';
 import { Projet } from '@/domain/models/projet';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import Tabs from '@codegouvfr/react-dsfr/Tabs';
-import { RecommendationList } from '@/components/RecommendationList';
+import { ChoisirAideForm } from '@/components/forms/ChoisirAideForm';
+import { aideRepository } from '@/infra/repositories/aide.repository';
 
 export const metadata: Metadata = {
-  title: 'Nouvelle recherche | VApp | beta.gouv.fr'
+  title: 'Projet | VApp | beta.gouv.fr'
 };
 
 export async function generateStaticParams() {
@@ -19,6 +20,11 @@ export async function generateStaticParams() {
 
 export default async function Page({ params: { uuid } }: { params: { uuid: string } }) {
   const projet = await projetRepository.fromUuid(uuid);
+  const aides = await Promise.all(projet.recommendations.map(({ aideId }) => aideRepository.fromUuid(aideId)));
+  const aidesEligibles = projet.recommendations.map(({ eligibilite }, index) => ({
+    eligibilite,
+    aide: { ...aides[index] }
+  }));
 
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
@@ -29,7 +35,7 @@ export default async function Page({ params: { uuid } }: { params: { uuid: strin
               label: 'Recommendations',
               iconId: 'fr-icon-folder-2-line',
               isDefault: true,
-              content: <RecommendationList projet={projet} />
+              content: <ChoisirAideForm projet={{ ...projet }} aidesEligibles={aidesEligibles} />
             },
             {
               label: 'Description',
