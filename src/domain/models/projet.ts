@@ -1,18 +1,18 @@
 import short, { SUUID } from 'short-uuid';
-import { Recommendation } from './recommendation';
+import { AideEligible } from '@/domain/models/aide-eligible';
 
 export class Projet {
   public uuid: SUUID;
   public description: string;
-  public recommendations: Recommendation[] = [];
+  public aidesEligibles: AideEligible[] = [];
 
-  constructor(uuid: SUUID, description: string = '', recommendations: Recommendation[] = []) {
+  constructor(uuid: SUUID, description: string = '', aidesEligibles: AideEligible[] = []) {
     this.uuid = uuid;
     this.description = description;
-    this.recommendations = recommendations;
+    this.aidesEligibles = aidesEligibles;
   }
 
-  public static create(description: string = '', recommendations: Recommendation[] = []): Projet {
-    return new Projet(short.generate(), description, recommendations);
+  public static create(description: string = '', aidesEligibles: AideEligible[] = []): Projet {
+    return new Projet(short.generate(), description, aidesEligibles);
   }
 }
