@@ -16,11 +16,8 @@ const version = pkg.version;
 
 /** @type {import('next').NextConfig} */
 const moduleExports = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   reactStrictMode: true,
   swcMinify: true,
-  output: 'export',
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(woff2|webmanifest)$/,
@@ -28,6 +25,9 @@ const moduleExports = {
     });
 
     return config;
+  },
+  experimental: {
+    typedRoutes: true
   },
   sentry: {
     //disableClientWebpackPlugin: true,
@@ -38,6 +38,7 @@ const moduleExports = {
     NEXT_PUBLIC_APP_VERSION_COMMIT: process.env.GITHUB_SHA,
     CONTENT_SECURITY_POLICY: ContentSecurityPolicy
   },
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   transpilePackages: ['@codegouvfr/react-dsfr', 'tss-react']
 };
 

@@ -14,7 +14,7 @@ export class NotationAideService implements NotationAideServiceInterface {
   ) {}
 
   public async initialize() {
-    console.log('initialize');
+    console.log('initialize', process.env.OLLAMA_HOST);
     await this.ollama.create({ ...this.modelRequest, stream: false });
     this.initialized = true;
 
@@ -43,7 +43,11 @@ ${projet.description}`
     });
 
     const note = Number(content);
-    assertValid(note);
+    assertValid(
+      note,
+      `La réponse suivante n'est pas attribuable à une note:
+${content} `
+    );
 
     return Promise.resolve(note);
   }
