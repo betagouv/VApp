@@ -1,3 +1,4 @@
 .env
 .conda
 hard-database/
+__pycache__/
