@@ -32,7 +32,7 @@ RUN if [ -z "$PRODUCTION" ]; then \
 # Production image, copy all the files and run nginx
 FROM ghcr.io/socialgouv/docker/nginx:sha-1d70757 AS runner
 
-COPY --from=builder /app/out /usr/share/nginx/html
+COPY --from=builder /app/.next /usr/share/nginx/html
 
 # Disable nextjs telemetry
 ENV NEXT_TELEMETRY_DISABLED 1
