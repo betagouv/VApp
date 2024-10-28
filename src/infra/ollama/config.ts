@@ -40,12 +40,13 @@ const fetchWithHeaders = async (input: RequestInfo | URL, init?: RequestInit): P
 
   const enhancedInit: RequestInit = {
     ...init,
+    // @ts-ignore
     headers: {
       ...defaultHeaders,
       ...init?.headers
     }
   };
-  console.debug(input);
+
   return fetch(input, enhancedInit);
 };
 

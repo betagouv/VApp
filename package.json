@@ -57,7 +57,8 @@
     "remark-gfm": "^4.0.0",
     "short-uuid": "^5.2.0",
     "tss-react": "^4.9.13",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.9",

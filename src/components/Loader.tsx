@@ -7,7 +7,7 @@ export type LoaderProps = {};
 
 export const Loader = async ({}: LoaderProps) => {
   return (
-    <Grid flexDirection="column">
+    <Grid>
       <Stack spacing={2} direction="row">
         <Box>
           <CircularProgress variant="determinate" />

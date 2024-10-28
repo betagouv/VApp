@@ -15,13 +15,22 @@ export const metadata: Metadata = {
 export async function generateStaticParams() {
   const projets = await projetRepository.all();
 
-  return projets.map((projet: Projet) => ({ uuid: projet.uuid }));
+  return projets.map((projet: Projet) => ({ projet_uuid: projet.uuid }));
 }
 
-export default async function Page({ params: { uuid } }: { params: { uuid: string } }) {
-  const projet = await projetRepository.fromUuid(uuid);
-  const aides = await Promise.all(projet.recommendations.map(({ aideId }) => aideRepository.fromUuid(aideId)));
-  const aidesEligibles = projet.recommendations.map(({ eligibilite }, index) => ({
+export default async function Page({
+  params: { projet_uuid },
+  searchParams
+}: {
+  params: { projet_uuid: string };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const tab = (await searchParams).tab;
+  const descriptionOpen = !!(tab && tab === 'description');
+
+  const projet = await projetRepository.fromUuid(projet_uuid);
+  const aides = await Promise.all(projet.aidesEligibles.map(({ aideId }) => aideRepository.fromUuid(aideId)));
+  const aidesEligibles = projet.aidesEligibles.map(({ eligibilite }, index) => ({
     eligibilite,
     aide: { ...aides[index] }
   }));
@@ -34,12 +43,13 @@ export default async function Page({ params: { uuid } }: { params: { uuid: strin
             {
               label: 'Recommendations',
               iconId: 'fr-icon-folder-2-line',
-              isDefault: true,
+              isDefault: !descriptionOpen,
               content: <ChoisirAideForm projet={{ ...projet }} aidesEligibles={aidesEligibles} />
             },
             {
               label: 'Description',
               iconId: 'fr-icon-draft-line',
+              isDefault: descriptionOpen,
               content: <p>{projet.description}</p>
             }
           ]}
