@@ -1,18 +1,17 @@
 'use client';
 
 import * as React from 'react';
-import { useFormState } from 'react-dom';
-import { useFormStatus } from 'react-dom';
-import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
+import { repondreQuestionAction } from '@/actions/repondre-questions.action';
 import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
-import { CircularProgress } from '@mui/material';
 import { Loader } from '@/components/Loader';
 import { Question } from '@/domain/models/question';
-import { repondreQuestionAction } from '@/actions/repondre-questions.action';
+import { Aide } from '@/domain/models/aide';
+import { Projet } from '@/domain/models/projet';
 
 const initialState = {
   message: '',
@@ -24,20 +23,22 @@ function SubmitButton() {
 
   return (
     <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
-      Rechercher des aides
+      Réévaluer l'égibilité aux aides
     </Button>
   );
 }
 export interface QuestionsProjetPourAideFormProps {
   questions: Question[];
+  projetUuid: Projet['uuid'];
+  aideUuid: Aide['uuid'];
 }
 
-export function QuestionsProjetPourAideForm({ questions }: QuestionsProjetPourAideFormProps) {
+export function QuestionsProjetPourAideForm({ questions, projetUuid, aideUuid }: QuestionsProjetPourAideFormProps) {
   const [formState, formAction] = useFormState(repondreQuestionAction, initialState);
   const { pending } = useFormStatus();
   useEffect(() => {
     if (formState?.uuid) {
-      redirect(`/projets/${formState?.uuid}`);
+      redirect(`/projets/${formState?.uuid}?tab=description`);
     }
   }, [formState]);
 
@@ -47,18 +48,19 @@ export function QuestionsProjetPourAideForm({ questions }: QuestionsProjetPourAi
       {formState?.message && !pending && (
         <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
       )}
+      <input type="hidden" name="projetId" value={projetUuid} />
+      <input type="hidden" name="aideId" value={aideUuid} />
       {questions.map((question, i) => (
-        <Input
-          key={`question_${i}`}
-          label={question}
-          textArea
-          id={`question_${i}`}
-          nativeTextAreaProps={{
-            name: `question_${i}`
-          }}
-        />
+        <fieldset key={`question_${i}`}>
+          <input type="hidden" name={`questionsReponses[${i}].question`} value={question} />
+          <Input
+            id={`reponse_${i}`}
+            label={question}
+            nativeTextAreaProps={{ name: `questionsReponses[${i}].reponse` }}
+            textArea
+          />
+        </fieldset>
       ))}
-
       <SubmitButton />
     </form>
   );

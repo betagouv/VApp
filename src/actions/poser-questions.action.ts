@@ -1,24 +1,13 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { isZodError } from '@/libs/utils/zod';
+import { Projet } from '@/domain/models/projet';
+import { Aide } from '@/domain/models/aide';
+import { projetRepository } from '@/infra/repositories/projet.repository';
+import { aideRepository } from '@/infra/repositories/aide.repository';
+import { poserQuestionUsecase } from '@/infra/uscases';
 
-export async function poserQuestionAction(
-  prevState: {
-    message: string;
-    uuid?: string;
-  },
-  formData: FormData
-) {
-  try {
-    // const questions = await repondreQuestionUsecase.execute(projet, questions, reponses);
-  } catch (e) {
-    // console.error(e);
-    // let message = 'Impossible de créer le projet.';
-    // if (isZodError(e)) {
-    //   message = e.message;
-    // }
-    //
-    // return { message };
-  }
+export async function poserQuestionAction(projetUuid: Projet['uuid'], aideUuid: Aide['uuid']) {
+  const projet = await projetRepository.fromUuid(projetUuid);
+  const aide = await aideRepository.fromUuid(aideUuid);
+  return await poserQuestionUsecase.execute(projet, aide);
 }

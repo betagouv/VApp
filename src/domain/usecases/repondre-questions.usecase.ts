@@ -1,26 +1,25 @@
 import { UsecaseInterface } from './usecase.interface';
 import { Projet } from '../models/projet';
-import { AideRepositoryInterface } from '../repositories/aide.repository.interface';
-import { Recommendation } from '../models/recommendation';
-import { NotationAideServiceInterface } from '../services/notation-aide.service.interface';
+import { QuestionReponse } from '@/domain/models/question-reponse';
+import { Aide } from '@/domain/models/aide';
+import { ReformulationServiceInterface } from '@/domain/services/reformulation-service.interface';
+import { ProjetRepository } from '@/infra/repositories/projet.repository';
 
-export class RechercherAidesUsecase implements UsecaseInterface {
+export class RepondreQuestionsUsecase implements UsecaseInterface {
   public constructor(
-    private readonly notationAideService: NotationAideServiceInterface,
-    private readonly aideRepository: AideRepositoryInterface
+    public projetRepository: ProjetRepository,
+    public reformulationService: ReformulationServiceInterface
   ) {}
 
-  public async execute(projet: Projet): Promise<Recommendation[]> {
-    if (!projet.description || projet.description.length === 0) {
-      throw new Error('La description du projet est vide.');
-    }
+  public async execute(
+    projet: Projet,
+    aide: Aide,
+    questionsReponses: QuestionReponse[]
+  ): Promise<Projet['description']> {
+    // ⚠ mutation du projet
+    await this.reformulationService.reformuler(projet, aide, questionsReponses);
+    await this.projetRepository.update(projet);
 
-    await this.notationAideService.initialize();
-    const aides = await this.aideRepository.all();
-    const notes = await Promise.all(aides.map((aide) => this.notationAideService.noterAide(aide, projet)));
-
-    return notes
-      .map((note, i) => new Recommendation(note, aides[i].uuid))
-      .sort((a, b) => b.eligibilite - a.eligibilite);
+    return projet.description;
   }
 }

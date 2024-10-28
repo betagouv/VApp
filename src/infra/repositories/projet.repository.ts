@@ -4,6 +4,7 @@ import { DB, ProjetTable } from '../database/types';
 import { Projet } from '@/domain/models/projet';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
 import { db } from '../database';
+import { describe } from 'vitest';
 
 export class ProjetRepository implements ProjetRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
@@ -14,9 +15,21 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       .values({
         uuid: projet.uuid,
         description: projet.description,
-        recommendations: JSON.stringify(projet.recommendations)
+        recommendations: JSON.stringify(projet.aidesEligibles)
       })
       .execute();
+
+    return Promise.resolve();
+  }
+
+  async update(projet: Projet) {
+    await db
+      .updateTable('projet_table')
+      .set({
+        description: projet.description
+      })
+      .where('uuid', '=', projet.uuid)
+      .executeTakeFirst();
 
     return Promise.resolve();
   }

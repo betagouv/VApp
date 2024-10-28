@@ -9,8 +9,6 @@ export class PoserQuestionsUsecase implements UsecaseInterface {
 
   public async execute(projet: Projet, aide: Aide): Promise<Question[]> {
     await this.questionsGenerator.initialize();
-    const questions = await this.questionsGenerator.generateQuestions(projet, aide);
-
-    return questions;
+    return await this.questionsGenerator.generateQuestions(projet, aide);
   }
 }

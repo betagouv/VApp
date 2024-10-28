@@ -8,8 +8,8 @@ export function useRecommendationsAvecAides(projet: Projet) {
 
   useEffect(() => {
     const handleProjetChange = async (projet: Projet) => {
-      const aides = await Promise.all(projet.recommendations.map(({ aideId }) => aideRepository.fromUuid(aideId)));
-      const localRecommendationsAvecAides = projet.recommendations.map(({ eligibilite }, index) => ({
+      const aides = await Promise.all(projet.aidesEligibles.map(({ aideId }) => aideRepository.fromUuid(aideId)));
+      const localRecommendationsAvecAides = projet.aidesEligibles.map(({ eligibilite }, index: number) => ({
         eligibilite,
         aide: aides[index]
       }));

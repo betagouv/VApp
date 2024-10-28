@@ -1,6 +1,6 @@
-import { Aide } from '@/domain/models/aide';
-
-export type AideEligible = {
-  eligibilite: number;
-  aide: Aide;
-};
+export class AideEligible {
+  constructor(
+    public eligibilite: number,
+    public aideId: string
+  ) {}
+}
