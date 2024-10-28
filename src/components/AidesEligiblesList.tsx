@@ -18,7 +18,7 @@ export const AidesEligiblesList = ({ aidesEligibles }: RecommendationListProps) 
     <RadioButtons
       legend="Liste des dispositifs d'aides correspondants au projet"
       name="aideUuid"
-      options={aidesEligibles.map(({ eligibilite, aide }) => ({
+      options={aidesEligibles.map(({ eligibilite, aide }, index) => ({
         illustration: (
           <Tooltip title="Score d'éligibilité" kind="hover">
             <span style={{ backgroundColor: getColor((eligibilite * 25) / 100) }}>{eligibilite * 25}%</span>
@@ -26,7 +26,8 @@ export const AidesEligiblesList = ({ aidesEligibles }: RecommendationListProps) 
         ),
         label: aide.nom,
         nativeInputProps: {
-          value: aide.uuid
+          value: aide.uuid,
+          checked: index === 0
         },
         hintText: (aide.description || '').slice(0, 256).concat('...')
       }))}
