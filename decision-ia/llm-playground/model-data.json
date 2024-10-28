@@ -1,1 +1,66 @@
-{"mistral-nemo:latest": {"best_context": 16000, "max_context": 128000, "top_k": 10, "top_p": 0.9, "temperature": 0.6, "repeat_penalty": 1.2, "presence_penalty": 1.5, "frequency_penalty": 1.0}, "mistral-small:latest": {"best_context": 32000, "max_context": 64000, "top_k": 10, "top_p": 0.9, "temperature": 0.6, "repeat_penalty": 1.2, "presence_penalty": 1.5}, "qwen2.5:14b": {"best_context": 32000, "max_context": 128000, "top_k": 20, "top_p": 0.9, "temperature": 0.8, "repeat_penalty": 1.2, "presence_penalty": 1.5, "frequency_penalty": 1.0}, "qwen2.5:32b": {"best_context": 32000, "max_context": 128000, "top_k": 20, "top_p": 0.9, "temperature": 0.8, "repeat_penalty": 1.2, "presence_penalty": 1.5, "frequency_penalty": 1.0}, "llama3.2:1b": {"best_context": 64000, "max_context": 128000, "top_k": 20, "top_p": 0.9, "temperature": 0.8, "repeat_penalty": 1.2, "presence_penalty": 1.5, "frequency_penalty": 1.0}, "llama3.1:latest": {"best_context": 64000, "max_context": 128000, "top_k": 20, "top_p": 0.9, "temperature": 0.8, "repeat_penalty": 1.2, "presence_penalty": 1.5, "frequency_penalty": 1.0}}
+{
+    "mistral-nemo:latest":
+    {
+        "best_context": 16000, 
+        "max_context": 128000,
+        "top_p": 0.9,
+        "temperature": 0.6,
+        "repeat_penalty": 1.2, 
+        "presence_penalty": 1.5, 
+        "frequency_penalty": 1.0
+    }, 
+    "mistral-small:latest": 
+    {
+        "best_context": 32000,
+        "max_context": 64000,
+        "top_k": 10,
+        "top_p": 0.9,
+        "temperature": 0.6,
+        "repeat_penalty": 1.2,
+        "presence_penalty": 1.5
+    },
+    "qwen2.5:14b": 
+    {
+        "best_context": 32000,
+        "max_context": 128000,
+        "top_k": 20,
+        "top_p": 0.9,
+        "temperature": 0.8,
+        "repeat_penalty": 1.2,
+        "presence_penalty": 1.5,
+        "frequency_penalty": 1.0
+    }, 
+    "qwen2.5:32b": 
+    {
+        "best_context": 32000, 
+        "max_context": 128000, 
+        "top_k": 20, 
+        "top_p": 0.9, 
+        "temperature": 0.8, 
+        "repeat_penalty": 1.2, 
+        "presence_penalty": 1.5, 
+        "frequency_penalty": 1.0
+    }, 
+    "llama3.2:1b": 
+    {
+        "best_context": 64000, 
+        "max_context": 128000, 
+        "top_k": 20, 
+        "top_p": 0.9, 
+        "temperature": 0.8, 
+        "repeat_penalty": 1.2, 
+        "presence_penalty": 1.5, 
+        "frequency_penalty": 1.0
+    }, 
+    "llama3.1:latest": 
+    {
+        "best_context": 64000, 
+        "max_context": 128000, 
+        "top_k": 20, 
+        "top_p": 0.9, 
+        "temperature": 0.8, 
+        "repeat_penalty": 1.2, 
+        "presence_penalty": 1.5, 
+        "frequency_penalty": 1.0
+    }
+}

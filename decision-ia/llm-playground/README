@@ -3,6 +3,16 @@ Ce dossier a pour objectif d'expliquer les choix techniques en matière d'IA (LL
 
 Nous nous basons principalement sur Ollama (https://hub.docker.com/r/ollama/ollama) pour les appels aux LLM. Vous pouvez l'installer simplement via la commande suivante :
 
+# Téléchargement base Aides Territoires
+
+Notre application se base aujourd'hui principalement sur Aides Territoires. Pour télécharger toute la base de données, vous pouvez utiliser le notebook download-data-base-at.ipynb.
+**Notez que vous aurez besoin d'une clé API.**
+
+https://aides-territoires.beta.gouv.fr/
+
+
+# Installation ollama
+
 *Installation CPU uniquement :*
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
@@ -18,5 +28,3 @@ Vous pouvez installer l'environnement de test via la commande suivante (après a
 ```bash
 pip install -r requirements.txt
 ```
-
-[Voir le graphe](./llm-playground/graph/token_count_description.html)
