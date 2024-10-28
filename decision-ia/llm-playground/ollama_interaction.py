@@ -50,7 +50,7 @@ def generate_ollama_request(
             "frequency_penalty": model_options.get('frequency_penalty', 1.0),
             "num_ctx": request_options.get('num_ctx', 16384),
             "num_predict": request_options.get('num_predict', 32),
-            "batch_size":128,
+            "batch_size":request_options.get('num_predict', 128),
         }
     }
 
