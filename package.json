@@ -1,17 +1,17 @@
 {
   "name": "@betagouv/vapp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=18 || >=20"
+    "node": "20.x"
   },
   "scripts": {
     "predev": "only-include-used-icons",
     "prebuild": "node -r @swc-node/register scripts/prebuild.ts && yarn only-include-used-icons",
     "only-include-used-icons": "node node_modules/@codegouvfr/react-dsfr/bin/only-include-used-icons.js",
     "dev": "next dev",
-    "build": "next build -d",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint-staged": "lint-staged",
@@ -104,5 +104,6 @@
     "turndown": "^7.2.0",
     "typescript": "^5",
     "vitest": "^1.6.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
