@@ -12,7 +12,7 @@
     "only-include-used-icons": "node node_modules/@codegouvfr/react-dsfr/bin/only-include-used-icons.js",
     "dev": "next dev",
     "build": "next build -d",
-    "start": "next start -p $PORT",
+    "start": "next start",
     "lint": "next lint",
     "lint-staged": "lint-staged",
     "e2e": "NEXT_PUBLIC_BASE_PATH='' NODE_ENV=production yarn build && yarn playwright test",
