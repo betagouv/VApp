@@ -27,6 +27,8 @@ fileignoreconfig:
   checksum: 1afcdbe75c32e87badf1d9b1f6d6f5b5cd8fa8ecc57b3df7b210c5e20afa48f8
 - filename: src/app/projets/\[projet_uuid\]/aide/\[aide_uuid\]/page.tsx
   checksum: 061294ee457555a21e9b149f29935982facf723bb00091fb07416e91ab36f829
+- filename: package.json
+  checksum: 30aaec11cb93988519b820902706baecf2d23f03fb2da2bd0e26f72931e6e70f
 
 scopeconfig:
 - scope: node
