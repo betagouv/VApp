@@ -5,9 +5,9 @@ import { RepondreQuestionsUsecase } from '@/domain/usecases/repondre-questions.u
 // import { notationAideService } from '@/infra/ollama/notation-aide.service';
 import { aideRepository } from '@/infra/repositories/aide.repository';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { dummyQuestionsGenerator } from 'tests-vitest/infra/services/dummy-questions-generator';
-import { dummyReformulationService } from 'tests-vitest/infra/services/dummy-reformulation-service';
-import { randomNotationAideService } from 'tests-vitest/infra/services/random-notation-aide.service';
+import { dummyQuestionsGenerator } from '../../tests-vitest/infra/services/dummy-questions-generator';
+import { dummyReformulationService } from '../../tests-vitest/infra/services/dummy-reformulation-service';
+import { randomNotationAideService } from '../../tests-vitest/infra/services/random-notation-aide.service';
 
 export const demarrerProjetUsecase = new DemarrerProjetUsecase(
   new RechercherAidesEligiblesUsecase(randomNotationAideService, aideRepository),

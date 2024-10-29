@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Metadata } from 'next';
 import { fr } from '@codegouvfr/react-dsfr';
-import { Projet } from '@/domain/models/projet';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import Tabs from '@codegouvfr/react-dsfr/Tabs';
 import { ChoisirAideForm } from '@/components/forms/ChoisirAideForm';

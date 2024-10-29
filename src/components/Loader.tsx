@@ -3,9 +3,7 @@ import { CircularProgress, Stack, Typography } from '@mui/material';
 import { Box } from '@/components/dsfr/base/Box';
 import { Grid } from '@/components/dsfr/layout';
 
-export type LoaderProps = {};
-
-export const Loader = async ({}: LoaderProps) => {
+export const Loader = async () => {
   return (
     <Grid>
       <Stack spacing={2} direction="row">

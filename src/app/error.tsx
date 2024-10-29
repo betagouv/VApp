@@ -7,7 +7,7 @@ import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { MatomoPush } from '@/components/matomo/MatomoPush';
 import { matomoCategory } from '@/infra/matomo/matomo-events';
 
-export default function Error({ error, reset: _reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);

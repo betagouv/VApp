@@ -16,31 +16,23 @@ const version = pkg.version;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  // webpack: (config) => {
-  //   config.module.rules.push({
-  //     test: /\.(woff2|webmanifest)$/,
-  //     type: 'asset/resource'
-  //   });
-  //
-  //   return config;
-  // },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(woff2|webmanifest)$/,
+      type: 'asset/resource'
+    });
+
+    return config;
+  },
   experimental: {
     typedRoutes: true
-  },
-  sentry: {
-    //disableClientWebpackPlugin: true,
-    //disableServerWebpackPlugin: true,
-    hideSourceMaps: process.env.NODE_ENV === 'production'
   },
   env: {
     NEXT_PUBLIC_APP_VERSION: version,
     NEXT_PUBLIC_APP_VERSION_COMMIT: process.env.GITHUB_SHA,
     CONTENT_SECURITY_POLICY: ContentSecurityPolicy
   },
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  transpilePackages: ['@codegouvfr/react-dsfr', 'tss-react']
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx']
 };
 
 const sentryConfig = {
@@ -49,5 +41,5 @@ const sentryConfig = {
 };
 
 export default {
-  ...withMDX(withSentryConfig(nextConfig, sentryConfig))
+  ...withMDX(nextConfig)
 };

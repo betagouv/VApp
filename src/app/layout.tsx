@@ -17,10 +17,10 @@ import { Matomo } from '@/components/matomo/Matomo';
 import { config } from '@/config';
 import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
 
-import { defaultColorScheme } from '../defaultColorScheme';
-import { StartDsfr } from 'src/components/StartDsfr';
+import { defaultColorScheme } from '@/defaultColorScheme';
+import { StartDsfr } from '@/components/StartDsfr';
 import { sharedMetadata } from './shared-metadata';
-import pkg from 'package.json';
+import pkg from '../../package.json';
 
 const brandTop = (
   <>
