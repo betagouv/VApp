@@ -1,7 +1,7 @@
 import { Projet } from '../models/projet';
 import { UsecaseInterface } from './usecase.interface';
 import { ProjetRepositoryInterface } from '../repositories/projet.repository.interface';
-import { RechercherAidesEligiblesUsecase } from 'src/domain/usecases/rechercher-aides-eligibles.usecase';
+import { RechercherAidesEligiblesUsecase } from '@/domain/usecases/rechercher-aides-eligibles.usecase';
 
 export class DemarrerProjetUsecase implements UsecaseInterface {
   constructor(

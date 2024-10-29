@@ -19,6 +19,7 @@ export type IconProps = {
   title?: string;
 } & (IconProps.WithoutText | IconProps.WithText);
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace IconProps {
   export interface WithText {
     /**
