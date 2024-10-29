@@ -44,7 +44,7 @@
     "@mui/x-date-pickers": "^5.0.20",
     "@next/env": "14.2.16",
     "@next/mdx": "14.2.16",
-    "@sentry/nextjs": "^7.119.2",
+    "@sentry/nextjs": "^8",
     "@socialgouv/matomo-next": "^1.9.1",
     "is-ci": "^3.0.1",
     "kysely": "^0.27.4",

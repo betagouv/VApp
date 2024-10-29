@@ -1,16 +1,17 @@
 'use client';
 
 import * as Sentry from '@sentry/nextjs';
+import Error from 'next/error';
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { ErrorPage } from '@/components/ErrorPage';
 import { push } from '@socialgouv/matomo-next';
 
 // eslint-disable-next-line import/no-default-export
-export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
+export default function GlobalError({ error }: { error: Error }) {
   useEffect(() => {
-    Sentry.captureMessage(error.message);
-    push(['trackEvent', '500', error.message]);
+    Sentry.captureException(error);
+    push(['trackEvent', '500', JSON.stringify(error)]);
   }, [error]);
 
   return (

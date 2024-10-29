@@ -10,8 +10,9 @@ const SENTRY_ENV = process.env.SENTRY_ENV || process.env.NEXT_PUBLIC_SENTRY_ENV;
 Sentry.init({
   dsn: SENTRY_DSN ?? '',
   environment: SENTRY_ENV ?? 'development',
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.1,
+
+  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
+  tracesSampleRate: 1,
 
   // remove healthz probes
   beforeSendTransaction: (event, hint) => {
@@ -19,5 +20,8 @@ Sentry.init({
       return null;
     }
     return event;
-  }
+  },
+
+  // Setting this option to true will print useful information to the console while you're setting up Sentry.
+  debug: false
 });
