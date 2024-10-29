@@ -4,7 +4,6 @@ import { DB, ProjetTable } from '../database/types';
 import { Projet } from '@/domain/models/projet';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
 import { db } from '../database';
-import { describe } from 'vitest';
 
 export class ProjetRepository implements ProjetRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
@@ -61,7 +60,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return new Projet(
       selectableProjet.uuid as SUUID,
       selectableProjet.description,
-      // @ts-ignore
+      // @ts-expect-error dunno
       selectableProjet.recommendations
     );
   }

@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { MdxLink } from '@/components/mdx/Link';
 import { slugify } from '@/libs/utils/string';
 
-import { CTA } from 'src/components/CTA';
+import { CTA } from '@/components/CTA';
 import { AnchorLink, getLabelFromChildren } from '@/components/dsfr/client';
 
 export const anchorHeadingMDXComponents: MDXComponents = {

@@ -2,10 +2,8 @@
 import * as React from 'react';
 import { SUUID } from 'short-uuid';
 import { fr } from '@codegouvfr/react-dsfr';
-import { useServerAction } from '@/presentation/hooks/useServerAction';
 import { QuestionsProjetPourAideForm } from '@/components/forms/QuestionsProjetPourAideForm';
 import { poserQuestionAction } from '@/actions/poser-questions.action';
-import { Loader } from '@/components/Loader';
 
 export default async function Page({
   params: { projet_uuid, aide_uuid }
