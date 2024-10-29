@@ -15,7 +15,7 @@ const withMDX = createMDX({
 const version = pkg.version;
 
 /** @type {import('next').NextConfig} */
-const moduleExports = {
+const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   webpack: (config) => {
@@ -32,6 +32,7 @@ const moduleExports = {
   sentry: {
     //disableClientWebpackPlugin: true,
     //disableServerWebpackPlugin: true,
+    hideSourceMaps: process.env.NODE_ENV === 'production'
   },
   env: {
     NEXT_PUBLIC_APP_VERSION: version,
@@ -42,6 +43,11 @@ const moduleExports = {
   transpilePackages: ['@codegouvfr/react-dsfr', 'tss-react']
 };
 
+const sentryConfig = {
+  silent: true,
+  hideSourceMaps: process.env.NODE_ENV === 'production'
+};
+
 export default {
-  ...withMDX(withSentryConfig(moduleExports, { silent: true }))
+  ...withMDX(withSentryConfig(nextConfig, sentryConfig))
 };
