@@ -12,12 +12,6 @@ export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'
 };
 
-export async function generateStaticParams() {
-  const projets = await projetRepository.all();
-
-  return projets.map((projet: Projet) => ({ projet_uuid: projet.uuid }));
-}
-
 export default async function Page({
   params: { projet_uuid },
   searchParams
