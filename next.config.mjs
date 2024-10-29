@@ -18,14 +18,14 @@ const version = pkg.version;
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(woff2|webmanifest)$/,
-      type: 'asset/resource'
-    });
-
-    return config;
-  },
+  // webpack: (config) => {
+  //   config.module.rules.push({
+  //     test: /\.(woff2|webmanifest)$/,
+  //     type: 'asset/resource'
+  //   });
+  //
+  //   return config;
+  // },
   experimental: {
     typedRoutes: true
   },
