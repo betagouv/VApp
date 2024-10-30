@@ -15,4 +15,8 @@ export class Projet {
   public static create(description: string = '', aidesEligibles: AideEligible[] = []): Projet {
     return new Projet(short.generate(), description, aidesEligibles);
   }
+
+  public reformuler(description: Projet['description']) {
+    this.description = description;
+  }
 }

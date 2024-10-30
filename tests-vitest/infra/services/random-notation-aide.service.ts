@@ -4,6 +4,7 @@ import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 
 export class RandomNotationAideService implements NotationAideServiceInterface {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public noterAide(aide: Aide, projet: Projet) {
     return Promise.resolve(Math.floor(Math.random() * NOTE_MAX) + NOTE_MIN);
   }

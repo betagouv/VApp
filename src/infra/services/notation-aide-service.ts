@@ -1,9 +1,10 @@
 import { CreateRequest, Ollama } from 'ollama';
-import { modelRequest, ollama } from '@/infra/ollama/config';
 import { NotationAideServiceInterface } from '@/domain/services/notation-aide.service.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { assertValid } from '@/domain/note';
+import { createModelRequest, ollama } from '@/infra/ollama';
+import { system, user } from '@/infra/prompts/notation';
 
 export class NotationAideService implements NotationAideServiceInterface {
   private initialized: boolean = false;
@@ -14,7 +15,7 @@ export class NotationAideService implements NotationAideServiceInterface {
   ) {}
 
   public async initialize() {
-    console.log('initialize', process.env.OLLAMA_HOST);
+    console.log(`Initializing ${this.modelRequest.model}...`);
     await this.ollama.create({ ...this.modelRequest, stream: false });
     this.initialized = true;
 
@@ -33,11 +34,7 @@ export class NotationAideService implements NotationAideServiceInterface {
       messages: [
         {
           role: 'user',
-          content: `*Aide ou subvention à analyser :*
-${aide.description}
-____
-*Projet de l'utilisateur :*
-${projet.description}`
+          content: user(aide, projet)
         }
       ]
     });
@@ -53,4 +50,7 @@ ${content} `
   }
 }
 
-export const notationAideService = new NotationAideService(ollama, modelRequest);
+export const notationAideService = new NotationAideService(
+  ollama,
+  createModelRequest('notation-agent', 'llama3.2:1b', system)
+);

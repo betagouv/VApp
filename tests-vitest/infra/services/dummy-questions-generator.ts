@@ -4,7 +4,8 @@ import { Projet } from '@/domain/models/projet';
 import { Question } from '@/domain/models/question';
 
 export class DummyQuestionsGenerator implements QuestionsGeneratorInterface {
-  generateQuestions(projet: Projet, aide: Aide): Promise<Question[]> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  generateQuestions(projet: Projet, aides: Aide[]): Promise<Question[]> {
     return Promise.resolve([
       "Quelle est la superficie et l'état actuel de la zone humide que tu souhaites restaurer ? Est-elle encore fonctionnelle ou très dégradée ?",
       "Quels sont les objectifs principaux de la restauration ? Par exemple, est-ce pour préserver la biodiversité, améliorer la qualité de l'eau, ou créer une zone pédagogique ?",

@@ -2,7 +2,6 @@
   "mistral-nemo:latest": {
     "best_context": 16000,
     "max_context": 128000,
-    "top_k": 10,
     "top_p": 0.9,
     "temperature": 0.6,
     "repeat_penalty": 1.2,
@@ -19,7 +18,6 @@
     "presence_penalty": 1.5
   },
   "qwen2.5:14b": {
-    // resumé
     "best_context": 32000,
     "max_context": 128000,
     "top_k": 20,
@@ -40,7 +38,6 @@
     "frequency_penalty": 1.0
   },
   "llama3.2:1b": {
-    // scoring
     "best_context": 64000,
     "max_context": 128000,
     "top_k": 20,
