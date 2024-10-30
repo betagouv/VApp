@@ -1,0 +1,17 @@
+/node_modules
+/.next/cache
+/.next/static
+/.next/types
+/.next/trace
+/.next/next-server.js.nft.json
+/data
+/.storybook
+yarn.lock
+tsconfig.tsbuildinfo
+/.husky
+/scripts
+/.github
+/tests-vitest
+/tests-playwright
+/public
+/decisions

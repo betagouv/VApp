@@ -18,6 +18,7 @@ const version = pkg.version;
 const nextConfig = {
   poweredByHeader: false,
   swcMinify: true,
+  output: 'standalone',
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(woff2|webmanifest)$/,
