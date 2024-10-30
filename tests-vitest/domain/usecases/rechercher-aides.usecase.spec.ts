@@ -4,7 +4,7 @@ import { Projet } from '@/domain/models/projet';
 import { dummyAideRepository } from '../../infra/repository/dummy-aide.repository';
 import { randomNotationAideService } from '../../infra/services/random-notation-aide.service';
 
-describe('suggerer aide usecase', () => {
+describe('poser questions usecase', () => {
   it('throws when the project description is empty', async () => {
     const projet = Projet.create('');
     const suggererAides = new RechercherAidesEligiblesUsecase(randomNotationAideService, dummyAideRepository);

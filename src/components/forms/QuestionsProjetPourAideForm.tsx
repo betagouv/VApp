@@ -30,10 +30,10 @@ function SubmitButton() {
 export interface QuestionsProjetPourAideFormProps {
   questions: Question[];
   projetUuid: Projet['uuid'];
-  aideUuid: Aide['uuid'];
+  aideUuid?: Aide['uuid'];
 }
 
-export function QuestionsProjetPourAideForm({ questions, projetUuid, aideUuid }: QuestionsProjetPourAideFormProps) {
+export function QuestionsProjetPourAideForm({ questions, projetUuid }: QuestionsProjetPourAideFormProps) {
   const [formState, formAction] = useFormState(repondreQuestionAction, initialState);
   const { pending } = useFormStatus();
   useEffect(() => {
@@ -49,7 +49,6 @@ export function QuestionsProjetPourAideForm({ questions, projetUuid, aideUuid }:
         <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
       )}
       <input type="hidden" name="projetId" value={projetUuid} />
-      <input type="hidden" name="aideId" value={aideUuid} />
       {questions.map((question, i) => (
         <fieldset key={`question_${i}`}>
           <input type="hidden" name={`questionsReponses[${i}].question`} value={question} />

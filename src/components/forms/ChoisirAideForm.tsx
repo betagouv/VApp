@@ -18,9 +18,8 @@ export type ChoisirAideFormProps = {
 
 export function ChoisirAideForm({ projet, aidesEligibles }: ChoisirAideFormProps) {
   const router = useRouter();
-  const redirectToQuestions = (formData: FormData) => {
-    console.log(formData);
-    router.push(`/projets/${projet.uuid}/aide/${formData.get('aideUuid')}`);
+  const redirectToQuestions = () => {
+    router.push(`/projets/${projet.uuid}/questions`);
   };
 
   return (

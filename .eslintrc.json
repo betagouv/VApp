@@ -1,5 +1,11 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "plugin:storybook/recommended", "plugin:jsx-a11y/recommended", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:storybook/recommended",
+    "plugin:jsx-a11y/recommended",
+    "prettier"
+  ],
   "rules": {
     "react/no-unescaped-entities": ["error", { "forbid": [">", "\"", "}"] }],
     "@typescript-eslint/no-namespace": "off"

@@ -7,8 +7,8 @@ import { QuestionsGeneratorInterface } from '@/domain/services/questions-generat
 export class PoserQuestionsUsecase implements UsecaseInterface {
   public constructor(private readonly questionsGenerator: QuestionsGeneratorInterface) {}
 
-  public async execute(projet: Projet, aide: Aide): Promise<Question[]> {
+  public async execute(projet: Projet, aides: Aide[]): Promise<Question[]> {
     await this.questionsGenerator.initialize();
-    return await this.questionsGenerator.generateQuestions(projet, aide);
+    return await this.questionsGenerator.generateQuestions(projet, aides);
   }
 }

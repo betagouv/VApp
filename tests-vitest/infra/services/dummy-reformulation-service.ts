@@ -1,10 +1,10 @@
 import { ReformulationServiceInterface } from '@/domain/services/reformulation-service.interface';
-import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { QuestionReponse } from '@/domain/models/question-reponse';
 
 export class DummyReformulationService implements ReformulationServiceInterface {
-  public reformuler(projet: Projet, aide: Aide, questionsReponses: QuestionReponse[]) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public reformuler(projet: Projet, questionsReponses: QuestionReponse[]) {
     projet.description = projet.description.concat(`
 Lorem ipsum dolor sit amet.`);
 
