@@ -14,9 +14,10 @@ export class AideRepository implements AideRepositoryInterface {
       .insertInto('aide_table')
       .values({
         uuid: Aide.createUuid(),
-        nom: aide.nom,
-        description: aide.description,
-        aides_territoire_id: aide.id
+        nom: aide.name,
+        description: aide.description_md,
+        criteresEligibilite: aide.eligibility_md,
+        aides_territoire_id: Number(aide.id)
       })
       .execute();
 

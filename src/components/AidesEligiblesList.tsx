@@ -21,7 +21,7 @@ export const AidesEligiblesList = ({ aidesEligibles }: RecommendationListProps) 
       options={aidesEligibles.map(({ eligibilite, aide }, index) => ({
         illustration: (
           <Tooltip title="Score d'éligibilité" kind="hover">
-            <span style={{ backgroundColor: getColor((eligibilite * 25) / 100) }}>{eligibilite * 25}%</span>
+            <span style={{ backgroundColor: getColor((eligibilite * 25) / 100) }}>{eligibilite}</span>
           </Tooltip>
         ),
         label: aide.nom,

@@ -6,7 +6,7 @@ export const system = `Tu es une IA qui aide l'utilisateur à déterminer la com
 Tu ne dois pas être bavard et te conformer totalement et strictement aux demandes de l'utilisateur.
 Ne fournis aucune explication, aucun mot supplémentaire, ni aucun caractère additionnel dans ta réponse.`;
 
-export const user = (aide: Aide, projet: Projet) => `**Instructions :**
+export const user = (aide: Aide, projet: Projet) => `## Instructions :
 
 Attribue une note sous forme d'entier entre {min_score} et {max_score}, selon les critères suivants :
 
@@ -32,13 +32,13 @@ Aucune des conditions et exigences de l'aide/subvention n'est satisfaite par le 
 
 Analyse les informations suivantes pour déterminer la compatibilité entre l'aide ou la subvention et le projet de l'utilisateur.
 
-- **Aide ou subvention à analyser :**
+## Aide ou subvention à analyser :
 ${aide.description}
 
-- **Projet de l'utilisateur :**
+## Projet de l'utilisateur :
 ${projet.description}
 
-**Instructions :**
+## Instructions :
 
 - Utilise ces informations pour attribuer une note selon les critères précédemment définis.
 

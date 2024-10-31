@@ -16,16 +16,16 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     }
 
     await this.notationAideService.initialize();
-    const aides = await this.aideRepository.all();
-    const notes = await Promise.all(aides.map((aide) => this.notationAideService.noterAide(aide, projet)));
+    const aides = (await this.aideRepository.all()).slice(0, 15);
+    const notes = [];
+    for (let i = 0; i <= aides.length; i++) {
+      const note = await this.notationAideService.noterAide(aides[i], projet);
+      notes.push(note);
+    }
 
-    return (
-      notes
-        .filter((note) => !!note)
-        // @ts-expect-error empty notes are filtered
-        .map((note, i) => new AideEligible(note, aides[i].uuid))
-        .sort((a, b) => b.eligibilite - a.eligibilite)
-        .slice(0, 3)
-    );
+    return notes
+      .map((note, i) => new AideEligible(note, aides[i].uuid))
+      .sort((a, b) => b.eligibilite - a.eligibilite)
+      .slice(0, 10);
   }
 }
