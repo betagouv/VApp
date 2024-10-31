@@ -4,7 +4,6 @@ import { isZodError } from '@/libs/utils/zod';
 import { repondreQuestionsUsecase } from '@/infra/uscases';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import { questionsFormDtoSchema } from '@/presentation/dtos/questions-form.dto';
-import { aideRepository } from '@/infra/repositories/aide.repository';
 
 export async function repondreQuestionAction(
   prevState: {
@@ -16,8 +15,7 @@ export async function repondreQuestionAction(
   try {
     const data = questionsFormDtoSchema.parse(formData);
     const projet = await projetRepository.fromUuid(data.projetId);
-    const aide = await aideRepository.fromUuid(data.aideId);
-    await repondreQuestionsUsecase.execute(projet, aide, data.questionsReponses);
+    await repondreQuestionsUsecase.execute(projet, data.questionsReponses);
 
     // [`/projets/${projet.uuid}`].forEach((path) => revalidatePath(path));
 
