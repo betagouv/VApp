@@ -1,56 +1,80 @@
-import { CreateRequest, Ollama } from 'ollama';
+import { CreateRequest, Ollama, Options } from 'ollama';
 import { NotationAideServiceInterface } from '@/domain/services/notation-aide.service.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { assertValid } from '@/domain/note';
-import { createModelRequest, ollama } from '@/infra/ollama';
+import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
 import { system, user } from '@/infra/prompts/notation';
+import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
+import * as console from 'node:console';
 
-export class NotationAideService implements NotationAideServiceInterface {
+export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
 
   constructor(
     private ollama: Ollama,
-    private modelRequest: CreateRequest
+    private modelConfiguration: ModelConfiguration
   ) {}
 
   public async initialize() {
-    console.log(`Initializing ${this.modelRequest.model}...`);
-    await this.ollama.create({ ...this.modelRequest, stream: false });
+    console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
+    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
     this.initialized = true;
 
     return Promise.resolve();
   }
 
-  public async noterAide(aide: Aide, projet: Projet): Promise<number> {
+  public async noterAide(aide: Aide, projet: Projet): Promise<number | void> {
     if (!this.initialized) {
       await this.initialize();
     }
 
-    const {
-      message: { content }
-    } = await this.ollama.chat({
-      model: this.modelRequest.model,
-      messages: [
-        {
-          role: 'user',
-          content: user(aide, projet)
-        }
-      ]
-    });
+    try {
+      const { response } = await this.ollama.generate({
+        model: this.getModelName(),
+        options: this.getRequestOptions({
+          num_ctx: 16384,
+          num_predict: 2
+        }),
+        prompt: user(aide, projet),
+        stream: false
+      });
 
-    const note = Number(content);
-    assertValid(
-      note,
-      `La réponse suivante n'est pas attribuable à une note:
-${content} `
-    );
+      const note = Number(response);
+      assertValid(
+        note,
+        `La réponse suivante n'est pas attribuable à une note:
+  ${response} `
+      );
 
-    return Promise.resolve(note);
+      return Promise.resolve(note);
+    } catch (e: unknown) {
+      console.error(e);
+      return Promise.resolve();
+    }
+  }
+
+  getModelFrom(): string {
+    return this.modelConfiguration.from;
+  }
+
+  getModelName(): string {
+    return this.modelConfiguration.request.model;
+  }
+
+  getModelParameters(): Partial<Options> {
+    return this.modelConfiguration.parameters;
+  }
+
+  getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
+    return {
+      ...this.getModelParameters(),
+      ...options
+    };
   }
 }
 
 export const notationAideService = new NotationAideService(
   ollama,
-  createModelRequest('notation-agent', 'llama3.2:1b', system)
+  getModelConfiguration('notation-agent', 'llama3.2:1b', system)
 );
