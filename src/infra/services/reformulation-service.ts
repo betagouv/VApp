@@ -1,23 +1,25 @@
-import { CreateRequest, Ollama } from 'ollama';
+import { Ollama, Options } from 'ollama';
 import { Projet } from '@/domain/models/projet';
 import { ReformulationServiceInterface } from '@/domain/services/reformulation-service.interface';
 import { QuestionReponse } from '@/domain/models/question-reponse';
-import { createModelRequest, ollama } from '@/infra/ollama';
+import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
 import { projetRepository, ProjetRepository } from '@/infra/repositories/projet.repository';
+import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
 import { user, system } from '@/infra/prompts/reformulation';
+import * as console from 'node:console';
 
-export class ReformulationService implements ReformulationServiceInterface {
+export class ReformulationService implements ReformulationServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
 
   constructor(
     private ollama: Ollama,
-    private modelRequest: CreateRequest,
+    private modelConfiguration: ModelConfiguration,
     private projetRepository: ProjetRepository
   ) {}
 
   public async initialize() {
-    console.log(`Initializing ${this.modelRequest.model}...`);
-    await this.ollama.create({ ...this.modelRequest, stream: false });
+    console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
+    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
 
     return Promise.resolve();
   }
@@ -27,28 +29,45 @@ export class ReformulationService implements ReformulationServiceInterface {
       await this.initialize();
     }
 
-    const {
-      message: { content }
-    } = await this.ollama.chat({
-      model: this.modelRequest.model,
-      messages: [
-        {
-          role: 'user',
-          content: user(projet, questionsReponses)
-        }
-      ]
+    const { response } = await this.ollama.generate({
+      model: this.modelConfiguration.request.model,
+      options: this.getRequestOptions({
+        num_ctx: 16384,
+        num_predict: 2048
+      }),
+      prompt: user(projet, questionsReponses),
+      stream: false
     });
 
-    projet.reformuler(content);
+    projet.reformuler(response);
 
     await this.projetRepository.update(projet);
 
     return Promise.resolve(projet);
   }
+
+  getModelFrom(): string {
+    return this.modelConfiguration.from;
+  }
+
+  getModelName(): string {
+    return this.modelConfiguration.request.model;
+  }
+
+  getModelParameters(): Partial<Options> {
+    return this.modelConfiguration.parameters;
+  }
+
+  getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
+    return {
+      ...this.getModelParameters(),
+      ...options
+    };
+  }
 }
 
 export const reformulationService = new ReformulationService(
   ollama,
-  createModelRequest('questions-agent', 'qwen2.5:14b', system),
+  getModelConfiguration('reformulation-agent', 'qwen2.5:14b', system),
   projetRepository
 );

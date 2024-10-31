@@ -19,9 +19,13 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     const aides = await this.aideRepository.all();
     const notes = await Promise.all(aides.map((aide) => this.notationAideService.noterAide(aide, projet)));
 
-    return notes
-      .map((note, i) => new AideEligible(note, aides[i].uuid))
-      .sort((a, b) => b.eligibilite - a.eligibilite)
-      .slice(0, 3);
+    return (
+      notes
+        .filter((note) => !!note)
+        // @ts-expect-error empty notes are filtered
+        .map((note, i) => new AideEligible(note, aides[i].uuid))
+        .sort((a, b) => b.eligibilite - a.eligibilite)
+        .slice(0, 3)
+    );
   }
 }

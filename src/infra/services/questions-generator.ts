@@ -1,23 +1,25 @@
-import { CreateRequest, Ollama } from 'ollama';
+import { CreateRequest, Ollama, Options } from 'ollama';
 import { QuestionsGeneratorInterface } from '@/domain/services/questions-generator.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { Question } from '@/domain/models/question';
-import { createModelRequest, ollama } from '@/infra/ollama';
+import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
 import { system, user } from '@/infra/prompts/questions';
 import { ollamaQuestionsDtoSchema } from '@/infra/dtos/ollama-questions.dto';
+import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
+import * as console from 'node:console';
 
-export class QuestionsGenerator implements QuestionsGeneratorInterface {
+export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaServiceInterface {
   private initialized: boolean = false;
 
   constructor(
     private ollama: Ollama,
-    private modelRequest: CreateRequest
+    private modelConfiguration: ModelConfiguration
   ) {}
 
   public async initialize() {
-    console.log(`Initializing ${this.modelRequest.model}...`);
-    await this.ollama.create({ ...this.modelRequest, stream: false });
+    console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
+    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
     this.initialized = true;
 
     return Promise.resolve();
@@ -28,26 +30,43 @@ export class QuestionsGenerator implements QuestionsGeneratorInterface {
       await this.initialize();
     }
 
-    const {
-      message: { content }
-    } = await this.ollama.chat({
-      model: this.modelRequest.model,
-      messages: [
-        {
-          role: 'user',
-          content: user(projet, aides)
-        }
-      ],
+    const { response } = await this.ollama.generate({
+      model: this.getModelName(),
+      options: this.getRequestOptions({
+        num_ctx: 16384,
+        num_predict: 512
+      }),
+      prompt: user(projet, aides),
+      stream: false,
       format: 'json'
     });
 
-    const { Q1, Q2, Q3 } = ollamaQuestionsDtoSchema.parse(content);
+    const { Q1, Q2, Q3 } = ollamaQuestionsDtoSchema.parse(response);
 
     return Promise.resolve([Q1, Q2, Q3]);
+  }
+
+  getModelFrom(): string {
+    return this.modelConfiguration.from;
+  }
+
+  getModelName(): string {
+    return this.modelConfiguration.request.model;
+  }
+
+  getModelParameters(): Partial<Options> {
+    return this.modelConfiguration.parameters;
+  }
+
+  getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
+    return {
+      ...this.getModelParameters(),
+      ...options
+    };
   }
 }
 
 export const questionsGenerator = new QuestionsGenerator(
   ollama,
-  createModelRequest('questions-agent', 'qwen2.5:14b', system)
+  getModelConfiguration('questions-agent', 'qwen2.5:14b', system)
 );

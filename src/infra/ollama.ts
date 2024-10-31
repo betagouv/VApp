@@ -1,4 +1,4 @@
-import { Ollama } from 'ollama';
+import { CreateRequest, Ollama, Options } from 'ollama';
 import models from 'data/model-data.json';
 
 const fetchWithHeaders = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
@@ -25,7 +25,7 @@ export const ollama = new Ollama({
   fetch: fetchWithHeaders
 });
 
-export const getModelParameters = (modelName: string) => {
+export const getModelParameters = (modelName: string): Partial<Options> => {
   const modelExists = Object.hasOwnProperty.call(models, modelName);
   if (!modelExists) {
     throw new Error(`Model ${modelName} doesn't exist.`);
@@ -36,10 +36,17 @@ export const getModelParameters = (modelName: string) => {
 };
 
 export const createModelFile = (from: string, system: string) => `FROM ${from}
-${Object.entries(getModelParameters(from)).map(([k, v]) => `PARAMETER ${k.toLocaleUpperCase()} ${v}`)}
 SYSTEM "${system}"`;
 
 export const createModelRequest = (name: string, from: string, system: string) => ({
   model: 'notation-agent',
   modelfile: createModelFile(from, system)
+});
+
+export type ModelConfiguration = { request: CreateRequest; parameters: Partial<Options>; from: string };
+
+export const getModelConfiguration = (name: string, from: string, system: string): ModelConfiguration => ({
+  request: createModelRequest(name, from, system),
+  parameters: getModelParameters(from),
+  from
 });
