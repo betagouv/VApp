@@ -41,7 +41,9 @@ export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaSe
       format: 'json'
     });
 
-    const { Q1, Q2, Q3 } = ollamaQuestionsDtoSchema.parse(response);
+    console.log(response);
+    console.log(typeof response);
+    const { Q1, Q2, Q3 } = ollamaQuestionsDtoSchema.parse(JSON.parse(response));
 
     return Promise.resolve([Q1, Q2, Q3]);
   }

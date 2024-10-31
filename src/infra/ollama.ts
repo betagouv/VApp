@@ -39,7 +39,7 @@ export const createModelFile = (from: string, system: string) => `FROM ${from}
 SYSTEM "${system}"`;
 
 export const createModelRequest = (name: string, from: string, system: string) => ({
-  model: 'notation-agent',
+  model: name,
   modelfile: createModelFile(from, system)
 });
 

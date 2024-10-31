@@ -25,7 +25,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "kysely": "kysely",
-    "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts",
+    "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts --env-file .env.local",
     "prepare": "husky",
     "prettier": "prettier . --write"
   },

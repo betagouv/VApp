@@ -5,7 +5,7 @@ export const system = `Tu es une IA bienveillante qui aide l'utilisateur à pré
 
 Ton rôle est de poser des questions simples et encourageantes, permettant à l'utilisateur d'explorer son projet plus en détail et en lien avec les critères des aides ou subventions.
 
-  Tu répondras exclusivement au format JSON, en respectant strictement le format demandé.`;
+Tu répondras exclusivement au format JSON, en respectant strictement le format demandé.`;
 
 export const user = ({ description }: Projet, aides: Aide[]) => `**Instruction**
 
