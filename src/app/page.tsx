@@ -23,7 +23,12 @@ export const metadata: Metadata = {
 
 const Home = () => {
   return (
-    <>
+    <main>
+      <h1>Collectivités</h1>
+      <h2>Financez vos projets en identifiant toutes les aides que vous pourriez mobiliser, en 5 minutes</h2>
+      <p>
+        <strong>Déja plus de 2000 aides référencées</strong>
+      </p>
       <section className="col-start-2 mt-4">
         <Button
           linkProps={{
@@ -33,7 +38,7 @@ const Home = () => {
           Rechercher des aides
         </Button>
       </section>
-    </>
+    </main>
   );
 };
 

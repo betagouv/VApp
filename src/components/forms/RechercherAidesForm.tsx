@@ -42,10 +42,10 @@ export function RechercherAidesForm() {
         <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
       )}
       <Input
-        label="Description"
+        label="Description du projet"
         textArea
         id="description"
-        hintText="hint text"
+        hintText="Plus la description de votre projet sera précise, plus notre IA sera en mesure de vous proposer des aides adaptées à celui-ci."
         nativeTextAreaProps={{
           name: 'description'
         }}

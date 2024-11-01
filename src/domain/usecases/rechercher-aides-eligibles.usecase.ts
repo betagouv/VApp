@@ -16,9 +16,10 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     }
 
     await this.notationAideService.initialize();
-    const aides = (await this.aideRepository.all()).slice(0, 15);
+    const sliceArgs = process.env.NODE_ENV == 'development' ? [0, 15] : [];
+    const aides = (await this.aideRepository.all()).slice(...sliceArgs);
     const notes = [];
-    for (let i = 0; i <= aides.length; i++) {
+    for (let i = 0; i < aides.length; i++) {
       const note = await this.notationAideService.noterAide(aides[i], projet);
       notes.push(note);
     }

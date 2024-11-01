@@ -67,6 +67,12 @@ docker compose --env-file .env.test up
 yarn e2e --ui
 ```
 
+## Ollama
+Follow production logs:
+```sh
+journalctl -u ollama.service -f
+```
+
 ## Projets connexes
 
 - https://github.com/MTES-MCT/aides-territoires

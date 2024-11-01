@@ -1,18 +1,15 @@
 import short, { SUUID } from 'short-uuid';
 
 export class Aide {
-  public uuid: SUUID;
-  public nom: string;
-  public description: string;
+  constructor(
+    public uuid: SUUID,
+    public nom: string,
+    public description: string,
+    public url: string
+  ) {}
 
-  constructor(uuid: SUUID, nom: string, description: string) {
-    this.uuid = uuid;
-    this.nom = nom;
-    this.description = description;
-  }
-
-  public static create(nom: string, description = '') {
-    return new Aide(Aide.createUuid(), nom, description);
+  public getAidesTerritoiresUrl() {
+    return `https://aides-territoires.beta.gouv.fr${this.url}`;
   }
 
   public static createUuid() {
