@@ -32,10 +32,12 @@ export interface AgentTable {
 export interface AideTable {
   aides_territoire_id: number;
   created_at: Generated<Timestamp>;
-  criteresEligibilite: string | null;
+  criteres_eligibilite: string | null;
   description: Generated<string>;
   id: Generated<number>;
   nom: Generated<string>;
+  targeted_audiences: Generated<Json>;
+  url: string;
   uuid: string;
 }
 

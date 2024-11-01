@@ -12,7 +12,7 @@ export default async function Page() {
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
       <main className={fr.cx()}>
-        <h1>Rechercher des aides</h1>
+        <h1>Nouvelle recherche d'aides</h1>
         <RechercherAidesForm />
       </main>
     </div>

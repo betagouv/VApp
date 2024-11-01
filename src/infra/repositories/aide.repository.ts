@@ -10,14 +10,22 @@ export class AideRepository implements AideRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
 
   async addFromAideTerritoires(aide: AideAidesTerritoiresDto) {
+    const decoded = aide.targeted_audiences
+      .replaceAll(", '", ', "')
+      .replaceAll("', ", '", ')
+      .replaceAll("['", '["')
+      .replaceAll("']", '"]');
+    console.log(decoded);
     await this.db
       .insertInto('aide_table')
       .values({
         uuid: Aide.createUuid(),
         nom: aide.name,
         description: aide.description_md,
-        criteresEligibilite: aide.eligibility_md,
-        aides_territoire_id: Number(aide.id)
+        criteres_eligibilite: aide.eligibility_md,
+        aides_territoire_id: Number(aide.id),
+        url: aide.url,
+        targeted_audiences: JSON.stringify(JSON.parse(decoded))
       })
       .execute();
 
@@ -27,7 +35,7 @@ export class AideRepository implements AideRepositoryInterface {
   async all() {
     const selectableProjets = await this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.nom', 'a.description'])
+      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
       .execute();
 
     return selectableProjets.map(AideRepository.toAide);
@@ -36,7 +44,7 @@ export class AideRepository implements AideRepositoryInterface {
   async fromUuid(uuid: string): Promise<Aide> {
     const selectableAides = await this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.nom', 'a.description'])
+      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
       .where('a.uuid', '=', uuid)
       .execute();
 
@@ -47,8 +55,8 @@ export class AideRepository implements AideRepositoryInterface {
     return AideRepository.toAide(selectableAides[0]);
   }
 
-  static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'nom' | 'description'>): Aide {
-    return new Aide(selectableAide.uuid as SUUID, selectableAide.nom, selectableAide.description);
+  static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'nom' | 'description' | 'url'>): Aide {
+    return new Aide(selectableAide.uuid as SUUID, selectableAide.nom, selectableAide.description, selectableAide.url);
   }
 }
 
