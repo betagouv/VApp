@@ -9,7 +9,6 @@
 yarn.lock
 tsconfig.tsbuildinfo
 /.husky
-/scripts
 /.github
 /tests-vitest
 /tests-playwright
