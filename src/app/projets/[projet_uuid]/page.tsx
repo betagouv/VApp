@@ -8,7 +8,6 @@ import { AidesEligibles } from '@/components/AideEligibles';
 import { aideRepository } from '@/infra/repositories/aide.repository';
 import { useRemarkSync } from 'react-remark';
 import { Button } from '@codegouvfr/react-dsfr/Button';
-import { CircularProgress } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'

@@ -10,6 +10,8 @@ import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
 import { CircularProgress } from '@mui/material';
+import targetedAudiences from 'data/targeted-audiences.json';
+import Select from '@codegouvfr/react-dsfr/SelectNext';
 
 const initialState = {
   message: '',
@@ -49,6 +51,10 @@ export function RechercherAidesForm() {
         nativeTextAreaProps={{
           name: 'description'
         }}
+      />
+      <Select
+        label="Type de structure"
+        options={targetedAudiences.map((audience: string) => ({ label: audience, value: audience }))}
       />
       <SubmitButton />
     </form>

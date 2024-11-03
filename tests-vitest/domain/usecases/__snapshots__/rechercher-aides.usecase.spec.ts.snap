@@ -20,3 +20,10 @@ exports[`poser questions usecase > returns a list of suggestions 3`] = `
   "eligibilite": Any<Number>,
 }
 `;
+
+exports[`poser questions usecase > returns a list of suggestions 4`] = `
+{
+  "aideId": Any<String>,
+  "eligibilite": Any<Number>,
+}
+`;

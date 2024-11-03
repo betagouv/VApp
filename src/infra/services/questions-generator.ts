@@ -1,4 +1,4 @@
-import { CreateRequest, Ollama, Options } from 'ollama';
+import { Ollama, Options } from 'ollama';
 import { QuestionsGeneratorInterface } from '@/domain/services/questions-generator.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';

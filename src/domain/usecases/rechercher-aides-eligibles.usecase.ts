@@ -3,6 +3,7 @@ import { Projet } from '../models/projet';
 import { AideRepositoryInterface } from '../repositories/aide.repository.interface';
 import { AideEligible } from '@/domain/models/aide-eligible';
 import { NotationAideServiceInterface } from '../services/notation-aide.service.interface';
+import { Aide } from '@/domain/models/aide';
 
 export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
   public constructor(
@@ -16,8 +17,7 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     }
 
     await this.notationAideService.initialize();
-    const sliceArgs = process.env.NODE_ENV == 'development' ? [0, 15] : [];
-    const aides = (await this.aideRepository.all()).slice(...sliceArgs);
+    const aides = await this.findAllForAudience();
     const notes = [];
     for (let i = 0; i < aides.length; i++) {
       const note = await this.notationAideService.noterAide(aides[i], projet);
@@ -28,5 +28,14 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
       .map((note, i) => new AideEligible(note, aides[i].uuid))
       .sort((a, b) => b.eligibilite - a.eligibilite)
       .slice(0, 10);
+  }
+
+  public async findAllForAudience(audience?: string): Promise<Aide[]> {
+    const sliceArgs = process.env.NODE_ENV == 'development' ? [0, 15] : [];
+    if (audience) {
+      return (await this.aideRepository.findAllForAudience(audience)).slice(...sliceArgs);
+    }
+
+    return (await this.aideRepository.all()).slice(...sliceArgs);
   }
 }
