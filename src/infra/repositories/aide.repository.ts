@@ -1,10 +1,10 @@
 import type { Kysely, Selectable } from 'kysely';
 import { SUUID } from 'short-uuid';
+import { AideAidesTerritoiresDto } from '@/infra/dtos/aide-aides-territoires.dto';
+import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
+import { Aide } from '@/domain/models/aide';
 import { AideTable, DB } from '../database/types';
 import { db } from '../database';
-import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
-import { AideAidesTerritoiresDto } from '@/infra/dtos/aide-aides-territoires.dto';
-import { Aide } from '@/domain/models/aide';
 
 export class AideRepository implements AideRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
@@ -32,10 +32,19 @@ export class AideRepository implements AideRepositoryInterface {
     return Promise.resolve();
   }
 
+  select() {
+    return this.db.selectFrom('aide_table as a').select(['a.uuid', 'a.nom', 'a.description', 'a.url']);
+  }
+
   async all() {
-    const selectableProjets = await this.db
-      .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
+    const selectableProjets = await this.select().execute();
+
+    return selectableProjets.map(AideRepository.toAide);
+  }
+
+  async findAllForAudience(audience: string) {
+    const selectableProjets = await this.select()
+      .where('a.targeted_audiences', '@>', JSON.stringify([audience]))
       .execute();
 
     return selectableProjets.map(AideRepository.toAide);

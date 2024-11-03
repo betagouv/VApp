@@ -68,7 +68,9 @@ yarn e2e --ui
 ```
 
 ## Ollama
+
 Follow production logs:
+
 ```sh
 journalctl -u ollama.service -f
 ```

@@ -14,7 +14,8 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       .values({
         uuid: projet.uuid,
         description: projet.description,
-        recommendations: JSON.stringify(projet.aidesEligibles)
+        recommendations: JSON.stringify(projet.aidesEligibles),
+        audience: projet.audience
       })
       .execute();
 
@@ -25,7 +26,8 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     await db
       .updateTable('projet_table')
       .set({
-        description: projet.description
+        description: projet.description,
+        audience: projet.audience
       })
       .where('uuid', '=', projet.uuid)
       .executeTakeFirst();
@@ -36,7 +38,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   async all() {
     const selectableProjets = await this.db
       .selectFrom('projet_table as p')
-      .select(['p.uuid', 'p.description', 'p.recommendations'])
+      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.audience'])
       .execute();
 
     return selectableProjets.map(ProjetRepository.toProjet);
@@ -45,7 +47,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   async fromUuid(uuid: string): Promise<Projet> {
     const selectableProjets = await this.db
       .selectFrom('projet_table as p')
-      .select(['p.uuid', 'p.description', 'p.recommendations'])
+      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.audience'])
       .where('p.uuid', '=', uuid)
       .execute();
 
@@ -56,12 +58,15 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return ProjetRepository.toProjet(selectableProjets[0]);
   }
 
-  static toProjet(selectableProjet: Pick<Selectable<ProjetTable>, 'uuid' | 'description' | 'recommendations'>): Projet {
+  static toProjet(
+    selectableProjet: Pick<Selectable<ProjetTable>, 'uuid' | 'description' | 'recommendations' | 'audience'>
+  ): Projet {
     return new Projet(
       selectableProjet.uuid as SUUID,
       selectableProjet.description,
       // @ts-expect-error dunno
-      selectableProjet.recommendations
+      selectableProjet.recommendations,
+      selectableProjet.audience
     );
   }
 }

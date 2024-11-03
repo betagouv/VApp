@@ -5,6 +5,6 @@ import { NouveauProjetFormDto, nouveauProjetFormDtoSchema } from '@/presentation
 export class ProjetAdapter {
   static adaptFromNouveauProjetFormData(nouveauProjetFormData: TypedFormData<NouveauProjetFormDto>): Projet {
     const data = nouveauProjetFormDtoSchema.parse(Object.fromEntries(nouveauProjetFormData.entries()));
-    return Projet.create(data.description);
+    return Projet.create(data.description, [], data.audience);
   }
 }

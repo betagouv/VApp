@@ -9,6 +9,10 @@ export class DummyAideRepository implements AideRepositoryInterface {
     return Promise.resolve(this.aides);
   }
 
+  public findAllForAudience() {
+    return Promise.resolve(this.aides);
+  }
+
   public async fromUuid(uuid: string): Promise<Aide> {
     const aides = await this.all();
     const aide = aides.find((aide) => aide.uuid === uuid);
