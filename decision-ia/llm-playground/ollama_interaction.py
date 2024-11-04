@@ -51,6 +51,7 @@ def generate_ollama_request(
             "num_ctx": request_options.get('num_ctx', 16384),
             "num_predict": request_options.get('num_predict', 32),
             "batch_size":request_options.get('batch_size', 128),
+            "main_gpu":request_options.get('main_gpu', 0)
         }
     }
 
