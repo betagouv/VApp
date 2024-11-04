@@ -55,6 +55,9 @@ export function RechercherAidesForm() {
       <Select
         label="Type de structure"
         options={targetedAudiences.map((audience: string) => ({ label: audience, value: audience }))}
+        nativeSelectProps={{
+          name: 'audience'
+        }}
       />
       <SubmitButton />
     </form>

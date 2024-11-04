@@ -19,7 +19,6 @@ export class ReformulationService implements ReformulationServiceInterface, Olla
 
   public async initialize() {
     console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
-    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
 
     return Promise.resolve();
   }
@@ -30,7 +29,7 @@ export class ReformulationService implements ReformulationServiceInterface, Olla
     }
 
     const { response } = await this.ollama.generate({
-      model: this.modelConfiguration.request.model,
+      model: this.getModelFrom(),
       options: this.getRequestOptions({
         num_ctx: 16384,
         num_predict: 2048

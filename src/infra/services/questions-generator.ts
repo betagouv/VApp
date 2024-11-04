@@ -19,7 +19,6 @@ export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaSe
 
   public async initialize() {
     console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
-    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
     this.initialized = true;
 
     return Promise.resolve();
@@ -31,7 +30,7 @@ export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaSe
     }
 
     const { response } = await this.ollama.generate({
-      model: this.getModelName(),
+      model: this.getModelFrom(),
       options: this.getRequestOptions({
         num_ctx: 16384,
         num_predict: 512

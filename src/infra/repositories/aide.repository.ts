@@ -15,7 +15,7 @@ export class AideRepository implements AideRepositoryInterface {
       .replaceAll("', ", '", ')
       .replaceAll("['", '["')
       .replaceAll("']", '"]');
-    console.log(decoded);
+
     await this.db
       .insertInto('aide_table')
       .values({
@@ -40,6 +40,15 @@ export class AideRepository implements AideRepositoryInterface {
     const selectableProjets = await this.select().execute();
 
     return selectableProjets.map(AideRepository.toAide);
+  }
+
+  async size() {
+    const { size } = await this.db
+      .selectFrom('aide_table as a')
+      .select(db.fn.countAll().as('size'))
+      .executeTakeFirstOrThrow();
+
+    return size as number;
   }
 
   async findAllForAudience(audience: string) {

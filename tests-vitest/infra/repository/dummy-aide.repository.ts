@@ -9,6 +9,10 @@ export class DummyAideRepository implements AideRepositoryInterface {
     return Promise.resolve(this.aides);
   }
 
+  public size() {
+    return Promise.resolve(this.aides.length);
+  }
+
   public findAllForAudience() {
     return Promise.resolve(this.aides);
   }

@@ -10,8 +10,8 @@ import * as console from 'node:console';
 
 export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
-  static MIN_NB_NOTES_REQUIRED = 3;
-  static MAX_ATTEMPT = 9;
+  static MIN_NB_NOTES_REQUIRED = 4;
+  static MAX_ATTEMPT = 12;
   static EXTRACT_NOTE_REGEX = /(-? ?[0-9]).*/;
 
   constructor(
@@ -21,7 +21,6 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
 
   public async initialize() {
     console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
-    await this.ollama.create({ ...this.modelConfiguration.request, stream: false });
     this.initialized = true;
 
     return Promise.resolve();
@@ -57,7 +56,7 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
   private async attemptNoterAide(aide: Aide, projet: Projet, seed: number): Promise<number | null> {
     try {
       const { response } = await this.ollama.generate({
-        model: 'llama3.2:1b',
+        model: this.getModelFrom(),
         system,
         options: this.getRequestOptions({
           num_ctx: 16384,
