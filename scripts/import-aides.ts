@@ -64,7 +64,7 @@ const processFile = async () => {
     })
   );
   for await (const record of parser) {
-    if (record.id === 'id' || !record.description_md) {
+    if (record.id === 'id' || record.token_numb_description_md < 200 || record.token_numb_description_md > 2000) {
       continue;
     }
 

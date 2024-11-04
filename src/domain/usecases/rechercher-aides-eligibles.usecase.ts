@@ -7,8 +7,8 @@ import { Aide } from '@/domain/models/aide';
 
 function msToMinutesAndSeconds(ms: number) {
   const m = Math.floor(ms / 60000);
-  const s = Number(((ms % 60000) / 1000).toFixed(0));
-  return m + ':' + (s < 10 ? '0' : '') + s;
+  const s = ((ms % 60000) / 1000).toFixed(0);
+  return `${m}m${s.padStart(2, '0')}`;
 }
 
 export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
@@ -25,7 +25,7 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     await this.notationAideService.initialize();
     const aides = await this.findAllForAudience(projet.audience);
     const chunkedAides = [];
-    const chunkSize = 4;
+    const chunkSize = 5;
     for (let i = 0; i < aides.length; i += chunkSize) {
       const chunk = aides.slice(i, i + chunkSize);
       chunkedAides.push(chunk);
@@ -52,13 +52,17 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
   }
 
   public async findAllForAudience(audience?: string): Promise<Aide[]> {
-    const sliceArgs = process.env.NODE_ENV == 'development' ? [0, 100] : [];
+    let sliceArgs: number[] = [];
+    if (process.env.NB_AIDE_HARD_LIMIT) {
+      console.log(`NB_AIDE_HARD_LIMIT a été fixé à ${process.env.NB_AIDE_HARD_LIMIT}.`);
+      console.log(`La recherche ne sera lancée que sur ${process.env.NB_AIDE_HARD_LIMIT} aides max.`);
+      sliceArgs = [0, Number(process.env.NB_AIDE_HARD_LIMIT)];
+    }
+
     if (audience) {
       const filteredAides = await this.aideRepository.findAllForAudience(audience);
       console.log(`Recherche parmis ${filteredAides.length} sur les ${await this.aideRepository.size()} au total.`);
       const slicedFilteredAides = filteredAides.slice(...sliceArgs);
-      console.log(`(En dev la recherche est en réalité faite sur ${slicedFilteredAides.length} aides seulement)`);
-
       return slicedFilteredAides;
     }
 

@@ -75,6 +75,12 @@ Follow production logs:
 journalctl -u ollama.service -f
 ```
 
+Watch GPU usage:
+
+```sh
+watch -n 1 nvidia-smi
+```
+
 ## Projets connexes
 
 - https://github.com/MTES-MCT/aides-territoires
