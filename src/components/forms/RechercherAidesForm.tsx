@@ -10,6 +10,7 @@ import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
 import { CircularProgress } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import targetedAudiences from 'data/targeted-audiences.json';
 import Select from '@codegouvfr/react-dsfr/SelectNext';
 
@@ -23,9 +24,19 @@ function SubmitButton() {
 
   return (
     <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
-      Rechercher des aides
+      Rechercher des aides {pending ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
     </Button>
   );
+}
+
+function LoadingMessage() {
+  const { pending } = useFormStatus();
+
+  if (pending) {
+    return <Alert severity="info" title="Veuillez patienter, la recherche peut prendre quelques minutes..." />;
+  }
+
+  return null;
 }
 
 export function RechercherAidesForm() {
@@ -39,7 +50,7 @@ export function RechercherAidesForm() {
 
   return (
     <form action={formAction}>
-      {pending && <CircularProgress />}
+      <LoadingMessage />
       {formState?.message && !pending && (
         <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
       )}
