@@ -3,10 +3,11 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely';
+import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-  T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U> : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export type Json = JsonValue;
 
@@ -32,10 +33,16 @@ export interface AideTable {
   aides_territoire_id: number;
   created_at: Generated<Timestamp>;
   criteres_eligibilite: string | null;
-  description: Generated<string>;
+  description: Generated<string | null>;
+  financers: Generated<Json>;
+  financers_full: Generated<Json>;
   id: Generated<number>;
   nom: Generated<string>;
+  perimeter: string | null;
+  perimeter_scale: string | null;
   targeted_audiences: Generated<Json>;
+  token_numb_description: Generated<number>;
+  token_numb_eligibility: Generated<number>;
   url: string;
   uuid: string;
 }

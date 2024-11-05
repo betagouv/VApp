@@ -1,4 +1,4 @@
-import type { Kysely, Selectable } from 'kysely';
+import type { ExpressionBuilder, Kysely, Selectable } from 'kysely';
 import { SUUID } from 'short-uuid';
 import { AideAidesTerritoiresDto } from '@/infra/dtos/aide-aides-territoires.dto';
 import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
@@ -6,16 +6,32 @@ import { Aide } from '@/domain/models/aide';
 import { AideTable, DB } from '../database/types';
 import { db } from '../database';
 
+const pythonJsonParse = (pythonJsonString: string) =>
+  JSON.parse(
+    pythonJsonString
+      .replaceAll(", '", ', "')
+      .replaceAll("', ", '", ')
+      // array start & end
+      .replaceAll("['", '["')
+      .replaceAll("']", '"]')
+      // object
+      // start & end
+      .replaceAll("{'", '{"')
+      .replaceAll("'}", '"}')
+      // properties
+      .replaceAll("': '", '": "') // first string
+      .replaceAll("': ", '": ') // then number
+      .replaceAll("'}", '"}')
+      .replaceAll(': None', ': "None"')
+      .replaceAll('\\xa0', ' ')
+  );
+
+const envNumber = (envString?: string, defaultValue = 0): number => (envString ? Number(envString) : defaultValue);
+
 export class AideRepository implements AideRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
 
   async addFromAideTerritoires(aide: AideAidesTerritoiresDto) {
-    const decoded = aide.targeted_audiences
-      .replaceAll(", '", ', "')
-      .replaceAll("', ", '", ')
-      .replaceAll("['", '["')
-      .replaceAll("']", '"]');
-
     await this.db
       .insertInto('aide_table')
       .values({
@@ -25,15 +41,30 @@ export class AideRepository implements AideRepositoryInterface {
         criteres_eligibilite: aide.eligibility_md,
         aides_territoire_id: Number(aide.id),
         url: aide.url,
-        targeted_audiences: JSON.stringify(JSON.parse(decoded))
+        targeted_audiences: JSON.stringify(pythonJsonParse(aide.targeted_audiences)),
+        token_numb_description: Number(aide.token_numb_description),
+        token_numb_eligibility: Number(aide.token_numb_eligibility),
+        perimeter: aide.perimeter,
+        perimeter_scale: aide.perimeter_scale,
+        financers: JSON.stringify(pythonJsonParse(aide.financers))
       })
       .execute();
 
     return Promise.resolve();
   }
 
-  select() {
-    return this.db.selectFrom('aide_table as a').select(['a.uuid', 'a.nom', 'a.description', 'a.url']);
+  private select() {
+    return this.db
+      .selectFrom('aide_table as a')
+      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
+      .where(this.numberOfTokenIsValid);
+  }
+
+  private numberOfTokenIsValid({ eb, and }: ExpressionBuilder<DB & { a: AideTable }, 'a'>) {
+    return and([
+      eb('a.token_numb_description', '>', envNumber(process.env.AIDE_DESCRIPTION_MIN_TOKEN, 200)),
+      eb('a.token_numb_description', '<', envNumber(process.env.AIDE_DESCRIPTION_MAX_TOKEN, 1500))
+    ]);
   }
 
   async all() {
@@ -46,6 +77,7 @@ export class AideRepository implements AideRepositoryInterface {
     const { size } = await this.db
       .selectFrom('aide_table as a')
       .select(db.fn.countAll().as('size'))
+      .where(this.numberOfTokenIsValid)
       .executeTakeFirstOrThrow();
 
     return size as number;
@@ -74,7 +106,12 @@ export class AideRepository implements AideRepositoryInterface {
   }
 
   static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'nom' | 'description' | 'url'>): Aide {
-    return new Aide(selectableAide.uuid as SUUID, selectableAide.nom, selectableAide.description, selectableAide.url);
+    return new Aide(
+      selectableAide.uuid as SUUID,
+      selectableAide.nom,
+      selectableAide.description || '',
+      selectableAide.url
+    );
   }
 }
 
