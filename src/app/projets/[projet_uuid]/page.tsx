@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
 import { Metadata } from 'next';
-import { fr } from '@codegouvfr/react-dsfr';
-import { projetRepository } from '@/infra/repositories/projet.repository';
-import Tabs from '@codegouvfr/react-dsfr/Tabs';
-import { AidesEligibles } from '@/components/AideEligibles';
-import { aideRepository } from '@/infra/repositories/aide.repository';
 import { useRemarkSync } from 'react-remark';
-import { Button } from '@codegouvfr/react-dsfr/Button';
+import { fr } from '@codegouvfr/react-dsfr';
+import Tabs from '@codegouvfr/react-dsfr/Tabs';
+
+import { AidesEligibles } from '@/components/AideEligibles';
+import { projetRepository } from '@/infra/repositories/projet.repository';
+import { aideRepository } from '@/infra/repositories/aide.repository';
 
 export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'
@@ -32,17 +32,6 @@ export default async function Page({
 
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'end', height: '20px' }}>
-        <Button
-          linkProps={{
-            href: `/projets/${projet.uuid}/questions`
-          }}
-          priority="primary"
-          size="large"
-        >
-          Vérifier l'égibilité
-        </Button>
-      </div>
       <main className={fr.cx()}>
         <Tabs
           tabs={[
@@ -50,7 +39,7 @@ export default async function Page({
               label: 'Recommendations',
               iconId: 'fr-icon-folder-2-line',
               isDefault: !descriptionOpen,
-              content: <AidesEligibles aidesEligibles={aidesEligibles} />
+              content: <AidesEligibles aidesEligibles={aidesEligibles} projet={projet} />
             },
             {
               label: 'Description',
