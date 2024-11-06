@@ -1,35 +1,38 @@
 'use client';
 
 import * as React from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
-import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
-import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
-import Input from '@codegouvfr/react-dsfr/Input';
-import Alert from '@codegouvfr/react-dsfr/Alert';
-import { Button } from '@codegouvfr/react-dsfr/Button';
 import { CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import targetedAudiences from 'data/targeted-audiences.json';
+import Input from '@codegouvfr/react-dsfr/Input';
+import Alert from '@codegouvfr/react-dsfr/Alert';
 import Select from '@codegouvfr/react-dsfr/SelectNext';
+
+import { Button } from '@codegouvfr/react-dsfr/Button';
+import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
+import targetedAudiences from 'data/targeted-audiences.json';
 
 const initialState = {
   message: '',
   uuid: undefined
 };
 
-function SubmitButton() {
+export function SubmitButton({ children }: PropsWithChildren) {
   const { pending } = useFormStatus();
 
   return (
     <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
-      Rechercher des aides {pending ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
+      {children}
+      {'\u00A0'}
+      {pending ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
     </Button>
   );
 }
 
-function LoadingMessage() {
+export function LoadingMessage() {
   const { pending } = useFormStatus();
 
   if (pending) {
@@ -70,7 +73,7 @@ export function RechercherAidesForm() {
           name: 'audience'
         }}
       />
-      <SubmitButton />
+      <SubmitButton>Rechercher des aides</SubmitButton>
     </form>
   );
 }

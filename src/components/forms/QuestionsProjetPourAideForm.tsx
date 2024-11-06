@@ -4,11 +4,11 @@ import * as React from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
-import { repondreQuestionAction } from '@/actions/repondre-questions.action';
 import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
-import { Button } from '@codegouvfr/react-dsfr/Button';
-import { Loader } from '@/components/Loader';
+
+import { LoadingMessage, SubmitButton } from '@/components/forms/RechercherAidesForm';
+import { repondreQuestionAction } from '@/actions/repondre-questions.action';
 import { Question } from '@/domain/models/question';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
@@ -17,16 +17,6 @@ const initialState = {
   message: '',
   uuid: undefined
 };
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
-      Réévaluer l'égibilité aux aides
-    </Button>
-  );
-}
 
 export interface QuestionsProjetPourAideFormProps {
   questions: Question[];
@@ -45,7 +35,7 @@ export function QuestionsProjetPourAideForm({ questions, projetUuid }: Questions
 
   return (
     <form action={formAction}>
-      {pending && <Loader />}
+      <LoadingMessage />
       {formState?.message && !pending && (
         <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
       )}
@@ -61,7 +51,7 @@ export function QuestionsProjetPourAideForm({ questions, projetUuid }: Questions
           />
         </fieldset>
       ))}
-      <SubmitButton />
+      <SubmitButton>Réévaluer l'égibilité aux aides</SubmitButton>
     </form>
   );
 }
