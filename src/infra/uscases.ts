@@ -8,11 +8,14 @@ import { projetRepository } from '@/infra/repositories/projet.repository';
 import { questionsGenerator } from '@/infra/services/questions-generator';
 import { reformulationService } from '@/infra/services/reformulation-service';
 
-export const demarrerProjetUsecase = new DemarrerProjetUsecase(
-  new RechercherAidesEligiblesUsecase(notationAideService, aideRepository),
-  projetRepository
-);
+export const rechercherAidesEligiblesUsecase = new RechercherAidesEligiblesUsecase(notationAideService, aideRepository);
+
+export const demarrerProjetUsecase = new DemarrerProjetUsecase(rechercherAidesEligiblesUsecase, projetRepository);
 
 export const poserQuestionUsecase = new PoserQuestionsUsecase(questionsGenerator);
 
-export const repondreQuestionsUsecase = new RepondreQuestionsUsecase(projetRepository, reformulationService);
+export const repondreQuestionsUsecase = new RepondreQuestionsUsecase(
+  projetRepository,
+  reformulationService,
+  rechercherAidesEligiblesUsecase
+);

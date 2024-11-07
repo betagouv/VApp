@@ -22,6 +22,13 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return Promise.resolve();
   }
 
+  save(projet: Projet) {
+    return this.update(projet);
+  }
+
+  /**
+   * @deprecated use save instead
+   */
   async update(projet: Projet) {
     await db
       .updateTable('projet_table')

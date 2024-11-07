@@ -25,9 +25,12 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "kysely": "kysely",
+    "migrate": "kysely migrate latest",
     "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts --env-file .env.local",
     "prepare": "husky",
     "prettier": "prettier . --write",
+    "empty-deps": "jq 'del(.dependencies, .devDependencies)' package.json > package.nodeps.json && mv package.nodeps.json package.json -b",
+    "setup-scripts-deps": "yarn empty-deps && yarn add pg kysely kysely-ctl @next/env",
     "import-aides": "node -r @swc-node/register scripts/import-aides.ts",
     "delete-aides": "node -r @swc-node/register scripts/delete-aides.ts"
   },

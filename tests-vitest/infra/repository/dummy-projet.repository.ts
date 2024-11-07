@@ -23,7 +23,10 @@ export class DummyProjetRepository implements ProjetRepositoryInterface {
 
     return Promise.resolve();
   }
+
+  save(): Promise<void> {
+    return Promise.resolve();
+  }
 }
 
-// @ts-ignore
 export const dummyProjetRepository = new DummyProjetRepository();
