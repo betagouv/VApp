@@ -8,6 +8,7 @@ import Tabs from '@codegouvfr/react-dsfr/Tabs';
 import { AidesEligibles } from '@/components/AideEligibles';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import { aideRepository } from '@/infra/repositories/aide.repository';
+import Alert from '@codegouvfr/react-dsfr/Alert';
 
 export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'
@@ -46,7 +47,18 @@ export default async function Page({
               iconId: 'fr-icon-draft-line',
               isDefault: descriptionOpen,
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              content: <div>{useRemarkSync(projet.description)}</div>
+              content: (
+                <div>
+                  {descriptionOpen && (
+                    <Alert
+                      severity="info"
+                      title="Le projet a été reformulé grâce à vos réponses. Vous pouvez consultez les nouvelles aides recommandées."
+                      closable
+                    />
+                  )}
+                  {useRemarkSync(projet.description)}
+                </div>
+              )
             }
           ]}
         />
