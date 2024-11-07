@@ -52,7 +52,7 @@ export default async function Page({
                   {descriptionOpen && (
                     <Alert
                       severity="info"
-                      title="Le projet a été reformulé grâce à vos réponses. Vous pouvez consultez les nouvelles aides recommandées."
+                      title="Le projet a été reformulé grâce à vos réponses. Vous pouvez consulter les nouvelles aides recommandées."
                       closable
                     />
                   )}
