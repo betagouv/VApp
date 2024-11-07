@@ -31,6 +31,8 @@ fileignoreconfig:
   checksum: 30aaec11cb93988519b820902706baecf2d23f03fb2da2bd0e26f72931e6e70f
 - filename: src/components/AideEligibles.tsx
   checksum: 88a9e4f62d9f92d71519dcd7b7feef87b303c39c82fbb5bc5fe3a7dfe460f281
+- filename: src/components/CommuneAutocomplete.tsx
+  checksum: d954a392870a8aedd6ff438feb02dc632a6ac471aab0f2deefba0eb35de04d2d
 
 scopeconfig:
 - scope: node

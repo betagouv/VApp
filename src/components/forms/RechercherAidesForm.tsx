@@ -5,7 +5,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
@@ -53,27 +53,33 @@ export function RechercherAidesForm() {
 
   return (
     <form action={formAction}>
-      <LoadingMessage />
-      {formState?.message && !pending && (
-        <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
-      )}
-      <Input
-        label="Description du projet"
-        textArea
-        id="description"
-        hintText="Plus la description de votre projet sera précise, plus notre IA sera en mesure de vous proposer des aides adaptées à celui-ci."
-        nativeTextAreaProps={{
-          name: 'description'
-        }}
-      />
-      <Select
-        label="Type de structure"
-        options={targetedAudiences.map((audience: string) => ({ label: audience, value: audience }))}
-        nativeSelectProps={{
-          name: 'audience'
-        }}
-      />
-      <SubmitButton>Rechercher des aides</SubmitButton>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <LoadingMessage />
+          {formState?.message && !pending && (
+            <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
+          )}
+          <Input
+            label="Description du projet"
+            textArea
+            id="description"
+            hintText="Plus la description de votre projet sera précise, plus notre IA sera en mesure de vous proposer des aides adaptées à celui-ci."
+            nativeTextAreaProps={{
+              name: 'description'
+            }}
+          />
+          <Select
+            label="Type de structure"
+            options={targetedAudiences.map((audience: string) => ({ label: audience, value: audience }))}
+            nativeSelectProps={{
+              name: 'audience'
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <SubmitButton>Rechercher des aides</SubmitButton>
+        </Grid>
+      </Grid>
     </form>
   );
 }
