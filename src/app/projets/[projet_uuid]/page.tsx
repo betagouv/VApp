@@ -56,6 +56,7 @@ export default async function Page({
                       closable
                     />
                   )}
+                  {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
                   {useRemarkSync(projet.description)}
                 </div>
               )
