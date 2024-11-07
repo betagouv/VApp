@@ -67,6 +67,12 @@ const bottomLinks = [
     }
   },
   {
+    text: 'Retours utilisateurs',
+    linkProps: {
+      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdADEzjivF3eS3G8zr6cLeUQTHakufOQMbCdxZ9TdhWhmJOOA/viewform?usp=sf_link'
+    }
+  },
+  {
     text: 'Contribuer sur GitHub',
     linkProps: {
       href: `${process.env.NEXT_PUBLIC_APP_REPOSITORY_URL}${
