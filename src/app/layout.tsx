@@ -155,7 +155,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
                     iconId: 'fr-icon-chat-3-line',
                     text: 'Retours utilisateurs',
                     linkProps: {
-                      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdADEzjivF3eS3G8zr6cLeUQTHakufOQMbCdxZ9TdhWhmJOOA/viewform?usp=sf_link'
+                      href: 'https://airtable.com/appymQfRFTofaHYrg/shryZG0t2LqzCEiBH'
                     }
                   },
                   headerFooterDisplayItem
