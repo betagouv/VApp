@@ -12,6 +12,10 @@ export class Aide {
     return `https://aides-territoires.beta.gouv.fr${this.url}`;
   }
 
+  public static getId({ uuid }: Aide) {
+    return uuid;
+  }
+
   public static createUuid() {
     return short.generate();
   }

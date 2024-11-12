@@ -35,6 +35,8 @@ fileignoreconfig:
   checksum: d954a392870a8aedd6ff438feb02dc632a6ac471aab0f2deefba0eb35de04d2d
 - filename: src/app/layout.tsx
   checksum: 40b2a18fb2a11397e9daa9ff920ffef9c59df50766c86eff3d0a260e8e74529a
+- filename: src/infra/services/questions-generator.ts
+  checksum: 5f8e509a9a5cc86898941f3f4fb0ce44f70fb05a971c0ecb4933e0964b149a63
 
 scopeconfig:
 - scope: node
