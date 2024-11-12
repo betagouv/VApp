@@ -21,6 +21,7 @@ import { defaultColorScheme } from '@/defaultColorScheme';
 import { StartDsfr } from '@/components/StartDsfr';
 import { sharedMetadata } from './shared-metadata';
 import pkg from '../../package.json';
+import Badge from '@codegouvfr/react-dsfr/Badge';
 
 const brandTop = (
   <>
@@ -67,21 +68,9 @@ const bottomLinks = [
     }
   },
   {
-    text: 'Retours utilisateurs',
-    linkProps: {
-      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdADEzjivF3eS3G8zr6cLeUQTHakufOQMbCdxZ9TdhWhmJOOA/viewform?usp=sf_link'
-    }
-  },
-  {
     text: 'Contribuer sur GitHub',
     linkProps: {
-      href: `${process.env.NEXT_PUBLIC_APP_REPOSITORY_URL}${
-        process.env.NEXT_PUBLIC_APP_VERSION
-          ? `/releases/tag/v${process.env.NEXT_PUBLIC_APP_VERSION}`
-          : process.env.NEXT_PUBLIC_APP_VERSION_COMMIT
-            ? `/commit/${process.env.NEXT_PUBLIC_APP_VERSION}`
-            : ''
-      }`
+      href: `${process.env.NEXT_PUBLIC_APP_REPOSITORY_URL}`
     }
   }
 ];
@@ -150,11 +139,27 @@ const RootLayout = ({ children }: PropsWithChildren) => {
               />
               <Header
                 brandTop={brandTop}
-                serviceTitle="VApp"
+                serviceTitle={
+                  <>
+                    VApp{' '}
+                    <Badge as="span" noIcon severity="success">
+                      Beta
+                    </Badge>
+                  </>
+                }
                 serviceTagline="Le service numérique qui vous aide à trouver des aides pour vos projets"
                 homeLinkProps={homeLinkPops}
                 navigation={[]}
-                quickAccessItems={[headerFooterDisplayItem]}
+                quickAccessItems={[
+                  {
+                    iconId: 'fr-icon-chat-3-line',
+                    text: 'Retours utilisateurs',
+                    linkProps: {
+                      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdADEzjivF3eS3G8zr6cLeUQTHakufOQMbCdxZ9TdhWhmJOOA/viewform?usp=sf_link'
+                    }
+                  },
+                  headerFooterDisplayItem
+                ]}
               />
               <div className={fr.cx('fr-container', 'fr-container--fluid', 'fr-p-5w')} id="content">
                 {children}

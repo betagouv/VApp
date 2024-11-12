@@ -34,7 +34,7 @@ fileignoreconfig:
 - filename: src/components/CommuneAutocomplete.tsx
   checksum: d954a392870a8aedd6ff438feb02dc632a6ac471aab0f2deefba0eb35de04d2d
 - filename: src/app/layout.tsx
-  checksum: d543ead5de5197117e9d24726080ac8885f8d43898bb0774e3bc0bf768a372c9
+  checksum: 11b37c13e6cfb87d37943b7d1d874290deeab4042e37f897871a9c9de064c2e4
 
 scopeconfig:
 - scope: node
