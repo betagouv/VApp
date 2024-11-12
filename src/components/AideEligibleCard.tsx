@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useRemarkSync } from 'react-remark';
 import { formatNote, noteToPercent } from '@/domain/note';
 import Card from '@codegouvfr/react-dsfr/Card';
 import Badge from '@codegouvfr/react-dsfr/Badge';
@@ -23,7 +22,6 @@ export const AideEligibleCard = ({ aide, eligibilite }: AideEligibleCard) => {
       size="small"
       background
       border
-      desc={useRemarkSync((aide.description || '').slice(0, 100).concat('...'))}
       enlargeLink
       horizontal
       linkProps={{
