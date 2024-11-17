@@ -4,15 +4,16 @@ import Card from '@codegouvfr/react-dsfr/Card';
 import Badge from '@codegouvfr/react-dsfr/Badge';
 import Tooltip from '@codegouvfr/react-dsfr/Tooltip';
 import { Aide } from '@/domain/models/aide';
+import { ClassProperties } from '@/libs/utils/types';
 
 function getColor(value: number) {
-  console.assert(value >= 0 && value <= 1, `${value} isn't commprised between 0 and 1`);
+  console.assert(value >= 0 && value <= 1, `${value} isn't comprised between 0 and 1`);
   const hue = (value * 120).toString(10);
   return ['hsl(', hue, ',100%,50%)'].join('');
 }
 
 export type AideEligibleCard = {
-  aide: Aide;
+  aide: ClassProperties<Aide>;
   eligibilite: number;
 };
 
@@ -25,7 +26,7 @@ export const AideEligibleCard = ({ aide, eligibilite }: AideEligibleCard) => {
       enlargeLink
       horizontal
       linkProps={{
-        href: aide.getAidesTerritoiresUrl()
+        href: Aide.getAidesTerritoiresUrl(aide)
       }}
       start={
         <ul className="fr-badges-group">

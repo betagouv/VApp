@@ -8,8 +8,12 @@ export class Aide {
     public url: string
   ) {}
 
+  public static getAidesTerritoiresUrl({ url }: Pick<Aide, 'url'>) {
+    return `https://aides-territoires.beta.gouv.fr${url}`;
+  }
+
   public getAidesTerritoiresUrl() {
-    return `https://aides-territoires.beta.gouv.fr${this.url}`;
+    return Aide.getAidesTerritoiresUrl(this);
   }
 
   public static getId({ uuid }: Aide) {

@@ -121,3 +121,13 @@ export interface TypedFormData<T extends Record<string, TypedFormDataValue>> {
     thisArg?: unknown
   ): void;
 }
+
+export type ClassProperties<C> = {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  [Key in keyof C as C[Key] extends Function ? never : Key]: C[Key];
+};
+
+export interface AbortableAsyncIterator<T extends object> {
+  abort(): void;
+  [Symbol.asyncIterator](): AsyncGenerator<Awaited<T>, void, unknown>;
+}

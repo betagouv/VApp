@@ -13,6 +13,6 @@ export class Version {
     public readonly formuleLe: Date,
     public readonly formulePar: FormulePar,
     public readonly questions: Question[],
-    public readonly reponse: Reponse[]
+    public readonly reponses: Reponse[]
   ) {}
 }

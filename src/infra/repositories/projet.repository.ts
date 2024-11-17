@@ -1,4 +1,4 @@
-import type { Kysely, Selectable } from 'kysely';
+import type { Insertable, Kysely, Selectable, Updateable } from 'kysely';
 import { SUUID } from 'short-uuid';
 import { DB, ProjetTable } from '../database/types';
 import { Projet } from '@/domain/models/projet';
@@ -9,37 +9,26 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   constructor(public db: Kysely<DB>) {}
 
   async add(projet: Projet) {
-    await this.db
-      .insertInto('projet_table')
-      .values({
-        uuid: projet.uuid,
-        description: projet.description,
-        recommendations: JSON.stringify(projet.aidesEligibles),
-        audience: projet.audience
-      })
-      .execute();
+    await this.db.insertInto('projet_table').values(ProjetRepository.toInsertable(projet)).execute();
 
     return Promise.resolve();
   }
 
-  save(projet: Projet) {
-    return this.update(projet);
+  async save(projet: Projet) {
+    await db
+      .updateTable('projet_table')
+      .set(ProjetRepository.toUpdateable(projet))
+      .where('uuid', '=', projet.uuid)
+      .executeTakeFirst();
+
+    return Promise.resolve();
   }
 
   /**
    * @deprecated use save instead
    */
   async update(projet: Projet) {
-    await db
-      .updateTable('projet_table')
-      .set({
-        description: projet.description,
-        audience: projet.audience
-      })
-      .where('uuid', '=', projet.uuid)
-      .executeTakeFirst();
-
-    return Promise.resolve();
+    return this.save(projet);
   }
 
   async all() {
@@ -63,6 +52,22 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     }
 
     return ProjetRepository.toProjet(selectableProjets[0]);
+  }
+
+  static toUpdateable(projet: Projet): Updateable<ProjetTable> {
+    return {
+      description: projet.description || '',
+      recommendations: JSON.stringify(projet.aidesEligibles),
+      audience: projet.audience
+    };
+  }
+
+  static toInsertable(projet: Projet): Insertable<ProjetTable> {
+    return {
+      uuid: projet.uuid,
+      ...ProjetRepository.toUpdateable(projet),
+      description: projet.description || ''
+    };
   }
 
   static toProjet(

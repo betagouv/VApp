@@ -6,7 +6,6 @@ import { assertValid, isNote } from '@/domain/note';
 import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
 import { system, user } from '@/infra/prompts/notation';
 import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
-import * as console from 'node:console';
 
 export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;

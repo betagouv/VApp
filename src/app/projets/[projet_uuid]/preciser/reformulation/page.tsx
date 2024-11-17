@@ -2,17 +2,16 @@
 import * as React from 'react';
 import { SUUID } from 'short-uuid';
 import { fr } from '@codegouvfr/react-dsfr';
-import { QuestionsProjetPourAideForm } from '@/components/forms/QuestionsProjetPourAideForm';
-import { poserQuestionAction } from '@/actions/poser-questions.action';
+import { ReformulationForm } from '@/components/forms/ReformulationForm';
+import { projetRepository } from '@/infra/repositories/projet.repository';
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: SUUID } }) {
-  const questions = await poserQuestionAction(projet_uuid);
+  const projet = await projetRepository.fromUuid(projet_uuid);
 
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
       <main className={fr.cx()}>
-        <h1>Précisez votre projet en répondant à ces 3 questions</h1>
-        <QuestionsProjetPourAideForm questions={questions} projetUuid={projet_uuid} />
+        <ReformulationForm projet={{ ...projet }} />
       </main>
     </div>
   );
