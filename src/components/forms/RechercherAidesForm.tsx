@@ -20,14 +20,21 @@ const initialState = {
   uuid: undefined
 };
 
-export function SubmitButton({ children }: PropsWithChildren) {
-  const { pending } = useFormStatus();
+export type SubmitButtonProps = PropsWithChildren<{ loading?: boolean }>;
+
+export function SubmitButton({ children, loading = false }: SubmitButtonProps) {
+  const { pending: submitting } = useFormStatus();
 
   return (
-    <Button type="submit" onClick={function noRefCheck() {}} aria-disabled={pending} disabled={pending}>
+    <Button
+      type="submit"
+      onClick={function noRefCheck() {}}
+      aria-disabled={submitting || loading}
+      disabled={submitting || loading}
+    >
       {children}
       {'\u00A0'}
-      {pending ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
+      {submitting ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
     </Button>
   );
 }
@@ -46,6 +53,7 @@ export function RechercherAidesForm() {
   const [formState, formAction] = useFormState(demarrerProjetAction, initialState);
   const { pending } = useFormStatus();
   useEffect(() => {
+    console.log(formState);
     if (formState?.uuid) {
       redirect(`/projets/${formState?.uuid}`);
     }

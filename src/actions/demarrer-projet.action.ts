@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { TypedFormData } from '@/libs/utils/types';
 import { demarrerProjetUsecase } from '@/infra/uscases';
 import { isZodError } from '@/libs/utils/zod';
@@ -20,7 +19,6 @@ export async function demarrerProjetAction(
     );
     await demarrerProjetUsecase.execute(projet);
 
-    revalidatePath('/');
     return { message: 'Projet créé.', uuid: projet.uuid };
   } catch (e) {
     console.error(e);

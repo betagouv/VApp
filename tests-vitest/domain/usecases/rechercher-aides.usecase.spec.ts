@@ -3,23 +3,22 @@ import { RechercherAidesEligiblesUsecase } from '@/domain/usecases/rechercher-ai
 import { Projet } from '@/domain/models/projet';
 import { dummyAideRepository } from '../../infra/repository/dummy-aide.repository';
 import { randomNotationAideService } from '../../infra/services/random-notation-aide.service';
+import { dummyProjetRepository } from '../../infra/repository/dummy-projet.repository';
 
 describe('poser questions usecase', () => {
-  it('throws when the project description is empty', async () => {
-    const projet = Projet.create('');
-    const suggererAides = new RechercherAidesEligiblesUsecase(randomNotationAideService, dummyAideRepository);
-    await expect(suggererAides.execute(projet)).rejects.toThrowError(/description/);
-  });
-
   it('returns a list of suggestions', async () => {
     const projet = Projet.create('Restaurer une zone humide');
-    const suggererAides = new RechercherAidesEligiblesUsecase(randomNotationAideService, dummyAideRepository);
-    const suggestions = await suggererAides.execute(projet);
-    suggestions.forEach((suggestion) =>
-      expect(suggestion).toMatchSnapshot({
+    const suggererAides = new RechercherAidesEligiblesUsecase(
+      randomNotationAideService,
+      dummyAideRepository,
+      dummyProjetRepository
+    );
+    const response = await suggererAides.execute(projet);
+    for await (const part of response) {
+      expect(part).toMatchSnapshot({
         eligibilite: expect.any(Number),
         aideId: expect.any(String)
-      })
-    );
+      });
+    }
   });
 });

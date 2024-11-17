@@ -15,5 +15,6 @@ export class Projet {
 
   public reformuler(description: Projet['description']) {
     this.description = description;
+    this.aidesEligibles = [];
   }
 }
