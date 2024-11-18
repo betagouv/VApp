@@ -16,5 +16,5 @@ export const isNote = <T>(input: T | false | undefined | null | ''): input is T 
   return !!input;
 };
 
-export const noteToPercent = (note: number) => (note + NOTE_MAX) / 10;
+export const noteToPercent = (note: number) => (note - NOTE_MIN) / (NOTE_MAX - NOTE_MIN);
 export const formatNote = (note: number) => `${Math.floor(noteToPercent(note) * 100)}%`;
