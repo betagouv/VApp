@@ -62,5 +62,5 @@ export class ReformulationService implements ReformulationServiceInterface, Olla
 
 export const reformulationService = new ReformulationService(
   ollama,
-  getModelConfiguration('reformulation-agent', 'llama3.2:1b', system)
+  getModelConfiguration('reformulation-agent', 'mistral-nemo:latest', system)
 );
