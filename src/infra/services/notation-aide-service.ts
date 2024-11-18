@@ -9,7 +9,7 @@ import { OllamaServiceInterface } from '@/infra/services/ollama-service.interfac
 
 export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
-  static MIN_NB_NOTES_REQUIRED = 4;
+  static MIN_NB_NOTES_REQUIRED = 5;
   static MAX_ATTEMPT = 12;
   static EXTRACT_NOTE_REGEX = /(-? ?[0-9]).*/;
 
@@ -99,5 +99,5 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
 
 export const notationAideService = new NotationAideService(
   ollama,
-  getModelConfiguration('notation-agent', 'llama3.2:1b', system)
+  getModelConfiguration('notation-agent', 'llama3.2:latest', system)
 );
