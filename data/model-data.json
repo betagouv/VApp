@@ -37,6 +37,14 @@
     "presence_penalty": 1.5,
     "frequency_penalty": 1.0
   },
+  "llama3.2:latest": {
+    "top_k": 20,
+    "top_p": 0.9,
+    "temperature": 0.8,
+    "repeat_penalty": 1.2,
+    "presence_penalty": 1.5,
+    "frequency_penalty": 1.0
+  },
   "llama3.1:latest": {
     "top_k": 20,
     "top_p": 0.9,
