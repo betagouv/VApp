@@ -113,5 +113,5 @@ ${ollamaResponse}`
 
 export const questionsGenerator = new QuestionsGenerator(
   ollama,
-  getModelConfiguration('questions-agent', 'qwen2.5:14b', system)
+  getModelConfiguration('questions-agent', 'mistral-nemo:latest', system)
 );
