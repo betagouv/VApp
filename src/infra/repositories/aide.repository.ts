@@ -1,52 +1,43 @@
 import type { ExpressionBuilder, Kysely, Selectable } from 'kysely';
-import { SUUID } from 'short-uuid';
 import { AideAidesTerritoiresDto } from '@/infra/dtos/aide-aides-territoires.dto';
-import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
-import { Aide } from '@/domain/models/aide';
+import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
+import { atApiClient } from '@/infra/at/at-api-client';
 import { AideTable, DB } from '../database/types';
 import { db } from '../database';
+import { Aide } from '@/domain/models/aide';
+import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
+import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 
-const pythonJsonParse = (pythonJsonString: string) =>
-  JSON.parse(
-    pythonJsonString
-      .replaceAll(", '", ', "')
-      .replaceAll("', ", '", ')
-      // array start & end
-      .replaceAll("['", '["')
-      .replaceAll("']", '"]')
-      // object
-      // start & end
-      .replaceAll("{'", '{"')
-      .replaceAll("'}", '"}')
-      // properties
-      .replaceAll("': '", '": "') // first string
-      .replaceAll("': ", '": ') // then number
-      .replaceAll("'}", '"}')
-      .replaceAll(': None', ': "None"')
-      .replaceAll('\\xa0', ' ')
-  );
+const envNumber = (envString?: string | number, defaultValue = 0): number =>
+  envString ? Number(envString) : defaultValue;
 
-const envNumber = (envString?: string, defaultValue = 0): number => (envString ? Number(envString) : defaultValue);
+export const getNbTokenRange = (): [number, number] => [
+  envNumber(process.env.AIDE_DESCRIPTION_MIN_TOKEN, 200),
+  envNumber(process.env.AIDE_DESCRIPTION_MAX_TOKEN, 5000)
+];
 
 export class AideRepository implements AideRepositoryInterface {
-  constructor(public db: Kysely<DB>) {}
+  constructor(
+    public db: Kysely<DB>,
+    public atApiClient: AtApiClientInterface
+  ) {}
+
+  // static getSelectableFields(): SelectExpression<{ a: AideTable }, 'a'> {
+  //   return ['a.uuid', 'a.nom', 'a.description', 'a.url', 'a.aides_territoire_id', 'a.targeted_audiences'];
+  // }
 
   async addFromAideTerritoires(aide: AideAidesTerritoiresDto) {
     await this.db
       .insertInto('aide_table')
       .values({
-        uuid: Aide.createUuid(),
-        nom: aide.name,
-        description: aide.description_md,
-        criteres_eligibilite: aide.eligibility_md,
-        aides_territoire_id: Number(aide.id),
-        url: aide.url,
-        targeted_audiences: JSON.stringify(pythonJsonParse(aide.targeted_audiences)),
-        token_numb_description: Number(aide.token_numb_description),
-        token_numb_eligibility: Number(aide.token_numb_eligibility),
-        perimeter: aide.perimeter,
-        perimeter_scale: aide.perimeter_scale,
-        financers: JSON.stringify(pythonJsonParse(aide.financers))
+        ...aide,
+        targeted_audiences: aide.targeted_audiences,
+        financers: aide.financers,
+        financers_full: JSON.stringify(aide.aid_types_full),
+        destinations: aide.destinations,
+        mobilization_steps: aide.mobilization_steps,
+        aid_types: aide.aid_types,
+        aid_types_full: JSON.stringify(aide.aid_types_full)
       })
       .execute();
 
@@ -56,14 +47,15 @@ export class AideRepository implements AideRepositoryInterface {
   private select() {
     return this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
+      .select(['a.uuid', 'a.id', 'a.name', 'a.description', 'a.url', 'a.targeted_audiences'])
       .where(this.numberOfTokenIsValid);
   }
 
   private numberOfTokenIsValid({ eb, and }: ExpressionBuilder<DB & { a: AideTable }, 'a'>) {
+    const tokenRange = getNbTokenRange();
     return and([
-      eb('a.token_numb_description', '>', envNumber(process.env.AIDE_DESCRIPTION_MIN_TOKEN, 200)),
-      eb('a.token_numb_description', '<', envNumber(process.env.AIDE_DESCRIPTION_MAX_TOKEN, 1500))
+      eb('a.token_numb_description', '>', tokenRange[0]),
+      eb('a.token_numb_description', '<', tokenRange[1])
     ]);
   }
 
@@ -71,6 +63,36 @@ export class AideRepository implements AideRepositoryInterface {
     const selectableProjets = await this.select().execute();
 
     return selectableProjets.map(AideRepository.toAide);
+  }
+
+  async findAllFor({
+    beneficiaire,
+    territoireId,
+    payante,
+    aideNatures,
+    etatsAvancements,
+    actionsConcernees
+  }: CriteresRechercheAide) {
+    const atAides = await this.atApiClient.searchAides({
+      is_charged: payante,
+      organization_type_slugs: beneficiaire ? [beneficiaire] : [],
+      perimeter_id: territoireId,
+      aid_step_slugs: etatsAvancements,
+      aid_destination_slugs: actionsConcernees,
+      aid_type_group_slug: aideNatures
+    });
+
+    const selectables = await this.select()
+      .where(
+        'a.id',
+        'in',
+        atAides.map((aide) => aide.id)
+      )
+      .execute();
+
+    console.log(`${selectables.length}/${atAides.length} left after filtering on token number.`);
+
+    return selectables.map(AideRepository.toAide);
   }
 
   async size() {
@@ -83,18 +105,10 @@ export class AideRepository implements AideRepositoryInterface {
     return size as number;
   }
 
-  async findAllForAudience(audience: string) {
-    const selectableProjets = await this.select()
-      .where('a.targeted_audiences', '@>', JSON.stringify([audience]))
-      .execute();
-
-    return selectableProjets.map(AideRepository.toAide);
-  }
-
   async fromUuid(uuid: string): Promise<Aide> {
     const selectableAides = await this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.nom', 'a.description', 'a.url'])
+      .select(['a.uuid', 'a.id', 'a.name', 'a.description', 'a.url'])
       .where('a.uuid', '=', uuid)
       .execute();
 
@@ -105,14 +119,15 @@ export class AideRepository implements AideRepositoryInterface {
     return AideRepository.toAide(selectableAides[0]);
   }
 
-  static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'nom' | 'description' | 'url'>): Aide {
+  static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'id' | 'name' | 'description' | 'url'>): Aide {
     return new Aide(
-      selectableAide.uuid as SUUID,
-      selectableAide.nom,
+      selectableAide.uuid,
+      selectableAide.id,
+      selectableAide.name,
       selectableAide.description || '',
       selectableAide.url
     );
   }
 }
 
-export const aideRepository = new AideRepository(db);
+export const aideRepository = new AideRepository(db, atApiClient);

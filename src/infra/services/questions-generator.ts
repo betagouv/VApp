@@ -1,7 +1,7 @@
 import { Ollama, Options } from 'ollama';
 import type { SafeParseReturnType } from 'zod';
 
-import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
+import { getAssistantConfiguration, ollama } from '@/infra/ollama';
 import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
 import { OllamaQuestionsDto, ollamaQuestionsDtoSchema } from '@/infra/dtos/ollama-questions.dto';
 import { system, user } from '@/infra/prompts/questions';
@@ -9,6 +9,7 @@ import { QuestionsGeneratorInterface } from '@/domain/services/questions-generat
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { Question } from '@/domain/models/question';
+import { NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
 
 export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaServiceInterface {
   private initialized: boolean = false;
@@ -16,11 +17,11 @@ export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaSe
 
   constructor(
     private ollama: Ollama,
-    private modelConfiguration: ModelConfiguration
+    private assistantConfiguration: NamedAssistantConfiguration
   ) {}
 
   public async initialize() {
-    console.info(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
+    console.log(`Initializing ${this.assistantConfiguration.name} from ${this.assistantConfiguration.model}...`);
     this.initialized = true;
 
     return Promise.resolve();
@@ -79,39 +80,26 @@ ${ollamaResponse}`
 
   private async attemptToGenerateQuestions(projet: Projet, aides: Aide[], seed: number = 1) {
     return this.ollama.generate({
-      model: this.getModelFrom(),
+      model: this.assistantConfiguration.model,
       options: this.getRequestOptions({
         num_ctx: 16384,
         num_predict: 512,
         seed
       }),
+      system,
       prompt: user(projet, aides),
       stream: false,
       format: 'json'
     });
   }
 
-  getModelFrom(): string {
-    return this.modelConfiguration.from;
-  }
-
-  getModelName(): string {
-    return this.modelConfiguration.request.model;
-  }
-
-  getModelParameters(): Partial<Options> {
-    return this.modelConfiguration.parameters;
-  }
-
   getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
     return {
-      ...this.getModelParameters(),
+      ...this.assistantConfiguration.model_parameters,
+      ...this.assistantConfiguration.request_parameters,
       ...options
     };
   }
 }
 
-export const questionsGenerator = new QuestionsGenerator(
-  ollama,
-  getModelConfiguration('questions-agent', 'mistral-nemo:latest', system)
-);
+export const questionsGenerator = new QuestionsGenerator(ollama, getAssistantConfiguration('questions-assistant'));

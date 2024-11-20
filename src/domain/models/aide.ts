@@ -1,8 +1,7 @@
-import short, { SUUID } from 'short-uuid';
-
 export class Aide {
   constructor(
-    public uuid: SUUID,
+    public uuid: string,
+    public atId: number,
     public nom: string,
     public description: string,
     public url: string
@@ -18,9 +17,5 @@ export class Aide {
 
   public static getId({ uuid }: Aide) {
     return uuid;
-  }
-
-  public static createUuid() {
-    return short.generate();
   }
 }

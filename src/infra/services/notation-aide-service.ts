@@ -3,23 +3,24 @@ import { NotationAideServiceInterface } from '@/domain/services/notation-aide.se
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { assertValid, isNote } from '@/domain/note';
-import { getModelConfiguration, ModelConfiguration, ollama } from '@/infra/ollama';
+import { getAssistantConfiguration, ollama } from '@/infra/ollama';
 import { system, user } from '@/infra/prompts/notation';
 import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
+import { NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
 
 export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
-  static MIN_NB_NOTES_REQUIRED = 5;
-  static MAX_ATTEMPT = 12;
+  static MIN_NB_NOTES_REQUIRED = 3;
+  static MAX_ATTEMPT = 6;
   static EXTRACT_NOTE_REGEX = /(-? ?[0-9]).*/;
 
   constructor(
     private ollama: Ollama,
-    private modelConfiguration: ModelConfiguration
+    private assistantConfiguration: NamedAssistantConfiguration
   ) {}
 
   public async initialize() {
-    console.log(`Initializing ${this.getModelName()} from ${this.getModelFrom()}...`);
+    console.log(`Initializing ${this.assistantConfiguration.name} from ${this.assistantConfiguration.model}...`);
     this.initialized = true;
 
     return Promise.resolve();
@@ -55,11 +56,9 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
   private async attemptNoterAide(aide: Aide, projet: Projet, seed: number): Promise<number | null> {
     try {
       const { response } = await this.ollama.generate({
-        model: this.getModelFrom(),
+        model: this.assistantConfiguration.model,
         system,
         options: this.getRequestOptions({
-          num_ctx: 16384,
-          num_predict: 2,
           seed: seed + NotationAideService.MIN_NB_NOTES_REQUIRED
         }),
         prompt: user(aide, projet),
@@ -77,27 +76,13 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
     }
   }
 
-  getModelFrom(): string {
-    return this.modelConfiguration.from;
-  }
-
-  getModelName(): string {
-    return this.modelConfiguration.request.model;
-  }
-
-  getModelParameters(): Partial<Options> {
-    return this.modelConfiguration.parameters;
-  }
-
   getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
     return {
-      ...this.getModelParameters(),
+      ...this.assistantConfiguration.model_parameters,
+      ...this.assistantConfiguration.request_parameters,
       ...options
     };
   }
 }
 
-export const notationAideService = new NotationAideService(
-  ollama,
-  getModelConfiguration('notation-agent', 'llama3.2:latest', system)
-);
+export const notationAideService = new NotationAideService(ollama, getAssistantConfiguration('score-assistant'));

@@ -34,7 +34,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   async all() {
     const selectableProjets = await this.db
       .selectFrom('projet_table as p')
-      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.audience'])
+      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.criteres_recherche_aide'])
       .execute();
 
     return selectableProjets.map(ProjetRepository.toProjet);
@@ -43,7 +43,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   async fromUuid(uuid: string): Promise<Projet> {
     const selectableProjets = await this.db
       .selectFrom('projet_table as p')
-      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.audience'])
+      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.criteres_recherche_aide'])
       .where('p.uuid', '=', uuid)
       .execute();
 
@@ -58,7 +58,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return {
       description: projet.description || '',
       recommendations: JSON.stringify(projet.aidesEligibles),
-      audience: projet.audience
+      criteres_recherche_aide: JSON.stringify(projet.criteresRechercheAide)
     };
   }
 
@@ -71,14 +71,17 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   }
 
   static toProjet(
-    selectableProjet: Pick<Selectable<ProjetTable>, 'uuid' | 'description' | 'recommendations' | 'audience'>
+    selectableProjet: Pick<
+      Selectable<ProjetTable>,
+      'uuid' | 'description' | 'recommendations' | 'criteres_recherche_aide'
+    >
   ): Projet {
     return new Projet(
       selectableProjet.uuid as SUUID,
       selectableProjet.description,
-      // @ts-expect-error dunno
-      selectableProjet.recommendations,
-      selectableProjet.audience
+      // @ts-expect-error this field should be a relationship table
+      selectableProjet.recommendations || [],
+      selectableProjet.criteres_recherche_aide
     );
   }
 }

@@ -81,6 +81,17 @@ Watch GPU usage:
 watch -n 1 nvidia-smi
 ```
 
+## AT
+
+Get token:
+
+```sh
+curl -X 'GET' \
+'https://aides-territoires.beta.gouv.fr/api/connexion' \
+-H 'accept: application/ld+json' \
+-H 'X-AUTH-TOKEN: myAidesTerritoiresToken'
+```
+
 ## Projets connexes
 
 - https://github.com/MTES-MCT/aides-territoires

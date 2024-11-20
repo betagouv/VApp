@@ -27,6 +27,7 @@ const nextConfig = {
 
     return config;
   },
+  transpilePackages: ['ky'],
   experimental: {
     typedRoutes: true
   },

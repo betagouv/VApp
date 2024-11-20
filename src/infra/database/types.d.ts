@@ -29,26 +29,42 @@ export interface AgentTable {
 }
 
 export interface AideTable {
-  aides_territoire_id: number;
+  aid_types: Generated<string[]>;
+  aid_types_full: Generated<Json>;
   created_at: Generated<Timestamp>;
-  criteres_eligibilite: string | null;
-  description: Generated<string | null>;
-  financers: Generated<Json>;
+  description: string;
+  description_md: string;
+  destinations: Generated<string[]>;
+  eligibility_md: string;
+  financers: Generated<string[]>;
   financers_full: Generated<Json>;
-  id: Generated<number>;
-  nom: Generated<string>;
+  id: number;
+  is_charged: Generated<boolean>;
+  mobilization_steps: Generated<string[]>;
+  name: string;
   perimeter: string | null;
   perimeter_scale: string | null;
-  targeted_audiences: Generated<Json>;
+  targeted_audiences: Generated<string[]>;
   token_numb_description: Generated<number>;
   token_numb_eligibility: Generated<number>;
   url: string;
-  uuid: string;
+  uuid: Generated<string>;
+}
+
+export interface AtPerimeterTable {
+  code: string;
+  created_at: Generated<Timestamp>;
+  id: string;
+  name: string;
+  scale: string;
+  text: string;
+  uuid: Generated<string>;
+  zipcodes: Generated<string[]>;
 }
 
 export interface ProjetTable {
-  audience: string | null;
   created_at: Generated<Timestamp>;
+  criteres_recherche_aide: Generated<Json>;
   description: string;
   id: Generated<number>;
   recommendations: Generated<Json>;
@@ -58,5 +74,6 @@ export interface ProjetTable {
 export interface DB {
   agent_table: AgentTable;
   aide_table: AideTable;
+  at_perimeter_table: AtPerimeterTable;
   projet_table: ProjetTable;
 }

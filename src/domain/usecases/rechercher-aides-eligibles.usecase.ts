@@ -1,10 +1,11 @@
 import { UsecaseInterface } from './usecase.interface';
 import { Projet } from '../models/projet';
 import { AideRepositoryInterface } from '../repositories/aide.repository.interface';
-import { AideEligible } from '@/domain/models/aide-eligible';
 import { NotationAideServiceInterface } from '../services/notation-aide.service.interface';
+import { AideEligible } from '@/domain/models/aide-eligible';
 import { Aide } from '@/domain/models/aide';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
+import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 
 function msToMinutesAndSeconds(ms: number) {
   const m = Math.floor(ms / 60000);
@@ -24,10 +25,11 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
       throw new Error('La description du projet est vide.');
     }
 
+    console.log('projet.criteresRechercheAide', projet.criteresRechercheAide);
     await this.notationAideService.initialize();
-    const aides = await this.findAllForAudience(projet.audience);
+    const aides = await this.findAllFor(projet.criteresRechercheAide);
     const chunkedAides: Aide[][] = [];
-    const chunkSize = 3;
+    const chunkSize = 1;
     for (let i = 0; i < aides.length; i += chunkSize) {
       const chunk = aides.slice(i, i + chunkSize);
       chunkedAides.push(chunk);
@@ -56,7 +58,7 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     await this.projetRepository.save(projet);
   }
 
-  public async findAllForAudience(audience?: string): Promise<Aide[]> {
+  public async findAllFor(criteresRechercheAide: CriteresRechercheAide): Promise<Aide[]> {
     let sliceArgs: number[] = [];
     if (process.env.NB_AIDE_HARD_LIMIT) {
       console.log(`NB_AIDE_HARD_LIMIT a été fixé à ${process.env.NB_AIDE_HARD_LIMIT}.`);
@@ -64,13 +66,8 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
       sliceArgs = [0, Number(process.env.NB_AIDE_HARD_LIMIT)];
     }
 
-    if (audience) {
-      const filteredAides = await this.aideRepository.findAllForAudience(audience);
-      console.log(`Recherche parmis ${filteredAides.length} sur les ${await this.aideRepository.size()} au total.`);
-      const slicedFilteredAides = filteredAides.slice(...sliceArgs);
-      return slicedFilteredAides;
-    }
-
-    return (await this.aideRepository.all()).slice(...sliceArgs);
+    const filteredAides = await this.aideRepository.findAllFor(criteresRechercheAide);
+    console.log(`Recherche parmis ${filteredAides.length} sur les ${await this.aideRepository.size()} au total.`);
+    return filteredAides.slice(...sliceArgs);
   }
 }
