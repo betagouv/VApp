@@ -8,8 +8,8 @@
   },
   "scripts": {
     "predev": "only-include-used-icons",
-    "prebuild": "node -r @swc-node/register scripts/prebuild.ts && yarn only-include-used-icons && yarn migrate",
-    "postbuild": "node -r @swc-node/register scripts/copy-assets.ts",
+    "prebuild": "node -r esbuild-register scripts/prebuild.ts && yarn only-include-used-icons && yarn migrate",
+    "postbuild": "node -r esbuild-register scripts/copy-assets.ts",
     "only-include-used-icons": "node node_modules/@codegouvfr/react-dsfr/bin/only-include-used-icons.js",
     "dev": "next dev",
     "build": "next build",
@@ -25,14 +25,17 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "kysely": "kysely",
-    "migrate": "kysely migrate latest",
+    "migrate": "kysely migrate latest && yarn kysely-codegen",
     "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts --env-file .env.local",
     "prepare": "husky",
     "prettier": "prettier . --write",
     "empty-deps": "jq 'del(.dependencies, .devDependencies)' package.json > package.nodeps.json && mv package.nodeps.json package.json -b",
     "setup-scripts-deps": "yarn empty-deps && yarn add pg kysely kysely-ctl @next/env",
-    "import-aides": "node -r @swc-node/register scripts/import-aides.ts",
-    "delete-aides": "node -r @swc-node/register scripts/delete-aides.ts"
+    "import-aides": "node -r esbuild-register scripts/import-aides.ts",
+    "delete-aides": "node -r esbuild-register scripts/delete-aides.ts",
+    "stats-aides": "node -r esbuild-register scripts/stats-aides.ts",
+    "import-territoires": "node -r esbuild-register scripts/import-territoires.ts",
+    "create-at-interfaces": "create-client https://aides-territoires.beta.gouv.fr/api src/infra/ate --generator typescript"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -54,7 +57,9 @@
     "@socialgouv/matomo-next": "^1.9.1",
     "ai": "4.0.0-canary.9",
     "autosuggest-highlight": "^3.3.4",
+    "esbuild-register": "^3.6.0",
     "is-ci": "^3.0.1",
+    "ky": "^1.7.2",
     "kysely": "^0.27.4",
     "next": "14.2.16",
     "ollama": "^0.5.10",
@@ -71,6 +76,7 @@
     "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
+    "@api-platform/create-client": "^0.10.0",
     "@babel/core": "^7.25.9",
     "@playwright/test": "^1.48.1",
     "@storybook/addon-actions": "^7.6.20",
@@ -83,7 +89,6 @@
     "@storybook/nextjs": "^7.6.20",
     "@storybook/test": "^7.6.20",
     "@storybook/testing-library": "^0.2.2",
-    "@swc-node/register": "^1.10.9",
     "@swc/core": "^1.7.39",
     "@testing-library/react": "^14.3.1",
     "@types/autosuggest-highlight": "^3.2.3",

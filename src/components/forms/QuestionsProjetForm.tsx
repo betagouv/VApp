@@ -81,6 +81,7 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
 
       redirect(`/projets/${formState?.uuid}/preciser/reformulation`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState]);
 
   return (

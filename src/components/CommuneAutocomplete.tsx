@@ -1,17 +1,22 @@
 import * as React from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import parse from 'autosuggest-highlight/parse';
 import { debounce } from '@mui/material/utils';
-import { CommuneSearchResultDto } from '@/infra/dtos/commune-search-result.dto';
-import match from 'autosuggest-highlight/match';
-import { SyntheticEvent } from 'react';
 import Input from '@codegouvfr/react-dsfr/Input';
 
-export default function CommuneAutocomplete() {
-  const [value, setValue] = React.useState<CommuneSearchResultDto | null>(null);
+import { CommuneSearchResultDto } from '@/infra/dtos/commune-search-result.dto';
+
+export type CommuneAutocompleteProps = {
+  value: CommuneSearchResultDto | null;
+  setValue: Dispatch<SetStateAction<CommuneAutocompleteProps['value']>>;
+};
+
+export default function CommuneAutocomplete({ value, setValue }: CommuneAutocompleteProps) {
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState<readonly CommuneSearchResultDto[]>([]);
 
@@ -54,6 +59,7 @@ export default function CommuneAutocomplete() {
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, inputValue, fetch]);
 
   return (

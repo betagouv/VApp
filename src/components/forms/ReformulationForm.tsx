@@ -69,7 +69,7 @@ export function ReformulationForm({ projet }: ReformulationFormProps) {
     if (formState?.isValid) {
       redirect(`/projets/${projet.uuid}`);
     }
-  }, [formState]);
+  }, [formState, projet.uuid]);
 
   return (
     <div>

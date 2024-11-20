@@ -1,5 +1,5 @@
-export const NOTE_MIN = -5;
-export const NOTE_MAX = 5;
+export const NOTE_MIN = 0;
+export const NOTE_MAX = 100;
 
 export const assertValid = (note: number | null, customMessage?: string) => {
   console.assert(

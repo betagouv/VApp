@@ -1,5 +1,8 @@
-import { CreateRequest, Ollama, Options } from 'ollama';
+import { Ollama } from 'ollama';
 import models from 'data/model-data.json';
+import assistants from 'data/ai-assistants.json';
+import { ModelParameters } from '@/infra/model-parameters';
+import { AiAssistantConfiguration, NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
 
 const fetchWithHeaders = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
   const defaultHeaders = process.env.OLLAMA_JWT
@@ -25,28 +28,32 @@ export const ollama = new Ollama({
   fetch: fetchWithHeaders
 });
 
-export const getModelParameters = (modelName: string): Partial<Options> => {
+export const getModelDefaultParameters = (modelName: string): ModelParameters => {
   const modelExists = Object.hasOwnProperty.call(models, modelName);
   if (!modelExists) {
-    throw new Error(`Model ${modelName} doesn't exist.`);
+    throw new Error(`Model "${modelName}" doesn't exist.`);
   }
 
   // @ts-expect-error key existence is tested above
   return models[modelName];
 };
 
-export const createModelFile = (from: string, system: string) => `FROM ${from}
-SYSTEM "${system}"`;
+export const getAssistantConfiguration = (assistantName: string): NamedAssistantConfiguration => {
+  const assistantExists = Object.hasOwnProperty.call(assistants, assistantName);
+  if (!assistantExists) {
+    throw new Error(`AI assistant "${assistantName}" doesn't exist.`);
+  }
 
-export const createModelRequest = (name: string, from: string, system: string) => ({
-  model: name,
-  modelfile: createModelFile(from, system)
-});
+  // @ts-expect-error key existence is tested above
+  const assistantConfiguration: AiAssistantConfiguration = assistants[assistantName];
+  const defaultModelParameters: ModelParameters = getModelDefaultParameters(assistantConfiguration.model);
 
-export type ModelConfiguration = { request: CreateRequest; parameters: Partial<Options>; from: string };
-
-export const getModelConfiguration = (name: string, from: string, system: string): ModelConfiguration => ({
-  request: createModelRequest(name, from, system),
-  parameters: getModelParameters(from),
-  from
-});
+  return {
+    name: assistantName,
+    ...assistantConfiguration,
+    model_parameters: {
+      ...defaultModelParameters,
+      ...assistantConfiguration.model_parameters
+    }
+  };
+};

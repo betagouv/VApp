@@ -2,7 +2,17 @@ import './loadEnv';
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
 import { aideRepository } from '@/infra/repositories/aide.repository';
-import { aideAidesTerritoiresDtoSchema } from '@/infra/dtos/aide-aides-territoires.dto';
+import {
+  AideAidesTerritoiresDto,
+  aideAidesTerritoiresDtoSchema,
+  atAideType
+} from '@/infra/dtos/aide-aides-territoires.dto';
+import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
+import type { Kysely } from 'kysely';
+import { DB } from '@/infra/database/types';
+import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
+import { Aide } from '@/domain/models/aide';
+import { z } from 'zod';
 
 // id
 // slug
@@ -55,6 +65,26 @@ import { aideAidesTerritoiresDtoSchema } from '@/infra/dtos/aide-aides-territoir
 // token_numb_eligibility_md
 // token_numb_eligibility
 
+const pythonJsonParse = (pythonJsonString: string) =>
+  JSON.parse(
+    pythonJsonString
+      .replaceAll(", '", ', "')
+      .replaceAll("', ", '", ')
+      // array start & end
+      .replaceAll("['", '["')
+      .replaceAll("']", '"]')
+      // object
+      // start & end
+      .replaceAll("{'", '{"')
+      .replaceAll("'}", '"}')
+      // properties
+      .replaceAll("': '", '": "') // first string
+      .replaceAll("': ", '": ') // then number
+      .replaceAll("'}", '"}')
+      .replaceAll(': None', ': "None"')
+      .replaceAll('\\xa0', ' ')
+  );
+
 const processFile = async () => {
   const records = [];
   const parser = fs.createReadStream(`${__dirname}/../data/data_at_select_ai.csv`).pipe(
@@ -68,7 +98,20 @@ const processFile = async () => {
       continue;
     }
 
-    const aideAidesTerritoiresDto = aideAidesTerritoiresDtoSchema.parse(record);
+    const aideAidesTerritoiresDto = aideAidesTerritoiresDtoSchema.parse({
+      ...record,
+      id: Number(record.id),
+      targeted_audiences: pythonJsonParse(record.targeted_audiences),
+      token_numb_description: Number(record.token_numb_description),
+      token_numb_eligibility: Number(record.token_numb_eligibility),
+      financers: pythonJsonParse(record.financers),
+      financers_full: pythonJsonParse(record.financers_full),
+      destinations: pythonJsonParse(record.destinations),
+      mobilization_steps: pythonJsonParse(record.mobilization_steps),
+      is_charged: record.is_charged === 'true',
+      aid_types: pythonJsonParse(record.aid_types),
+      aid_types_full: pythonJsonParse(record.aid_types_full)
+    });
     records.push(aideAidesTerritoiresDto);
 
     await aideRepository.addFromAideTerritoires(aideAidesTerritoiresDto);
