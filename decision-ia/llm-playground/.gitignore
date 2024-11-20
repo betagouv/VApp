@@ -4,3 +4,4 @@ hard-database/
 __pycache__/
 generation-score-async.ipynb
 database-studies.ipynb
+rag_prototype.ipynb
