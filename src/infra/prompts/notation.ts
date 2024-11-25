@@ -39,11 +39,11 @@ Attribuez une note entière entre  ${NOTE_MIN} et ${NOTE_MAX}, selon les critèr
 Analysez les informations suivantes pour déterminer la compatibilité entre l'aide et le projet :
 
 [AIDE]
-{aide_description}
+${aide}
 [/AIDE]
 
 [PROJET]
-{project_description}
+${projet}
 [/PROJET]
 
 **Instructions importantes :**
