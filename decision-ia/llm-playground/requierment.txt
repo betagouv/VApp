@@ -5,3 +5,4 @@ pandas
 plotly
 python-decouple
 markdownify
+aiohttp
