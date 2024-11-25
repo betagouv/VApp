@@ -14,7 +14,7 @@ def generate_ollama_request(
     ):
     
     ollama_api_endpoint = f"{ollama_api_url}/api/generate/"
-
+    
     # Ensure options is a dictionary (default empty dictionary if None)
     if model_options is None:
         model_options = {}
@@ -44,6 +44,7 @@ def generate_ollama_request(
             "seed": seed,
             "top_k": model_options.get('top_k', 20),
             "top_p": model_options.get('top_p', 0.9),
+            "min_p": model_options.get('min_p', 0),
             "temperature": model_options.get('temperature', 0.8),
             "repeat_penalty": model_options.get('repeat_penalty', 1.2),
             "presence_penalty": model_options.get('presence_penalty', 1.5),
@@ -66,15 +67,17 @@ def generate_ollama_request(
         print(error)
         return None
     
-def embeding_ollama_request(
+def generate_ollama_embeddings(
+        prompt: str,
         ollama_api_url: str,
-        text_input: str,
-        model: str = "llama3.2:1b",
+        model: str = "nomic-embed-text",
         bearer_token: str = None
     ):
-
-    ollama_api_endpoint = f"{ollama_api_url}/api/embed/"
     
+    ollama_api_endpoint = f"{ollama_api_url}/api/embeddings/"
+    
+    # Ensure options is a dictionary (default empty dictionary if None)
+
     headers = {'Content-Type': 'application/json'}
     
     # Handle the bearer token with special character encoding
@@ -82,10 +85,10 @@ def embeding_ollama_request(
         utf8_bytes = f'Bearer {bearer_token}'.encode('utf-8')
         auth_header_value = utf8_bytes.decode('latin1')
         headers['Authorization'] = auth_header_value
-    # Build the data payload
+
     data = {
         "model": model,
-        "input": text_input
+        "prompt": prompt,
     }
 
     try:
