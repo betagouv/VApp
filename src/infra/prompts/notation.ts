@@ -49,5 +49,5 @@ ${projet}
 **Instructions importantes :**
 
 - Répond **uniquement** par un nombre entier entre ${NOTE_MIN} et ${NOTE_MAX}.
-- **Ne fourniss aucune explication, texte ou formatage supplémentaire.**
+- **Ne fournis aucune explication, texte ou formatage supplémentaire.**
 - Renvoie la note sous forme de string pure, sans aucune balise ou formatage`;
