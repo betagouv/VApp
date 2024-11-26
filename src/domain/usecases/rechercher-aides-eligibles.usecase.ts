@@ -29,7 +29,7 @@ export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
     await this.notationAideService.initialize();
     const aides = await this.findAllFor(projet.criteresRechercheAide);
     const chunkedAides: Aide[][] = [];
-    const chunkSize = 1;
+    const chunkSize = 8;
     for (let i = 0; i < aides.length; i += chunkSize) {
       const chunk = aides.slice(i, i + chunkSize);
       chunkedAides.push(chunk);
