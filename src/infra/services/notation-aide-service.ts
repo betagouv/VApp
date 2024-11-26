@@ -13,7 +13,7 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
   private initialized: boolean = false;
   static MIN_NB_NOTES_REQUIRED = envNumber(process.env.MIN_NB_NOTES_REQUIRED, 3);
   static MAX_ATTEMPT = 6;
-  static EXTRACT_NOTE_REGEX = /(-? ?[0-9]).*/;
+  static EXTRACT_NOTE_REGEX = /(-? ?[0-9]+).*/;
 
   constructor(
     private ollama: Ollama,
