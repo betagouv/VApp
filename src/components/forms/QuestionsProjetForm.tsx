@@ -10,7 +10,7 @@ import { Grid } from '@mui/material';
 import { useActions, useUIState } from 'ai/rsc';
 import { useLocalStorage } from 'usehooks-ts';
 
-import { SubmitButton } from '@/components/forms/RechercherAidesForm';
+import { SubmitButton } from '@/components/SubmitButton';
 import { GridItemLoader } from '@/components/GridItemLoader';
 import { useMountEffect } from '@/presentation/hooks/useMountEffect';
 import { repondreQuestionAction } from '@/actions/repondre-questions.action';

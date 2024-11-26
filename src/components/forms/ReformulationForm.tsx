@@ -5,9 +5,9 @@ import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { readStreamableValue, useActions, useUIState } from 'ai/rsc';
 import { redirect } from 'next/navigation';
-
 import Input from '@codegouvfr/react-dsfr/Input';
-import { SubmitButton } from '@/components/forms/RechercherAidesForm';
+
+import { SubmitButton } from '@/components/SubmitButton';
 import { validerReformulationAction } from '@/actions/valider-reformulation.action';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';

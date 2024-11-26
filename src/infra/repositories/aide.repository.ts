@@ -1,7 +1,7 @@
 import type { ExpressionBuilder, Kysely, Selectable } from 'kysely';
-import { AideAidesTerritoiresDto } from '@/infra/dtos/aide-aides-territoires.dto';
+import { AtAid } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
-import { atApiClient } from '@/infra/at/at-api-client';
+import { atApiClient } from '@/infra/at/api-client';
 import { AideTable, DB } from '../database/types';
 import { db } from '../database';
 import { Aide } from '@/domain/models/aide';
@@ -26,7 +26,7 @@ export class AideRepository implements AideRepositoryInterface {
   //   return ['a.uuid', 'a.nom', 'a.description', 'a.url', 'a.aides_territoire_id', 'a.targeted_audiences'];
   // }
 
-  async addFromAideTerritoires(aide: AideAidesTerritoiresDto) {
+  async addFromAideTerritoires(aide: AtAid) {
     await this.db
       .insertInto('aide_table')
       .values({

@@ -1,5 +1,5 @@
 import './loadEnv';
-import { atApiClient } from '@/infra/at/at-api-client';
+import { atApiClient } from '@/infra/at/api-client';
 import { territoireRepository } from '@/infra/repositories/territoire.repository';
 
 const importTerritoires = async () => {

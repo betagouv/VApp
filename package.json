@@ -35,7 +35,7 @@
     "delete-aides": "node -r esbuild-register scripts/delete-aides.ts",
     "stats-aides": "node -r esbuild-register scripts/stats-aides.ts",
     "import-territoires": "node -r esbuild-register scripts/import-territoires.ts",
-    "create-at-interfaces": "create-client https://aides-territoires.beta.gouv.fr/api src/infra/ate --generator typescript"
+    "update-at-interfaces": "find . -name 'src/infra/at/interfaces/*.ts' -delete && create-client https://aides-territoires.beta.gouv.fr/api src/infra/at --generator typescript --format hydra"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
