@@ -1,0 +1,53 @@
+{
+    "score-assistant": {
+        "model" : "mistral-small:latest",
+        "request_parameters": {
+            "num_ctx": 16384,
+            "num_predict": 4
+        },
+        "model_parameters": {
+            "best_context": 16000, 
+            "max_context": 128000,
+            "top_k": 40,
+            "top_p": 0.95,
+            "min_p": 0.7,
+            "temperature": 0.9,
+            "repeat_penalty": 0.8,
+            "presence_penalty": 0.9
+        }
+    },
+    "questions-assistant": {
+        "model" : "mistral-small:latest",
+        "request_parameters": {
+            "num_ctx": 16384,
+            "num_predict": 4096
+        },
+        "model_parameters": {
+            "best_context": 16000, 
+            "max_context": 128000,
+            "top_k": 40,
+            "top_p": 0.9,
+            "min_p": 0.03,
+            "temperature": 0.6,
+            "repeat_penalty": 0.9,
+            "presence_penalty": 0.9
+        }
+    },
+    "reformulation-assistant": {
+        "model" : "mistral-small:latest",
+        "request_parameters": {
+            "num_ctx": 16384,
+            "num_predict": 4096
+        },
+        "model_parameters": {
+            "best_context": 16000, 
+            "max_context": 128000,
+            "top_k": 40,
+            "top_p": 0.9,
+            "min_p": 0.03,
+            "temperature": 0.6,
+            "repeat_penalty": 0.9,
+            "presence_penalty": 0.9
+        }
+    }
+}
