@@ -7,10 +7,11 @@ import { getAssistantConfiguration, ollama } from '@/infra/ollama';
 import { system, user } from '@/infra/prompts/notation';
 import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
 import { NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
+import { envNumber } from '@/infra/repositories/aide.repository';
 
 export class NotationAideService implements NotationAideServiceInterface, OllamaServiceInterface {
   private initialized: boolean = false;
-  static MIN_NB_NOTES_REQUIRED = 3;
+  static MIN_NB_NOTES_REQUIRED = envNumber(process.env.MIN_NB_NOTES_REQUIRED, 3);
   static MAX_ATTEMPT = 6;
   static EXTRACT_NOTE_REGEX = /(-? ?[0-9]).*/;
 
