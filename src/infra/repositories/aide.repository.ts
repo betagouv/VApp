@@ -8,7 +8,7 @@ import { Aide } from '@/domain/models/aide';
 import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 
-const envNumber = (envString?: string | number, defaultValue = 0): number =>
+export const envNumber = (envString?: string | number, defaultValue = 0): number =>
   envString ? Number(envString) : defaultValue;
 
 export const getNbTokenRange = (): [number, number] => [

@@ -20,6 +20,7 @@ declare global {
       AIDE_DESCRIPTION_MIN_TOKEN: number;
       AIDE_DESCRIPTION_MAX_TOKEN: number;
       NB_AIDE_HARD_LIMIT: number;
+      MIN_NB_NOTES_REQUIRED: number;
     }
   }
 }
