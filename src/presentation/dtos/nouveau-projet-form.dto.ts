@@ -7,9 +7,9 @@ export const nouveauProjetFormDtoSchema = z.object({
   commune: z.string().optional(),
   territoireId: z.string().optional(),
   payante: z.string().optional(),
-  etatsAvancements: z.array(z.string()).optional(),
-  aideNatures: z.array(z.string()).optional(),
-  actionsConcernees: z.array(z.string()).optional()
+  etatsAvancements: z.array(z.string()).optional().or(z.string()),
+  aideNatures: z.array(z.string()).optional().or(z.string()),
+  actionsConcernees: z.array(z.string()).optional().or(z.string())
 });
 
 export type NouveauProjetFormDto = z.infer<typeof nouveauProjetFormDtoSchema>;

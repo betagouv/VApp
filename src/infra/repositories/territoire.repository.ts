@@ -2,10 +2,10 @@ import type { Kysely, Selectable } from 'kysely';
 import { DB, AtPerimeterTable } from '../database/types';
 import { db } from '../database';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
-import { atApiClient } from '@/infra/at/at-api-client';
+import { atApiClient } from '@/infra/at/api-client';
 import { TerritoireRepositoryInterface } from '@/domain/repositories/territoire.repository.interface';
 import { Territoire } from '@/domain/models/territoire';
-import { PerimeterInterface } from '@/infra/at/perimeter';
+import { AtPerimeter } from '@/infra/at/perimeter';
 
 export class TerritoireRepository implements TerritoireRepositoryInterface {
   constructor(
@@ -27,7 +27,7 @@ export class TerritoireRepository implements TerritoireRepositoryInterface {
     return TerritoireRepository.fromSelectable(selectables[0]);
   }
 
-  async addFromPerimeter(perimeter: PerimeterInterface): Promise<void> {
+  async addFromPerimeter(perimeter: AtPerimeter): Promise<void> {
     await this.db
       .insertInto('at_perimeter_table')
       .values({ ...perimeter })

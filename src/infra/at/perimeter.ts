@@ -1,15 +1,4 @@
-import { Territoire } from '@/domain/models/territoire';
-
-export type TerritoireAutocompleteType = {
-  value: string;
-  text: string;
-};
-
-export type TerritoireAutocompleteTypeResponse = {
-  results: TerritoireAutocompleteType[];
-};
-
-export enum PerimeterScale {
+export enum AtPerimeterScale {
   commune = 'commune',
   epci = 'epci',
   basin = 'Bassin hydrographique',
@@ -22,21 +11,11 @@ export enum PerimeterScale {
   continent = 'Continent'
 }
 
-export interface PerimeterInterface {
+export type AtPerimeter = {
   id: string;
   text: string;
   name: string;
-  scale: PerimeterScale;
+  scale: AtPerimeterScale;
   zipcodes: string[];
   code: string;
-}
-
-export class Perimeter {
-  static toTerritoire({ text, name, id }: PerimeterInterface): Partial<Territoire> {
-    return {
-      nom: name,
-      description: text,
-      aidesTerritoiresId: id
-    };
-  }
-}
+};

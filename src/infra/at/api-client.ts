@@ -1,10 +1,28 @@
 import { Hooks } from 'ky';
-import { AtAide } from '@/infra/dtos/at-aide.dto';
-import { PerimeterInterface } from '@/infra/at/perimeter';
+import { AtAid } from '@/infra/at/aid';
+import { AtPerimeter } from '@/infra/at/perimeter';
 import { api } from '@/infra/at/api';
 import { AtSearchAidsQuery } from '@/infra/at/search-aids-query';
-import { CollectionResponse } from '@/infra/at/collection-response';
+import { AtCollectionResponse } from '@/infra/at/collection-response';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
+
+type scalar = string | boolean | number;
+
+function appendIfDefined(searchParams: URLSearchParams, name: string) {
+  return (value?: scalar) => {
+    if (typeof value !== 'undefined') {
+      searchParams.append(name, value.toString());
+    }
+  };
+}
+
+function appendArrayIfDefined<T extends scalar>(searchParams: URLSearchParams, name: string) {
+  return (value?: T[]) => {
+    if (typeof value !== 'undefined') {
+      value.forEach(appendIfDefined(searchParams, name));
+    }
+  };
+}
 
 export class AtApiClient implements AtApiClientInterface {
   private bearerToken: string | undefined;
@@ -60,37 +78,40 @@ export class AtApiClient implements AtApiClientInterface {
     };
   }
 
-  async searchAides(searchQuery: AtSearchAidsQuery): Promise<AtAide[]> {
+  static appendIfDefined(searchParams: URLSearchParams, searchParam: string | boolean | number) {
+    if (typeof searchParams !== 'undefined') {
+      searchParams.append('perimeter_id', searchParam.toString());
+    }
+  }
+
+  async searchAides(searchQuery: AtSearchAidsQuery): Promise<AtAid[]> {
     const searchParams = new URLSearchParams();
-    searchQuery.organization_type_slugs.forEach((audience) => {
-      searchParams.append('organization_type_slugs', audience);
-    });
-    if (searchQuery?.perimeter_id) {
-      searchParams.append('perimeter_id', searchQuery.perimeter_id);
-    }
-    if (searchQuery?.is_charged) {
-      searchParams.append('is_charged', searchQuery.is_charged.toString());
-    }
+    appendArrayIfDefined(searchParams, 'organization_type_slugs')(searchQuery.organization_type_slugs);
+    appendArrayIfDefined(searchParams, 'aid_type_group_slug')(searchQuery.aid_type_group_slug);
+    appendArrayIfDefined(searchParams, 'aid_destination_slugs')(searchQuery.aid_destination_slugs);
+    appendArrayIfDefined(searchParams, 'aid_step_slugs')(searchQuery.aid_step_slugs);
+    appendIfDefined(searchParams, 'perimeter_id')(searchQuery?.perimeter_id);
+    appendIfDefined(searchParams, 'is_charged')(searchQuery.is_charged);
 
     const url = `${this.baseUrl}/aids/?${searchParams.toString()}`;
     console.log(url);
 
     const response = await api
-      .get<CollectionResponse<AtAide>>(url, {
+      .get<AtCollectionResponse<AtAid>>(url, {
         hooks: this.hooks(),
         headers: this.headers()
       })
       .json();
 
-    return await this.fetchAllFromCollection<AtAide>(response);
+    return await this.fetchAllFromCollection<AtAid>(response);
   }
 
-  async fetchAllFromCollection<Type>({ next, count, results }: CollectionResponse<Type>): Promise<Type[]> {
+  async fetchAllFromCollection<Type>({ next, count, results }: AtCollectionResponse<Type>): Promise<Type[]> {
     let allResults: Type[] = results;
     let nextURL: string = next;
     while (allResults.length < count) {
       const { results, next } = await api
-        .get<CollectionResponse<Type>>(nextURL, { hooks: this.hooks(), headers: this.headers() })
+        .get<AtCollectionResponse<Type>>(nextURL, { hooks: this.hooks(), headers: this.headers() })
         .json();
       allResults = allResults.concat(results);
       nextURL = next;
@@ -101,22 +122,22 @@ export class AtApiClient implements AtApiClientInterface {
 
   async fetchAllPerimeters() {
     const response = await api
-      .get<CollectionResponse<PerimeterInterface>>(`${this.baseUrl}/perimeters/`, {
+      .get<AtCollectionResponse<AtPerimeter>>(`${this.baseUrl}/perimeters/`, {
         hooks: this.hooks(),
         headers: this.headers()
       })
       .json();
 
-    return await this.fetchAllFromCollection<PerimeterInterface>(response);
+    return await this.fetchAllFromCollection<AtPerimeter>(response);
   }
 
-  async autocompletePerimeter(searchQuery: { q: string | null }): Promise<PerimeterInterface[]> {
+  async autocompletePerimeter(searchQuery: { q: string | null }): Promise<AtPerimeter[]> {
     if (!searchQuery?.q) {
       return [];
     }
 
     const { results } = await api
-      .get<CollectionResponse<PerimeterInterface>>(`${this.baseUrl}/perimeters?q=${searchQuery?.q}`, {
+      .get<AtCollectionResponse<AtPerimeter>>(`${this.baseUrl}/perimeters?q=${searchQuery?.q}`, {
         hooks: this.hooks(),
         headers: this.headers()
       })

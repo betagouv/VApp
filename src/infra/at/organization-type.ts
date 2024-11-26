@@ -1,4 +1,4 @@
-export enum OrganizationType {
+export enum AtOrganizationType {
   'association' = 'Association',
   'commune' = 'Commune',
   'researcher' = 'Recherche',
@@ -13,4 +13,4 @@ export enum OrganizationType {
   'private-person' = 'Particulier'
 }
 
-export type OrganisationTypeKey = keyof typeof OrganizationType;
+export type AtOrganisationTypeKey = keyof typeof AtOrganizationType;

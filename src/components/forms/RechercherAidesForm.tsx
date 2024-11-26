@@ -1,23 +1,26 @@
 'use client';
 
 import * as React from 'react';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
 import { redirect } from 'next/navigation';
 import { SUUID } from 'short-uuid';
-import { CircularProgress, Grid } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Grid } from '@mui/material';
 import Input from '@codegouvfr/react-dsfr/Input';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import Select from '@codegouvfr/react-dsfr/SelectNext';
-import { Button } from '@codegouvfr/react-dsfr/Button';
 import Checkbox from '@codegouvfr/react-dsfr/Checkbox';
 import RadioButtons from '@codegouvfr/react-dsfr/RadioButtons';
 
-import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
+import { SubmitButton } from '@/components/SubmitButton';
 import TerritoireAutocomplete, { TerritoireAutocompleteProps } from '@/components/TerritoireAutocomplete';
-import { OrganisationTypeKey, OrganizationType } from '@/infra/at/organization-type';
+import { toggleValueInStateArray } from '@/libs/utils/array';
+import { AtOrganisationTypeKey, AtOrganizationType } from '@/infra/at/organization-type';
+import { atAidTypeGroupOptions } from '@/infra/at/aid-type-group';
+import { atAidStepOptions } from '@/infra/at/aid-step';
+import { atAidDestinationOptions } from '@/infra/at/aid-destination';
+import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
 
 export type RechercherAidesFormState = {
   message: string;
@@ -29,31 +32,15 @@ const initialState: RechercherAidesFormState = {
   uuid: undefined
 };
 
-export type SubmitButtonProps = PropsWithChildren<{ loading?: boolean }>;
-
-export function SubmitButton({ children, loading = false }: SubmitButtonProps) {
-  const { pending: submitting } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      onClick={function noRefCheck() {}}
-      aria-disabled={submitting || loading}
-      disabled={submitting || loading}
-    >
-      {children}
-      {'\u00A0'}
-      {submitting ? <CircularProgress color="inherit" size={20} /> : <SearchIcon />}
-    </Button>
-  );
-}
-
 export function RechercherAidesForm() {
   const { pending } = useFormStatus();
   const [audience, setAudience] = useState<string>();
   const [territoire, setTerritoire] = React.useState<TerritoireAutocompleteProps['value']>(null);
   const [formState, formAction] = useFormState(demarrerProjetAction, initialState);
   const [isCharged, setIsCharged] = useState<true | false | undefined>(false);
+  const [groupTypes, setGroupTypes] = useState<string[]>(['financial-group']);
+  const [steps, setSteps] = useState<string[]>([]);
+  const [destinations, setDestinations] = useState<string[]>([]);
 
   useEffect(() => {
     console.log(formState);
@@ -80,8 +67,8 @@ export function RechercherAidesForm() {
           />
           <Select
             label="Type de structure"
-            options={Object.keys(OrganizationType).map((slug) => ({
-              label: OrganizationType[slug as OrganisationTypeKey] as string,
+            options={Object.keys(AtOrganizationType).map((slug) => ({
+              label: AtOrganizationType[slug as AtOrganisationTypeKey] as string,
               value: slug
             }))}
             nativeSelectProps={{
@@ -126,77 +113,41 @@ export function RechercherAidesForm() {
           <Checkbox
             legend="Nature de l'aide"
             orientation="horizontal"
-            options={[
-              {
-                label: 'Aide en ingénierie',
-                nativeInputProps: {
-                  name: 'aid_type_group_slug',
-                  value: 'technical-group'
-                }
-              },
-              {
-                label: 'Aide financière',
-                nativeInputProps: {
-                  name: 'aid_type_group_slug',
-                  value: 'financial-group'
-                }
+            options={atAidTypeGroupOptions.map(({ label, value }) => ({
+              label,
+              nativeInputProps: {
+                name: 'aideNatures',
+                value,
+                checked: groupTypes.includes(value),
+                onChange: () => setGroupTypes(toggleValueInStateArray(value))
               }
-            ]}
+            }))}
           />
-
           <Checkbox
             legend="Avancement du projet"
             orientation="horizontal"
-            options={[
-              {
-                label: 'Label checkbox',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value1'
-                }
-              },
-              {
-                label: 'Label checkbox 2',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value2'
-                }
-              },
-              {
-                label: 'Label checkbox 3',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value3'
-                }
+            options={atAidStepOptions.map(({ label, value }) => ({
+              label,
+              nativeInputProps: {
+                name: 'etatsAvancements',
+                value,
+                checked: steps.includes(value),
+                onChange: () => setSteps(toggleValueInStateArray(value))
               }
-            ]}
+            }))}
           />
           <Checkbox
             legend="Actions concernées"
             orientation="horizontal"
-            options={[
-              {
-                label: 'Label checkbox',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value1'
-                }
-              },
-              {
-                label: 'Label checkbox 2',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value2'
-                }
-              },
-              {
-                label: 'Label checkbox 3',
-                nativeInputProps: {
-                  name: 'checkboxes-1',
-                  value: 'value3'
-                }
+            options={atAidDestinationOptions.map(({ label, value }) => ({
+              label,
+              nativeInputProps: {
+                name: 'actionsConcernees',
+                value,
+                checked: destinations.includes(value),
+                onChange: () => setDestinations(toggleValueInStateArray(value))
               }
-            ]}
+            }))}
           />
         </Grid>
         <Grid item xs={12}>

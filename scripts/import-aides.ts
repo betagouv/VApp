@@ -2,17 +2,7 @@ import './loadEnv';
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
 import { aideRepository } from '@/infra/repositories/aide.repository';
-import {
-  AideAidesTerritoiresDto,
-  aideAidesTerritoiresDtoSchema,
-  atAideType
-} from '@/infra/dtos/aide-aides-territoires.dto';
-import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
-import type { Kysely } from 'kysely';
-import { DB } from '@/infra/database/types';
-import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
-import { Aide } from '@/domain/models/aide';
-import { z } from 'zod';
+import { atAidSchema } from '@/infra/at/aid';
 
 // id
 // slug
@@ -98,7 +88,7 @@ const processFile = async () => {
       continue;
     }
 
-    const aideAidesTerritoiresDto = aideAidesTerritoiresDtoSchema.parse({
+    const atAid = atAidSchema.parse({
       ...record,
       id: Number(record.id),
       targeted_audiences: pythonJsonParse(record.targeted_audiences),
@@ -112,9 +102,9 @@ const processFile = async () => {
       aid_types: pythonJsonParse(record.aid_types),
       aid_types_full: pythonJsonParse(record.aid_types_full)
     });
-    records.push(aideAidesTerritoiresDto);
+    records.push(atAid);
 
-    await aideRepository.addFromAideTerritoires(aideAidesTerritoiresDto);
+    await aideRepository.addFromAideTerritoires(atAid);
   }
 
   return records;
