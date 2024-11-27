@@ -13,6 +13,7 @@ export interface ClientMessage {
 export interface UIState {
   questionsReponses: QuestionReponse[];
   loading: boolean;
+  error?: boolean;
 }
 
 export interface AIState {

@@ -90,6 +90,13 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
         {formState?.message && !pending && (
           <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
         )}
+
+        {uiState.error && (
+          <Alert
+            severity="error"
+            title="Une erreur est survenue lors de la génération des questions. Veuillez recharger la page."
+          />
+        )}
       </Grid>
       <GridItemLoader loading={uiState.loading} />
       <Grid item xs={12}>
@@ -112,7 +119,9 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
               />
             </fieldset>
           ))}
-          <SubmitButton loading={uiState.loading}>Reformuler mon projet</SubmitButton>
+          <SubmitButton loading={uiState.loading} error={uiState.error}>
+            Reformuler mon projet
+          </SubmitButton>
         </form>
       </Grid>
     </Grid>
