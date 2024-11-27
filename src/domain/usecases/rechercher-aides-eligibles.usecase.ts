@@ -6,12 +6,7 @@ import { AideEligible } from '@/domain/models/aide-eligible';
 import { Aide } from '@/domain/models/aide';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
-
-function msToMinutesAndSeconds(ms: number) {
-  const m = Math.floor(ms / 60000);
-  const s = ((ms % 60000) / 1000).toFixed(0);
-  return `${m}m${s.padStart(2, '0')}s`;
-}
+import { msToMinutesAndSeconds } from '@/libs/utils/time';
 
 export class RechercherAidesEligiblesUsecase implements UsecaseInterface {
   public constructor(

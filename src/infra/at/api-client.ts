@@ -26,6 +26,7 @@ function appendArrayIfDefined<T extends scalar>(searchParams: URLSearchParams, n
 
 export class AtApiClient implements AtApiClientInterface {
   private bearerToken: string | undefined;
+  static TIMEOUT: number = 80000;
 
   constructor(
     public baseUrl: string,
@@ -57,14 +58,6 @@ export class AtApiClient implements AtApiClientInterface {
   hooks(): Hooks {
     return {
       afterResponse: [
-        // (_request, _options, response) => {
-        //   // You could do something with the response, for example, logging.
-        //   console.log(response);
-        //
-        //   // Or return a `Response` instance to overwrite the response.
-        //   return new Response('A different response', { status: 200 });
-        // },
-
         // Or retry with a fresh token on a 403 error
         async (request, options, response) => {
           if (response.status === 403 || response.status === 401) {
@@ -107,11 +100,14 @@ export class AtApiClient implements AtApiClientInterface {
   }
 
   async fetchAllFromCollection<Type>({ next, count, results }: AtCollectionResponse<Type>): Promise<Type[]> {
+    console.log('next', next);
     let allResults: Type[] = results;
     let nextURL: string = next;
     while (allResults.length < count) {
       const { results, next } = await api
-        .get<AtCollectionResponse<Type>>(nextURL, { hooks: this.hooks(), headers: this.headers() })
+        .get<
+          AtCollectionResponse<Type>
+        >(nextURL, { hooks: this.hooks(), headers: this.headers(), timeout: AtApiClient.TIMEOUT })
         .json();
       allResults = allResults.concat(results);
       nextURL = next;
@@ -124,7 +120,8 @@ export class AtApiClient implements AtApiClientInterface {
     const response = await api
       .get<AtCollectionResponse<AtPerimeter>>(`${this.baseUrl}/perimeters/`, {
         hooks: this.hooks(),
-        headers: this.headers()
+        headers: this.headers(),
+        timeout: AtApiClient.TIMEOUT
       })
       .json();
 
