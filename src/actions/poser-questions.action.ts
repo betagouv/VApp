@@ -15,17 +15,26 @@ export async function poserQuestionsAction(projetUuid: Projet['uuid']) {
 
   const mutableAIState = getMutableAIState<typeof QuestionsReponsesProvider>();
 
-  const questions = await poserQuestionUsecase.execute(projet, aides.slice(0, 3));
-  const questionsReponses: QuestionReponse[] = questions.map((question) => ({ question, reponse: '' }));
+  try {
+    const questions = await poserQuestionUsecase.execute(projet, aides.slice(0, 3));
+    const questionsReponses: QuestionReponse[] = questions.map((question) => ({ question, reponse: '' }));
 
-  // @ts-expect-error lib typing is wrong
-  mutableAIState.done((aiState: AIState) => ({
-    ...aiState,
-    questionsReponses
-  }));
+    // @ts-expect-error lib typing is wrong
+    mutableAIState.done((aiState: AIState) => ({
+      ...aiState,
+      questionsReponses
+    }));
 
-  return {
-    questionsReponses,
-    loading: false
-  };
+    return {
+      questionsReponses,
+      loading: false
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      questionsReponses: [],
+      loading: false,
+      error: true
+    };
+  }
 }

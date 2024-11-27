@@ -5,17 +5,17 @@ import { CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import * as React from 'react';
 
-export type SubmitButtonProps = PropsWithChildren<{ loading?: boolean }>;
+export type SubmitButtonProps = PropsWithChildren<{ loading?: boolean; error?: boolean }>;
 
-export function SubmitButton({ children, loading = false }: SubmitButtonProps) {
+export function SubmitButton({ children, loading = false, error }: SubmitButtonProps) {
   const { pending: submitting } = useFormStatus();
 
   return (
     <Button
       type="submit"
       onClick={function noRefCheck() {}}
-      aria-disabled={submitting || loading}
-      disabled={submitting || loading}
+      aria-disabled={submitting || loading || error}
+      disabled={submitting || loading || error}
     >
       {children}
       {'\u00A0'}
