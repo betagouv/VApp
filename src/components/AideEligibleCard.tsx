@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { formatNote, noteToPercent } from '@/domain/note';
 import Card from '@codegouvfr/react-dsfr/Card';
-import Badge from '@codegouvfr/react-dsfr/Badge';
+import Tag from '@codegouvfr/react-dsfr/Tag';
 import Tooltip from '@codegouvfr/react-dsfr/Tooltip';
 import { Aide } from '@/domain/models/aide';
 import { ClassProperties } from '@/libs/utils/types';
@@ -29,12 +29,22 @@ export const AideEligibleCard = ({ aide, eligibilite }: AideEligibleCard) => {
         href: Aide.getAidesTerritoiresUrl(aide)
       }}
       start={
-        <ul className="fr-badges-group">
+        <ul className="fr-tags-group">
           <li>
             <Tooltip title="Score d'éligibilité" kind="hover">
-              <Badge style={{ backgroundColor: getColor(noteToPercent(eligibilite)) }}>{formatNote(eligibilite)}</Badge>
+              <Tag style={{ backgroundColor: getColor(noteToPercent(eligibilite)) }}>{formatNote(eligibilite)}</Tag>
             </Tooltip>
           </li>
+          {aide.types.map(({ id, name }) => (
+            <li key={`aide-type-${id}`}>
+              <Tag iconId="ri-hand-coin-line">{name}</Tag>
+            </li>
+          ))}
+          {aide.programmes.map((programme) => (
+            <li key={`aide-${programme}`}>
+              <Tag>{programme}</Tag>
+            </li>
+          ))}
         </ul>
       }
       title={aide.nom}

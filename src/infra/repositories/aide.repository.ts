@@ -1,5 +1,5 @@
 import type { ExpressionBuilder, Kysely, Selectable } from 'kysely';
-import { AtAid } from '@/infra/at/aid';
+import { AtAid, AtAideType } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
 import { atApiClient } from '@/infra/at/api-client';
 import { AideTable, DB } from '../database/types';
@@ -47,7 +47,16 @@ export class AideRepository implements AideRepositoryInterface {
   private select() {
     return this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.id', 'a.name', 'a.description', 'a.url', 'a.targeted_audiences'])
+      .select([
+        'a.uuid',
+        'a.id',
+        'a.name',
+        'a.description',
+        'a.url',
+        'a.targeted_audiences',
+        'a.aid_types_full',
+        'a.programs'
+      ])
       .where(this.numberOfTokenIsValid);
   }
 
@@ -108,7 +117,16 @@ export class AideRepository implements AideRepositoryInterface {
   async fromUuid(uuid: string): Promise<Aide> {
     const selectableAides = await this.db
       .selectFrom('aide_table as a')
-      .select(['a.uuid', 'a.id', 'a.name', 'a.description', 'a.url'])
+      .select([
+        'a.uuid',
+        'a.id',
+        'a.name',
+        'a.description',
+        'a.url',
+        'a.targeted_audiences',
+        'a.aid_types_full',
+        'a.programs'
+      ])
       .where('a.uuid', '=', uuid)
       .execute();
 
@@ -119,13 +137,20 @@ export class AideRepository implements AideRepositoryInterface {
     return AideRepository.toAide(selectableAides[0]);
   }
 
-  static toAide(selectableAide: Pick<Selectable<AideTable>, 'uuid' | 'id' | 'name' | 'description' | 'url'>): Aide {
+  static toAide(
+    selectableAide: Pick<
+      Selectable<AideTable>,
+      'uuid' | 'id' | 'name' | 'description' | 'url' | 'aid_types_full' | 'programs'
+    >
+  ): Aide {
     return new Aide(
       selectableAide.uuid,
       selectableAide.id,
       selectableAide.name,
       selectableAide.description || '',
-      selectableAide.url
+      selectableAide.url,
+      selectableAide.aid_types_full as AtAideType[],
+      selectableAide.programs
     );
   }
 }

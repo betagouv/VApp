@@ -27,8 +27,8 @@ fileignoreconfig:
   checksum: 061294ee457555a21e9b149f29935982facf723bb00091fb07416e91ab36f829
 - filename: package.json
   checksum: 30aaec11cb93988519b820902706baecf2d23f03fb2da2bd0e26f72931e6e70f
-- filename: src/components/AideEligibles.tsx
-  checksum: 1b5861a9b833df33cc08e0787d7e21707dcd670d37b0bff2f873dfcc8d172411
+- filename: src/components/AideEligibleCard.tsx
+  allowed_patterns: [key=]
 - filename: src/components/CommuneAutocomplete.tsx
   checksum: d954a392870a8aedd6ff438feb02dc632a6ac471aab0f2deefba0eb35de04d2d
 - filename: src/app/layout.tsx
