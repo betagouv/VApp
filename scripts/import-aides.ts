@@ -100,7 +100,9 @@ const processFile = async () => {
       mobilization_steps: pythonJsonParse(record.mobilization_steps),
       is_charged: record.is_charged === 'true',
       aid_types: pythonJsonParse(record.aid_types),
-      aid_types_full: pythonJsonParse(record.aid_types_full)
+      aid_types_full: pythonJsonParse(record.aid_types_full),
+      categories: pythonJsonParse(record.categories),
+      programs: pythonJsonParse(record.programs)
     });
     records.push(atAid);
 

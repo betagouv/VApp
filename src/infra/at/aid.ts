@@ -11,6 +11,8 @@ export const atAideTypeSchema = z.object({
   group: atAideTypeGroupSchema
 });
 
+export type AtAideType = z.infer<typeof atAideTypeSchema>;
+
 export const atFinancerFullSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -35,7 +37,10 @@ export const atAidSchema = z.object({
   mobilization_steps: z.array(z.string()),
   is_charged: z.boolean().optional(),
   aid_types: z.array(z.string()),
-  aid_types_full: z.array(atAideTypeSchema)
+  aid_types_full: z.array(atAideTypeSchema),
+  programs: z.array(z.string()),
+  recurrence: z.string(),
+  categories: z.array(z.string())
 });
 
 export type AtAid = z.infer<typeof atAidSchema>;
