@@ -39,7 +39,6 @@ export const atAidSchema = z.object({
   aid_types: z.array(z.string()),
   aid_types_full: z.array(atAideTypeSchema),
   programs: z.array(z.string()),
-  recurrence: z.string(),
   categories: z.array(z.string())
 });
 
