@@ -1,7 +1,7 @@
 import { assertValid } from '@/domain/note';
 
 export class AideEligible {
-  static SELECTION = 10;
+  static SELECTION = 30;
 
   constructor(
     public eligibilite: number,

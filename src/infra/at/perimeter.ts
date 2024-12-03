@@ -1,5 +1,5 @@
 export enum AtPerimeterScale {
-  commune = 'commune',
+  commune = 'Commune',
   epci = 'epci',
   basin = 'Bassin hydrographique',
   department = 'Département',
