@@ -8,7 +8,7 @@ import { rechercherAidesEligiblesUsecase } from '@/infra/uscases';
 import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
 import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
 
-export async function rechercherAidesEligiblesAction(projetId: string) {
+export async function rechercherAidesProjetAction(projetId: string) {
   const projet = await projetRepository.fromUuid(projetId);
   const stream = createStreamableValue<ViewAideEligible>();
 

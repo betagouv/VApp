@@ -3,4 +3,5 @@ export type Territoire = {
   nom: string;
   description: string;
   aidesTerritoiresId: string;
+  code: string;
 };

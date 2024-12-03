@@ -1,41 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { SUUID } from 'short-uuid';
 import * as React from 'react';
-import { useState } from 'react';
-import { Metadata } from 'next';
-import { readStreamableValue } from 'ai/rsc';
-import { Grid } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+
+import { rechercherAidesCollectiviteAction } from '@/actions/rechercher-aides-collectivite.action';
+import Grid from '@mui/material/Grid';
 import Alert from '@codegouvfr/react-dsfr/Alert';
-import { Button } from '@codegouvfr/react-dsfr/Button';
-
-import { AidesEligibles } from '@/components/AideEligibles';
 import { GridItemLoader } from '@/components/GridItemLoader';
-import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
+import { AidesEligibles } from '@/components/AideEligibles';
 import { useMountEffect } from '@/presentation/hooks/useMountEffect';
-import { rechercherAidesProjetAction } from '@/actions/rechercher-aides-projet.action';
+import { useState } from 'react';
+import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
+import { readStreamableValue } from 'ai/rsc';
 import { AideEligible } from '@/domain/models/aide-eligible';
-import { useRouter } from 'next/navigation';
+import { Territoire } from '@/domain/models/territoire';
+import { Projet } from '@/domain/models/projet';
 
-export const metadata: Metadata = {
-  title: 'Projet | VApp | beta.gouv.fr'
-};
+export interface WidgetCollectiviteProps {
+  code: Territoire['code'];
+  description: Projet['description'];
+}
 
-type AideEligiblesTabContentProps = {
-  projetUuid: SUUID;
-  initialAidesEligibles: ViewAideEligible[];
-};
-export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = [] }: AideEligiblesTabContentProps) => {
-  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>(initialAidesEligibles);
+export default function WidgetCollectivite({ code, description }: WidgetCollectiviteProps) {
+  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
   useMountEffect(() => {
     let ignoreActionResult = false;
     async function triggerNouvelleRecherche() {
       setLoading(true);
-      const response = await rechercherAidesProjetAction(projetUuid);
+      const response = await rechercherAidesCollectiviteAction({ code, description });
       for await (const aideEligible of readStreamableValue<ViewAideEligible>(response)) {
         if (ignoreActionResult) {
           continue;
@@ -80,19 +73,8 @@ export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = []
           />
         )}
       </Grid>
-      <Grid item xs={12}>
-        <Button
-          onClick={() => router.push(`/projets/${projetUuid}/preciser/questions`)}
-          priority="primary"
-          size="large"
-          disabled={loading || aidesEligibles.length === 0}
-        >
-          Préciser mon projet{'\u00A0'}
-          <SearchIcon />
-        </Button>
-      </Grid>
       <GridItemLoader loading={loading} />
       <AidesEligibles aidesEligibles={aidesEligibles} />
     </Grid>
   );
-};
+}

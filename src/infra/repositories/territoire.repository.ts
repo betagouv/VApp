@@ -1,22 +1,17 @@
 import type { Kysely, Selectable } from 'kysely';
 import { DB, AtPerimeterTable } from '../database/types';
 import { db } from '../database';
-import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
-import { atApiClient } from '@/infra/at/api-client';
 import { TerritoireRepositoryInterface } from '@/domain/repositories/territoire.repository.interface';
 import { Territoire } from '@/domain/models/territoire';
-import { AtPerimeter } from '@/infra/at/perimeter';
+import { AtPerimeter, AtPerimeterScale } from '@/infra/at/perimeter';
 
 export class TerritoireRepository implements TerritoireRepositoryInterface {
-  constructor(
-    public db: Kysely<DB>,
-    public atApiClient: AtApiClientInterface
-  ) {}
+  constructor(public db: Kysely<DB>) {}
 
   async fromUuid(uuid: string): Promise<Territoire> {
     const selectables = await this.db
       .selectFrom('at_perimeter_table as p')
-      .select(['p.uuid', 'p.name', 'p.text', 'p.id'])
+      .select(['p.uuid', 'p.name', 'p.text', 'p.id', 'p.code'])
       .where('p.uuid', '=', uuid)
       .execute();
 
@@ -37,7 +32,7 @@ export class TerritoireRepository implements TerritoireRepositoryInterface {
   async all() {
     const selectables = await this.db
       .selectFrom('at_perimeter_table as p')
-      .select(['p.uuid', 'p.text', 'p.name', 'p.id'])
+      .select(['p.uuid', 'p.text', 'p.name', 'p.id', 'p.code'])
       .execute();
 
     return selectables.map(TerritoireRepository.fromSelectable);
@@ -59,7 +54,7 @@ export class TerritoireRepository implements TerritoireRepositoryInterface {
 
     const selectables = await this.db
       .selectFrom('at_perimeter_table as p')
-      .select(['p.uuid', 'p.text', 'p.name', 'p.id'])
+      .select(['p.uuid', 'p.text', 'p.name', 'p.id', 'p.code'])
       .where('p.name', 'ilike', `${query}%`)
       .limit(10)
       .execute();
@@ -67,19 +62,36 @@ export class TerritoireRepository implements TerritoireRepositoryInterface {
     return selectables.map(TerritoireRepository.fromSelectable);
   }
 
+  async findCommuneByCode(code: string) {
+    const selectables = await this.db
+      .selectFrom('at_perimeter_table as p')
+      .select(['p.uuid', 'p.name', 'p.text', 'p.id', 'p.code'])
+      .where('p.code', '=', code)
+      .where('p.scale', '=', AtPerimeterScale.commune)
+      .execute();
+
+    if (selectables.length === 0) {
+      throw new Error(`Aucuns commune portant le code INSEE ${code} n'a été trouvée.`);
+    }
+
+    return TerritoireRepository.fromSelectable(selectables[0]);
+  }
+
   private static fromSelectable({
     uuid,
     name,
     text,
-    id
-  }: Pick<Selectable<AtPerimeterTable>, 'uuid' | 'name' | 'text' | 'id'>): Territoire {
+    id,
+    code
+  }: Pick<Selectable<AtPerimeterTable>, 'uuid' | 'name' | 'text' | 'id' | 'code'>): Territoire {
     return {
       uuid,
       nom: name,
       description: text,
-      aidesTerritoiresId: id
+      aidesTerritoiresId: id,
+      code
     };
   }
 }
 
-export const territoireRepository = new TerritoireRepository(db, atApiClient);
+export const territoireRepository = new TerritoireRepository(db);
