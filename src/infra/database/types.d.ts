@@ -65,6 +65,7 @@ export interface AtPerimeterTable {
 }
 
 export interface ProjetTable {
+  at_perimeter_id: string | null;
   created_at: Generated<Timestamp>;
   criteres_recherche_aide: Generated<Json>;
   description: string;

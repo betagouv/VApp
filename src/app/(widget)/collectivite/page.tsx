@@ -3,6 +3,9 @@ import * as React from 'react';
 import { Metadata } from 'next';
 
 import WidgetCollectivite from '@/components/WidgetCollectivite';
+import { projetRepository } from '@/infra/repositories/projet.repository';
+import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
+import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
 
 export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'
@@ -18,5 +21,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ c
     throw new Error('La description du projet est vide.');
   }
 
-  return <WidgetCollectivite code={code} description={description} />;
+  const projet = await projetRepository.findForCommune(code, description);
+  let initialAidesEligibles: ViewAideEligible[] = [];
+  if (projet) {
+    initialAidesEligibles = await Promise.all(
+      projet.aidesEligibles.map(aideEligibleAdapter.toViewAideEligible.bind(aideEligibleAdapter))
+    );
+  }
+
+  return <WidgetCollectivite code={code} description={description} initialAidesEligibles={initialAidesEligibles} />;
 }

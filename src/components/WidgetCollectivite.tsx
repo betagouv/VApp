@@ -19,10 +19,11 @@ import { Projet } from '@/domain/models/projet';
 export interface WidgetCollectiviteProps {
   code: Territoire['code'];
   description: Projet['description'];
+  initialAidesEligibles: ViewAideEligible[];
 }
 
-export default function WidgetCollectivite({ code, description }: WidgetCollectiviteProps) {
-  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>([]);
+export default function WidgetCollectivite({ code, description, initialAidesEligibles = [] }: WidgetCollectiviteProps) {
+  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>(initialAidesEligibles);
   const [loading, setLoading] = useState<boolean>(false);
   useMountEffect(() => {
     let ignoreActionResult = false;

@@ -9,6 +9,7 @@ import { Projet } from '@/domain/models/projet';
 import { AtAidTypeGroup } from '@/infra/at/aid-type-group';
 import { Territoire } from '@/domain/models/territoire';
 import { territoireRepository } from '@/infra/repositories/territoire.repository';
+import { projetRepository } from '@/infra/repositories/projet.repository';
 
 export async function rechercherAidesCollectiviteAction({
   description,
@@ -21,6 +22,8 @@ export async function rechercherAidesCollectiviteAction({
     aideNatures: [AtAidTypeGroup['financial-group']],
     beneficiaire: 'Commune'
   });
+  await projetRepository.add(projet);
+
   const stream = createStreamableValue<ViewAideEligible>();
 
   (async () => {
