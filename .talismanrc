@@ -51,6 +51,8 @@ fileignoreconfig:
   checksum: c2863ff0cac4724560f197b803abedf9e4a87ea4352b33b024e46ed294fb77b2
 - filename: environment.d.ts
   checksum: 516cc4fd9457f64e4d4a213c6ad941198d9131b484f11feb673a793a8ec09691
+- filename: src/infra/database/migrations/1733321281571_projet_perimeter_relationship.ts
+  checksum: 00e1e6b1ff1c32c50f37609b9efd14f7e90d8ee1f773132f58dd7ff29388a633
 
 scopeconfig:
 - scope: node

@@ -55,11 +55,17 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   }
 
   static toUpdateable(projet: Projet): Updateable<ProjetTable> {
-    return {
+    const updatable: Updateable<ProjetTable> = {
       description: projet.description || '',
       recommendations: JSON.stringify(projet.aidesEligibles),
       criteres_recherche_aide: JSON.stringify(projet.criteresRechercheAide)
     };
+
+    if (projet.criteresRechercheAide.territoireId) {
+      updatable.at_perimeter_id = projet.criteresRechercheAide.territoireId;
+    }
+
+    return updatable;
   }
 
   static toInsertable(projet: Projet): Insertable<ProjetTable> {
@@ -83,6 +89,18 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       selectableProjet.recommendations || [],
       selectableProjet.criteres_recherche_aide
     );
+  }
+
+  async findForCommune(codeInsee: string, description: string) {
+    const selectableProjets = await this.db
+      .selectFrom('projet_table as p')
+      .select(['p.uuid', 'p.description', 'p.recommendations', 'p.criteres_recherche_aide'])
+      .leftJoin('at_perimeter_table', 'at_perimeter_table.id', 'p.at_perimeter_id')
+      .where('at_perimeter_table.code', '=', codeInsee)
+      .where('p.description', '=', description)
+      .execute();
+
+    return ProjetRepository.toProjet(selectableProjets[0]);
   }
 }
 
