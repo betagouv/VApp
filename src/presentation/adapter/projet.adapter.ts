@@ -1,16 +1,18 @@
 import { TypedFormData } from '@/libs/utils/types';
 import { Projet } from '@/domain/models/projet';
 import { NouveauProjetFormDto, nouveauProjetFormDtoSchema } from '@/presentation/dtos/nouveau-projet-form.dto';
+import { AtAidTypeGroupType } from '@/infra/at/aid-type-group';
+import { Beneficiaire } from '@/domain/models/beneficiaire';
 
-function toArrayOrUndefined<T>(data?: T | T[]) {
+function toArrayOrUndefined<T>(data?: unknown | unknown[]): T[] | undefined {
   if (typeof data === 'undefined') {
     return;
   }
 
   if (Array.isArray(data)) {
-    return data;
+    return data as T[];
   } else {
-    return [data];
+    return [data as T];
   }
 }
 
@@ -34,10 +36,10 @@ export class ProjetAdapter {
   static adaptFromNouveauProjetFormData(nouveauProjetFormData: TypedFormData<NouveauProjetFormDto>): Projet {
     const data = nouveauProjetFormDtoSchema.parse(Object.fromEntries(nouveauProjetFormData.entries()));
     return Projet.create(data.description, [], {
-      aideNatures: toArrayOrUndefined(data.aideNatures),
+      aideNatures: toArrayOrUndefined<AtAidTypeGroupType>(data.aideNatures),
       actionsConcernees: toArrayOrUndefined(data.actionsConcernees),
       etatsAvancements: toArrayOrUndefined(data.etatsAvancements),
-      beneficiaire: data.audience,
+      beneficiaire: data.audience as Beneficiaire,
       payante: data.payante === 'true' ? true : data.payante === 'false' ? false : undefined,
       territoireId: data.territoireId
     });

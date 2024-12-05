@@ -6,7 +6,6 @@ import { rechercherAidesEligiblesUsecase } from '@/infra/uscases';
 import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
 import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
 import { Projet } from '@/domain/models/projet';
-import { AtAidTypeGroup } from '@/infra/at/aid-type-group';
 import { Territoire } from '@/domain/models/territoire';
 import { territoireRepository } from '@/infra/repositories/territoire.repository';
 import { projetRepository } from '@/infra/repositories/projet.repository';
@@ -19,8 +18,8 @@ export async function rechercherAidesCollectiviteAction({
   const projet = Projet.create(description, [], {
     payante: false,
     territoireId: territoire.aidesTerritoiresId,
-    aideNatures: [AtAidTypeGroup['financial-group']],
-    beneficiaire: 'Commune'
+    aideNatures: ['financial-group'],
+    beneficiaire: 'commune'
   });
   await projetRepository.add(projet);
 
