@@ -21,8 +21,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ c
     throw new Error('La description du projet est vide.');
   }
 
-  const projet = await projetRepository.findForCommune(code, description);
   let initialAidesEligibles: ViewAideEligible[] = [];
+  const projet = await projetRepository.findForCommune(code, description);
   if (projet) {
     initialAidesEligibles = await Promise.all(
       projet.aidesEligibles.map(aideEligibleAdapter.toViewAideEligible.bind(aideEligibleAdapter))

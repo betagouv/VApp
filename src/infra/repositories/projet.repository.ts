@@ -100,6 +100,10 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       .where('p.description', '=', description)
       .execute();
 
+    if (!selectableProjets.length) {
+      return null;
+    }
+
     return ProjetRepository.toProjet(selectableProjets[0]);
   }
 }
