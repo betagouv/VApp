@@ -56,6 +56,7 @@ const RootLayout = ({ children, head }: RootLayoutProps) => {
         <Suspense>
           <Matomo env={config.env} />
         </Suspense>
+        <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/child" type="text/javascript" async></script>
         {head}
       </head>
       <body>
