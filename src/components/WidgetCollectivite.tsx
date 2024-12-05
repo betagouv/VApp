@@ -16,6 +16,8 @@ import { AideEligible } from '@/domain/models/aide-eligible';
 import { Territoire } from '@/domain/models/territoire';
 import { Projet } from '@/domain/models/projet';
 
+const WIDGET_SELECTION = 6;
+
 export interface WidgetCollectiviteProps {
   code: Territoire['code'];
   description: Projet['description'];
@@ -23,7 +25,9 @@ export interface WidgetCollectiviteProps {
 }
 
 export default function WidgetCollectivite({ code, description, initialAidesEligibles = [] }: WidgetCollectiviteProps) {
-  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>(initialAidesEligibles);
+  const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>(
+    initialAidesEligibles.slice(0, WIDGET_SELECTION)
+  );
   const [loading, setLoading] = useState<boolean>(false);
   useMountEffect(() => {
     let ignoreActionResult = false;
@@ -37,7 +41,7 @@ export default function WidgetCollectivite({ code, description, initialAidesElig
 
         if (aideEligible) {
           setAidesEligibles((previousAidesEligibles) =>
-            previousAidesEligibles.concat(aideEligible).sort(AideEligible.compare).slice(0, AideEligible.SELECTION)
+            previousAidesEligibles.concat(aideEligible).sort(AideEligible.compare).slice(0, WIDGET_SELECTION)
           );
         }
       }
