@@ -1,5 +1,5 @@
 import type { ExpressionBuilder, Kysely, Selectable } from 'kysely';
-import { AtAid, AtAideType } from '@/infra/at/aid';
+import { AtAid, AtAideTypeFull } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
 import { atApiClient } from '@/infra/at/api-client';
 import { AideTable, DB } from '../database/types';
@@ -149,7 +149,7 @@ export class AideRepository implements AideRepositoryInterface {
       selectableAide.name,
       selectableAide.description || '',
       selectableAide.url,
-      selectableAide.aid_types_full as AtAideType[],
+      selectableAide.aid_types_full as AtAideTypeFull[],
       selectableAide.programs
     );
   }

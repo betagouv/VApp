@@ -1,4 +1,4 @@
-import { type PropsWithChildren, ReactNode, Suspense } from 'react';
+import { type PropsWithChildren, Suspense } from 'react';
 import { type Metadata } from 'next';
 import Link from 'next/link';
 import { NextAppDirEmotionCacheProvider } from 'tss-react/next';
@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   }
 };
 
-type RootLayoutProps = PropsWithChildren<{ head?: ReactNode }>;
+type RootLayoutProps = PropsWithChildren;
 
-const RootLayout = ({ children, head }: RootLayoutProps) => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="fr" {...getHtmlAttributes({ defaultColorScheme, lang: 'fr' })}>
       <head>
@@ -57,7 +57,6 @@ const RootLayout = ({ children, head }: RootLayoutProps) => {
           <Matomo env={config.env} />
         </Suspense>
         <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/child" type="text/javascript" async></script>
-        {head}
       </head>
       <body>
         <DsfrProvider lang="fr">

@@ -3,7 +3,7 @@
 
 import { SUUID } from 'short-uuid';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Metadata } from 'next';
 import { readStreamableValue } from 'ai/rsc';
 import { Grid } from '@mui/material';
@@ -18,6 +18,8 @@ import { useMountEffect } from '@/presentation/hooks/useMountEffect';
 import { rechercherAidesProjetAction } from '@/actions/rechercher-aides-projet.action';
 import { AideEligible } from '@/domain/models/aide-eligible';
 import { useRouter } from 'next/navigation';
+import { DynamicAtAidTypeSelect } from '@/components/DynamicAtAidTypeSelect';
+import { AtAidType } from '@/infra/at/aid-type';
 
 export const metadata: Metadata = {
   title: 'Projet | VApp | beta.gouv.fr'
@@ -29,12 +31,15 @@ type AideEligiblesTabContentProps = {
 };
 export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = [] }: AideEligiblesTabContentProps) => {
   const [aidesEligibles, setAidesEligibles] = useState<ViewAideEligible[]>(initialAidesEligibles);
+  const [filteredAidesEligibles, setFilteredAidesEligibles] = useState<ViewAideEligible[]>(aidesEligibles);
+  const [atAidType, setAtAidType] = useState<AtAidType>();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   useMountEffect(() => {
     let ignoreActionResult = false;
     async function triggerNouvelleRecherche() {
       setLoading(true);
+      // The `response` is updated regularly with newly scored `Aide`.
       const response = await rechercherAidesProjetAction(projetUuid);
       for await (const aideEligible of readStreamableValue<ViewAideEligible>(response)) {
         if (ignoreActionResult) {
@@ -42,9 +47,7 @@ export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = []
         }
 
         if (aideEligible) {
-          setAidesEligibles((previousAidesEligibles) =>
-            previousAidesEligibles.concat(aideEligible).sort(AideEligible.compare).slice(0, AideEligible.SELECTION)
-          );
+          setAidesEligibles((previousAidesEligibles) => previousAidesEligibles.concat(aideEligible));
         }
       }
       setLoading(false);
@@ -58,6 +61,17 @@ export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = []
       ignoreActionResult = true;
     };
   });
+
+  useEffect(() => {
+    setFilteredAidesEligibles(() =>
+      aidesEligibles
+        .sort(AideEligible.compare)
+        .filter(({ aide: { types } }: ViewAideEligible) =>
+          atAidType ? types.map(({ name }) => name).includes(atAidType) : true
+        )
+        .slice(0, AideEligible.SELECTION)
+    );
+  }, [atAidType, aidesEligibles]);
 
   return (
     <Grid container spacing={2}>
@@ -80,7 +94,7 @@ export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = []
           />
         )}
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <Button
           onClick={() => router.push(`/projets/${projetUuid}/preciser/questions`)}
           priority="primary"
@@ -91,8 +105,16 @@ export const AideEligiblesTabContent = ({ projetUuid, initialAidesEligibles = []
           <SearchIcon />
         </Button>
       </Grid>
+      <Grid item xs={6}>
+        <DynamicAtAidTypeSelect
+          setAtAidType={setAtAidType}
+          atAidType={atAidType}
+          aidesEligibles={aidesEligibles}
+          loading={loading}
+        />
+      </Grid>
       <GridItemLoader loading={loading} />
-      <AidesEligibles aidesEligibles={aidesEligibles} />
+      <AidesEligibles aidesEligibles={filteredAidesEligibles} />
     </Grid>
   );
 };

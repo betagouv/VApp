@@ -1,17 +1,18 @@
 import { z } from 'zod';
+import { AtAidType } from '@/infra/at/aid-type';
 
 export const atAideTypeGroupSchema = z.object({
   id: z.number(),
   name: z.string()
 });
 
-export const atAideTypeSchema = z.object({
+export const atAideTypeFullSchema = z.object({
   id: z.number(),
   name: z.string(),
   group: atAideTypeGroupSchema
 });
 
-export type AtAideType = z.infer<typeof atAideTypeSchema>;
+export type AtAideTypeFull = z.infer<typeof atAideTypeFullSchema> & { name: AtAidType };
 
 export const atFinancerFullSchema = z.object({
   id: z.number(),
@@ -37,7 +38,7 @@ export const atAidSchema = z.object({
   mobilization_steps: z.array(z.string()),
   is_charged: z.boolean().optional(),
   aid_types: z.array(z.string()),
-  aid_types_full: z.array(atAideTypeSchema),
+  aid_types_full: z.array(atAideTypeFullSchema),
   programs: z.array(z.string()),
   categories: z.array(z.string())
 });

@@ -47,7 +47,8 @@ supply
 </select>
 ```
 
-Nature de l'aide
+[
+Nature de l'aide]()
 aid_type_group_slug
 string
 (query)
@@ -118,3 +119,7 @@ Nature de l'aide
         }
       ],
 ```
+
+## Notes
+
+For filtering slug are used but they are never send back whent requesting data, only label and numeric id are used.
