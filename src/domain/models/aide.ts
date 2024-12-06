@@ -1,4 +1,4 @@
-import { AtAideType } from '@/infra/at/aid';
+import { AtAideTypeFull } from '@/infra/at/aid';
 
 export class Aide {
   constructor(
@@ -7,7 +7,7 @@ export class Aide {
     public nom: string,
     public description: string,
     public url: string,
-    public types: AtAideType[],
+    public types: AtAideTypeFull[],
     public programmes: string[]
   ) {}
 
