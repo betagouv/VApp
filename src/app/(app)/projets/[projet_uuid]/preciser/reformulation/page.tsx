@@ -4,15 +4,22 @@ import { SUUID } from 'short-uuid';
 import { fr } from '@codegouvfr/react-dsfr';
 import { ReformulationForm } from '@/components/forms/ReformulationForm';
 import { projetRepository } from '@/infra/repositories/projet.repository';
+import Grid from '@mui/material/Grid';
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: SUUID } }) {
   const projet = await projetRepository.fromUuid(projet_uuid);
 
   return (
-    <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
-      <main className={fr.cx()}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        justifyContent: 'center'
+      }}
+    >
+      <Grid item xs={8}>
         <ReformulationForm projet={{ ...projet }} />
-      </main>
-    </div>
+      </Grid>
+    </Grid>
   );
 }

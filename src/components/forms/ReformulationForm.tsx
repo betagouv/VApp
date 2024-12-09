@@ -72,29 +72,27 @@ export function ReformulationForm({ projet }: ReformulationFormProps) {
   }, [formState, projet.uuid]);
 
   return (
-    <div>
-      <form action={formAction}>
-        {loading && (
-          <Alert severity="info" title="Grâce à vos réponses, le projet peut maintenant être reformulé." closable />
-        )}
-        <input type="hidden" name="projetId" value={projet.uuid} />
-        <Input
-          label="Reformulation du projet"
-          textArea
-          id="reformulation"
-          hintText="Vous pouvez egalement l'ajuster manuellement"
-          nativeTextAreaProps={{
-            style: { minHeight: '700px' },
-            name: 'reformulation',
-            value: reformulation,
-            readOnly: loading,
-            onChange: (e) => {
-              setReformulation(e.target.value);
-            }
-          }}
-        />
-        <SubmitButton loading={loading}>Réévaluer l'égibilité aux aides</SubmitButton>
-      </form>
-    </div>
+    <form action={formAction}>
+      {loading && (
+        <Alert severity="info" title="Grâce à vos réponses, le projet peut maintenant être reformulé." closable />
+      )}
+      <input type="hidden" name="projetId" value={projet.uuid} />
+      <Input
+        label="Reformulation du projet"
+        textArea
+        id="reformulation"
+        hintText="Vous pouvez egalement l'ajuster manuellement"
+        nativeTextAreaProps={{
+          style: { minHeight: '700px' },
+          name: 'reformulation',
+          value: reformulation,
+          readOnly: loading,
+          onChange: (e) => {
+            setReformulation(e.target.value);
+          }
+        }}
+      />
+      <SubmitButton loading={loading}>Réévaluer l'égibilité aux aides</SubmitButton>
+    </form>
   );
 }
