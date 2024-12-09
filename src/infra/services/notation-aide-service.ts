@@ -1,4 +1,4 @@
-import { Ollama, Options } from 'ollama';
+import { GenerateRequest, Ollama, Options } from 'ollama';
 import { NotationAideServiceInterface } from '@/domain/services/notation-aide.service.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
@@ -39,7 +39,7 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
       attempt < NotationAideService.MAX_ATTEMPT && notes.length < NotationAideService.MIN_NB_NOTES_REQUIRED;
       attempt++
     ) {
-      const note = await this.attemptNoterAide(aide, projet, attempt + 1);
+      const note = await this.attemptNoterAide(aide, projet, attempt);
       if (isNote(note)) {
         notes.push(note);
       }
@@ -56,19 +56,24 @@ export class NotationAideService implements NotationAideServiceInterface, Ollama
 
   private async attemptNoterAide(aide: Aide, projet: Projet, seed: number): Promise<number | null> {
     try {
-      const { response } = await this.ollama.generate({
+      const generateRequest: GenerateRequest & {
+        stream?: false;
+      } = {
         model: this.assistantConfiguration.model,
         system,
         options: this.getRequestOptions({
-          seed: seed + NotationAideService.MIN_NB_NOTES_REQUIRED
+          seed: seed
         }),
         prompt: user(aide, projet),
         stream: false
-      });
+      };
+      const { response } = await this.ollama.generate(generateRequest);
 
       const matches = response.trim().match(NotationAideService.EXTRACT_NOTE_REGEX);
       const note = matches ? Number(matches[1]) : null;
       assertValid(note, `La réponse suivante n'est pas attribuable à une note: ${response}`);
+
+      console.log(`Seed ${seed} : ${note}`);
 
       return Promise.resolve(note);
     } catch (e: unknown) {

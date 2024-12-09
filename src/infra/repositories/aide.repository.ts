@@ -51,7 +51,7 @@ export class AideRepository implements AideRepositoryInterface {
         'a.uuid',
         'a.id',
         'a.name',
-        'a.description',
+        'a.description_md',
         'a.url',
         'a.targeted_audiences',
         'a.aid_types_full',
@@ -121,7 +121,7 @@ export class AideRepository implements AideRepositoryInterface {
         'a.uuid',
         'a.id',
         'a.name',
-        'a.description',
+        'a.description_md',
         'a.url',
         'a.targeted_audiences',
         'a.aid_types_full',
@@ -137,17 +137,40 @@ export class AideRepository implements AideRepositoryInterface {
     return AideRepository.toAide(selectableAides[0]);
   }
 
+  async fromId(id: AtAid['id']): Promise<Aide> {
+    const selectableAides = await this.db
+      .selectFrom('aide_table as a')
+      .select([
+        'a.uuid',
+        'a.id',
+        'a.name',
+        'a.description_md',
+        'a.url',
+        'a.targeted_audiences',
+        'a.aid_types_full',
+        'a.programs'
+      ])
+      .where('a.id', '=', id)
+      .execute();
+
+    if (selectableAides.length === 0) {
+      throw new Error(`Aucune aide trouvée pour l'identifiant AT ${id}`);
+    }
+
+    return AideRepository.toAide(selectableAides[0]);
+  }
+
   static toAide(
     selectableAide: Pick<
       Selectable<AideTable>,
-      'uuid' | 'id' | 'name' | 'description' | 'url' | 'aid_types_full' | 'programs'
+      'uuid' | 'id' | 'name' | 'description_md' | 'url' | 'aid_types_full' | 'programs'
     >
   ): Aide {
     return new Aide(
       selectableAide.uuid,
       selectableAide.id,
       selectableAide.name,
-      selectableAide.description || '',
+      selectableAide.description_md || '',
       selectableAide.url,
       selectableAide.aid_types_full as AtAideTypeFull[],
       selectableAide.programs
