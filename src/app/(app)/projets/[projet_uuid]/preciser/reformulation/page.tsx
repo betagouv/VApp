@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
 import { SUUID } from 'short-uuid';
-import { fr } from '@codegouvfr/react-dsfr';
+import Grid from '@mui/material/Grid';
+
 import { ReformulationForm } from '@/components/forms/ReformulationForm';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 
@@ -9,10 +9,16 @@ export default async function Page({ params: { projet_uuid } }: { params: { proj
   const projet = await projetRepository.fromUuid(projet_uuid);
 
   return (
-    <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
-      <main className={fr.cx()}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        justifyContent: 'center'
+      }}
+    >
+      <Grid item xs={8}>
         <ReformulationForm projet={{ ...projet }} />
-      </main>
-    </div>
+      </Grid>
+    </Grid>
   );
 }
