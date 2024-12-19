@@ -11,11 +11,11 @@ Nous avons externalisé cette ressource via des serveurs externes. Le répertoir
 ## Structure du Répertoire
 
 - **setup-default/** : Setup basique avec le support d'un systeme de token d'authentication
-    - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx et Ollama.
+  - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx et Ollama.
 - **setup-openwebui/** : Setup avec le support de openwebui
-    - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx, Ollama et Open WebUI. **(work in progress)**
+  - `setup.sh` : Script principal pour installer et configurer l'environnement Nginx, Ollama et Open WebUI. **(work in progress)**
 - **setup-no-nginx/** : Setup sans nginx et sans token d'authentication
-    - `setup.sh` : Script principal pour installer et configurer l'environnement Ollama.
+  - `setup.sh` : Script principal pour installer et configurer l'environnement Ollama.
 - `cloud-init.yaml` : Script principal pour installer et configurer automatiquement une instance. **(work in progress)**
 
 ## Étapes de Configuration
@@ -37,7 +37,7 @@ chmod +x /path/to/setup.sh
 sudo bash -c "export BEARER_TOKEN=$BEARER_TOKEN; /path/to/setup.sh"
 ```
 
-___
+---
 
 Vous pouvez installer le script via la commande suivante avec une configuration **sans token d'authentication**.
 
@@ -53,4 +53,3 @@ sudo bash -c "/path/to/setup.sh"
 ```bash
 curl -X POST http://YOUR_INSTANCE_IP/api/generate -H "Content-Type: application/json" -H "Authorization: Bearer YOUR_TOKEN" -d '{"model": "llama3.2:1b", "prompt": "Why is the sky blue?", "stream": false}'
 ```
-   
