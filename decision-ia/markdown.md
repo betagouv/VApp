@@ -11,10 +11,11 @@ Nous nous appuyons principalement sur l'API d'Aide Territoire pour constituer la
 Nous avons également évoqué la possibilité d'interroger les formulaires d'aide de Démarches Simplifiées, mais cela présente un défi de taille. En effet, toutes les aides ne sont pas centralisées sur Démarches Simplifiées.
 
 J'ai imaginé l'application autour de trois composantes principales :
+
 - Frontend
 - Backend
 - Serveur GPU dédié à la partie LLM et à l'IA de manière plus générale
-Je vais détailler le choix de chacune de ces solutions par la suite. Pour résumé :
+  Je vais détailler le choix de chacune de ces solutions par la suite. Pour résumé :
 
 Dans le cadre de la création d'une application web basée sur l'intelligence artificielle, j'ai choisi de structurer l'architecture de manière modulaire en séparant clairement le frontend, le backend et un serveur GPU dédié aux tâches liées à l'IA. L'objectif principal derrière cette approche est d'optimiser les performances et de garantir une meilleure gestion des ressources.
 
@@ -25,23 +26,28 @@ Ce découplage permet également d'améliorer la scalabilité. Si les besoins en
 En conclusion, cette séparation claire entre les différentes couches de l'application et l'utilisation d'un serveur dédié aux calculs IA garantit non seulement des performances optimales, mais aussi une flexibilité et une évolutivité accrues, essentielles pour l'évolution future du projet.
 
 ## Frontend
+
 Le choix du frontend a été relativement simple. Je travaillais initialement avec Python Flask en backend, et j'utilisais directement le combo HTML/CSS/JS. Ensuite, j'ai voulu implémenter des fonctionnalités plus complexes et plus dynamiques, et j'ai hésité entre Angular et React.
 
 La communauté beta.gouv utilisant principalement React et proposant déjà un template React DFSR, mon choix s'est orienté vers cette solution.
 
 ## Backend
+
 Initialement sur Flask, je suis rapidement passé à Django. Django est un framework Python avec une communauté déjà importante chez beta.gouv. De plus, il semblait plus adapté pour créer un backend sous forme d'API, ce qui permettrait une intégration plus simple à long terme avec Aide Territoire ou Mon Espace Collectivité, selon moi.
 
 Je souhaitais également rester sur un framework Python, car cela simplifie grandement les interactions avec les LLM, quelle que soit l'approche adoptée par la suite.
 
 ## Serveur GPU - IA
+
 Pour le serveur GPU IA j'ai préféré partir sur une solution très low level, pour plusieurs raison :
+
 - Des application comme ollama permette une interaction et un déploiement extraimeent simple sous forme d'API à un large panel de LLM
 - Permet de facilement avoir accès à de la ressoure GPU qui est reconnue pour faciliter l'usage de large réseau neuronaux.
 - Pour le moment le problème va être brute force à l'aide de LLM mais il sera envisagble de a termes créer des réseau de neurone dédié à la tache beaucoup plus éfficace et ne nécessitant pas de autant de ressoure. Le serveur dédié facilitera le protoypage de ces solutions.
 - Dans notre contexte nous aurions pu utiliser des api tel que celle d'open IA ou de mistral, cependant nous voulons pouvoir tester rapidement une large variété de model open source pour trouver celui le plus adapter à la tache, quit à employer également une compinéaison d'autre méthode. Nous avons également pour ojbectif de montrer la faisablité d'utiliser des modèles customes sur des serveur spécialisé pour mettre en évidence où non la néssésité à plus long terme de se dauter de serveur dédié GenIA au seins des ministères.
 
 ### Usage de la solution Ollama
+
 Je souhaite utiliser Ollama (https://ollama.com/) pour la gestion des LLM, car il permet une gestion extrêmement simplifiée des modèles via une API, tout en offrant la possibilité d'ajuster très finement les modèles pour des utilisations spécialisées.
 
 Il intègre également plusieurs méthodes d'optimisation, notamment la quantization, ce qui permet de réduire considérablement l'utilisation des ressources serveur.
@@ -64,7 +70,7 @@ class APIClient:
         self.x_auth_token = x_auth_token
         self.base_uri = self.get_api_base_url()
         self.bearer_token = self.get_bearer_token()
-        self.session = self.create_session() 
+        self.session = self.create_session()
 
     def get_api_base_url(self):
         return 'https://aides-territoires.beta.gouv.fr/api/'
@@ -98,7 +104,7 @@ class APIClient:
         response = self.session.request(method, url)
         response.raise_for_status()
         return response
-    
+
 # Utilisation vous avez besoin d'un x_auth_token fournit par aide territoires
 client = APIClient(x_auth_token)
 ```
@@ -128,6 +134,7 @@ while data['next'] or error_counter >10:
 
 data_at = pd.DataFrame(data_collect)
 ```
+
 Pour l'utilisation de la base de données, nous avons remarqué qu'un grand nombre d'aides contiennent moins de 3 000 caractères (environ 500 mots). Cela représente 90 % de la base, mais pour garantir l'efficacité de l'outil, nous avons préféré les exclure et ne conserver que les aides les mieux décrites, soit un total de ~ 400.
 
 ```python
@@ -137,26 +144,29 @@ sub_min_description = 3000
 
 data_at_select = data_at_select[data_at_select['description'].apply(len)>sub_min_description].reset_index(drop=True)
 ```
+
 # Usage du LLM
 
 ## Usage 1 - Attribution d'un score en fonction d'une aide et de la description d'un projet
 
 Ici, nous sommes grandement contraints par les limites techniques propres aux LLM. Voici les principales raisons de mon approche :
+
 - Les aides contiennent entre 500 et 10 000 mots, soit environ 250 à 5 000 tokens. Les LLM ayant une capacité limitée à gérer le contexte (et plus le contexte est long, moins ils sont fiables), j'ai préféré limiter chaque appel à une seule aide et à une description de projet.
 - Cette approche est similaire à d'autres méthodes déjà connues avec les LLM.
 - Le RAG, qui repose sur une analyse vectorielle des embeddings pour mesurer la similarité probabiliste entre une requête et des documents, semblait initialement prometteur. Cependant, nous l'avons écarté après réflexion. Lors d'une discussion sur une solution sans RAG, des aides apparemment non reliées à un projet spécifique ont émergé. Cela s'est révélé pertinent après avoir consulté une chargée d'affaires qui a confirmé que certains projets peuvent comporter des aspects complexes où des aides moins évidentes (comme l’aménagement d’étangs pour un projet de réfection de voirie) deviennent cruciales pour la réussite globale du projet. Ce genre de subtilité pourrait échapper à une approche purement vectorielle du RAG.
 - Nous avons observé une variabilité dans les réponses des LLM en fonction des seeds (ou aléas initiaux). Pour garantir une réponse cohérente et fiable, nous appliquons une méthode de bouclage inspirée de la technique MMLU (Massive Multitask Language Understanding). Chaque aide se voit attribuer un score basé sur une moyenne des résultats sur plusieurs itérations, ce qui permet de lisser les fluctuations liées à la génération probabiliste des modèles.
 
 ### Variable env
+
 Ci-dessous se trouve le prompt système, qui définit le retour attendu. Ce prompt pourrait également être ajouté hors du prompt système, à la fin du prompt principal, mais j'ai pour l'instant privilégié cette approche. En effet, les derniers modèles, tels que Mistral, NeMo et LLaMA 3.1, ont démontré une bonne capacité à conserver le contexte du prompt système, même dans des contextes longs.
 
 ```python
 prompt_system = """Tu aides l'utilisateur à déterminer la compatibilité de l'aide ou subvention à analyser par rapport à la description de son projet.
 Réponds uniquement par un chiffre de 1 à 5.
-- Attribue 5 si l'aide ou la subvention correspond parfaitement aux objectifs et aux besoins du projet. 
+- Attribue 5 si l'aide ou la subvention correspond parfaitement aux objectifs et aux besoins du projet.
   - Les objectifs de l'aide/subvention sont totalement alignés avec les besoins du projet.
   - Les conditions et exigences de l'aide/subvention sont complètement satisfaites par le projet.
-- Attribue 4 si l'aide ou la subvention correspond très bien aux objectifs et aux besoins du projet. 
+- Attribue 4 si l'aide ou la subvention correspond très bien aux objectifs et aux besoins du projet.
   - Les objectifs de l'aide/subvention sont majoritairement alignés avec les besoins du projet.
   - La plupart des conditions et exigences de l'aide/subvention sont satisfaites par le projet.
 - Attribue 3 si l'aide ou la subvention correspond partiellement aux objectifs et aux besoins du projet.
@@ -180,7 +190,7 @@ top_p = 0.9
 temperature = 0.2 # 0.8 if you use another model than mistral nemo
 repeat_penalty = 1.2 # there can be a lot of repeat word in a subvention so this parameter can be adjusted to help the model but keep in mind that it's a tricky one
 presence_penalty = 1.5
-frequency_penalty = 1.0 
+frequency_penalty = 1.0
 num_ctx = 16384
 num_predict = 32 # we basicly ask the model to predict a number between 1 and 5. By using a small num_predict we ensure that we don't allow it to
 
@@ -189,10 +199,11 @@ api_url = ollama_url+"/api/generate"
 ```
 
 ### Variabe d'une requette post
+
 variables attendues envoyées par le client
 
 ```python
-seed_number =5 
+seed_number =5
 
 data = request.data
 sub_id = data['sub_id']
