@@ -43,7 +43,6 @@ export function RechercherAidesForm() {
   const [destinations, setDestinations] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log(formState);
     if (formState?.uuid) {
       redirect(`/projets/${formState?.uuid}`);
     }

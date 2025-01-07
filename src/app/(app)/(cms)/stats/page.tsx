@@ -1,6 +1,5 @@
 import { type Metadata } from 'next';
 
-import { H1 } from '@/components/dsfr/base/typography';
 import { sharedMetadata } from '@/app/shared-metadata';
 import { StatsContent } from '@/app/(app)/(cms)/stats/content';
 
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
 
 const Stats = () => (
   <div className="my-8">
-    <H1>{title}</H1>
+    <h1>{title}</h1>
     <StatsContent />
   </div>
 );
