@@ -3,9 +3,7 @@ import artworkOvoidSvgUrl from '@codegouvfr/react-dsfr/dsfr/artwork/background/o
 import artworkTechnicalErrorSvgUrl from '@codegouvfr/react-dsfr/dsfr/artwork/pictograms/system/technical-error.svg';
 import { type StaticImageData } from 'next/image';
 import { type ReactNode } from 'react';
-
-import { Container, Grid, GridCol } from '@/components/dsfr/layout';
-import { H1, Text } from '@/components/dsfr/base/typography';
+import Grid from '@mui/material/Grid';
 
 const errors = {
   '404': {
@@ -60,69 +58,56 @@ export const ErrorDisplay = ({ code, noRedirect, body, headline, title }: ErrorD
   }
 
   return (
-    <Container>
-      <Grid haveGutters valign="middle" align="center" my="7w" mtmd="12w" mbmd="10w">
-        <GridCol md={6} py="0">
-          <H1>{title}</H1>
-          {!isNaN(+code) && (
-            <Text variant="sm" className="mb-6">
-              Erreur {code}
-            </Text>
-          )}
-          <Text variant="xl" className="mb-6">
-            {headline}
-          </Text>
-          <Text variant="sm" className="mb-10">
-            {body}
-          </Text>
-          {!noRedirect && (
-            <ButtonsGroup
-              inlineLayoutWhen="md and up"
-              buttons={[
-                {
-                  children: "Page d'accueil",
-                  linkProps: {
-                    href: '/'
-                  }
+    <Grid>
+      <Grid item xs={8}>
+        <h1>{title}</h1>
+        {!isNaN(+code) && <p>Erreur {code}</p>}
+        <p>{headline}</p>
+        <p>{body}</p>
+        {!noRedirect && (
+          <ButtonsGroup
+            inlineLayoutWhen="md and up"
+            buttons={[
+              {
+                children: "Page d'accueil",
+                linkProps: {
+                  href: '/'
                 }
-              ]}
-            />
-          )}
-        </GridCol>
-        <GridCol md={3} offsetMd={1} px="6w" pxmd="0" py="0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="fr-responsive-img fr-artwork"
-            aria-hidden="true"
-            width="160"
-            height="200"
-            viewBox="0 0 160 200"
-          >
-            <use
-              className="fr-artwork-motif"
-              href={`${(artworkOvoidSvgUrl as StaticImageData).src}#artwork-motif`}
-            ></use>
-            <use
-              className="fr-artwork-background"
-              href={`${(artworkOvoidSvgUrl as StaticImageData).src}#artwork-background`}
-            ></use>
-            <g transform="translate(40, 60)">
-              <use
-                className="fr-artwork-decorative"
-                href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-decorative`}
-              ></use>
-              <use
-                className="fr-artwork-minor"
-                href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-minor`}
-              ></use>
-              <use
-                className="fr-artwork-major"
-                href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-major`}
-              ></use>
-            </g>
-          </svg>
-        </GridCol>
+              }
+            ]}
+          />
+        )}
       </Grid>
-    </Container>
+      <Grid item xs={4}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="fr-responsive-img fr-artwork"
+          aria-hidden="true"
+          width="160"
+          height="200"
+          viewBox="0 0 160 200"
+        >
+          <use className="fr-artwork-motif" href={`${(artworkOvoidSvgUrl as StaticImageData).src}#artwork-motif`}></use>
+          <use
+            className="fr-artwork-background"
+            href={`${(artworkOvoidSvgUrl as StaticImageData).src}#artwork-background`}
+          ></use>
+          <g transform="translate(40, 60)">
+            <use
+              className="fr-artwork-decorative"
+              href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-decorative`}
+            ></use>
+            <use
+              className="fr-artwork-minor"
+              href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-minor`}
+            ></use>
+            <use
+              className="fr-artwork-major"
+              href={`${(artworkTechnicalErrorSvgUrl as StaticImageData).src}#artwork-major`}
+            ></use>
+          </g>
+        </svg>
+      </Grid>
+    </Grid>
   );
 };

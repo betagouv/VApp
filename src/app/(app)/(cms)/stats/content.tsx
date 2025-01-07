@@ -1,14 +1,14 @@
 import Card from '@codegouvfr/react-dsfr/Card';
+import Grid from '@mui/material/Grid';
 
-import { Grid, GridCol } from '@/components/dsfr/layout';
 import { fetchMatomoData } from '@/infra/matomo/matomo';
 
 export const StatsContent = async () => {
   const matomoData = await fetchMatomoData(process.env.NEXT_PUBLIC_MATOMO_URL, process.env.NEXT_PUBLIC_MATOMO_SITE_ID);
 
   return (
-    <Grid haveGutters>
-      <GridCol md={4}>
+    <Grid>
+      <Grid item md={4}>
         <Card
           title="Nombre de visites"
           desc="Nombre de visites total du site sur les 12 derniers mois"
@@ -16,8 +16,8 @@ export const StatsContent = async () => {
           size="large"
           grey
         />
-      </GridCol>
-      <GridCol md={4}>
+      </Grid>
+      <Grid md={4}>
         <Card
           title="Nombre de pages vues (total)"
           desc="Nombre de pages vues au total sur le site sur les 12 derniers mois"
@@ -25,8 +25,8 @@ export const StatsContent = async () => {
           size="large"
           grey
         />
-      </GridCol>
-      <GridCol md={4}>
+      </Grid>
+      <Grid md={4}>
         <Card
           title="Nombre de pages vues (uniques)"
           desc="Nombre de pages vues uniques sur le site sur les 12 derniers mois"
@@ -34,7 +34,7 @@ export const StatsContent = async () => {
           size="large"
           grey
         />
-      </GridCol>
+      </Grid>
     </Grid>
   );
 };
