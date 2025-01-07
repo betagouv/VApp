@@ -1,27 +1,13 @@
 import * as React from 'react';
 import { Suspense } from 'react';
 import { type Metadata } from 'next';
-
 import { Button } from '@codegouvfr/react-dsfr/Button';
-import { config } from '@/config';
-import { sharedMetadata } from 'src/app/shared-metadata';
+
 import { NombreAides } from '@/components/NombreAides';
 import { Loader } from '@/components/Loader';
 
-const title = `Accueil - ${config.name}`;
-const url = '/';
-
 export const metadata: Metadata = {
-  ...sharedMetadata,
-  title,
-  openGraph: {
-    ...sharedMetadata.openGraph,
-    title,
-    url
-  },
-  alternates: {
-    canonical: url
-  }
+  title: 'Accueil'
 };
 
 const Home = () => {

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 import { fr } from '@codegouvfr/react-dsfr';
 
 import { RechercherAidesForm } from '@/components/forms/RechercherAidesForm';
 
 export const metadata: Metadata = {
-  title: 'Nouvelle recherche | VApp | beta.gouv.fr'
+  title: 'Nouvelle recherche'
 };
 
 export default async function Page() {

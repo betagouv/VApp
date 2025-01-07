@@ -4,7 +4,6 @@
 import { SUUID } from 'short-uuid';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Metadata } from 'next';
 import { readStreamableValue } from 'ai/rsc';
 import { Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,10 +19,6 @@ import { AideEligible } from '@/domain/models/aide-eligible';
 import { useRouter } from 'next/navigation';
 import { DynamicAtAidTypeSelect } from '@/components/DynamicAtAidTypeSelect';
 import { AtAidType } from '@/infra/at/aid-type';
-
-export const metadata: Metadata = {
-  title: 'Projet | VApp | beta.gouv.fr'
-};
 
 type AideEligiblesTabContentProps = {
   projetUuid: SUUID;

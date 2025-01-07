@@ -1,10 +1,11 @@
 export enum AtAidStep {
-  preop = 'Réflexion / conception',
-  op = 'Mise en œuvre / réalisation',
-  postop = 'Usage / valorisation'
+  Reflexion = 'preop',
+  Realisation = 'op',
+  Usage = 'postop'
 }
 
-export const atAidStepOptions = Object.keys(AtAidStep).map((slug) => ({
-  label: AtAidStep[slug as keyof typeof AtAidStep] as string,
-  value: slug
-}));
+export const atAidStepLabels: Record<AtAidStep, string> = {
+  [AtAidStep.Reflexion]: 'Réflexion / conception',
+  [AtAidStep.Realisation]: 'Mise en œuvre / réalisation',
+  [AtAidStep.Usage]: 'Usage / valorisation'
+} as const;

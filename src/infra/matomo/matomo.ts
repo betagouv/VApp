@@ -1,5 +1,3 @@
-import { config } from '@/config';
-
 export interface MatomoResult {
   nbPageViews: number;
   nbUniqPageViews: number;
@@ -21,14 +19,14 @@ namespace MatomoApi {
   }
 }
 
-export const fetchMatomoData = async (): Promise<MatomoResult> => {
+export const fetchMatomoData = async (url: string, siteId: string): Promise<MatomoResult> => {
   const MATOMO_URL = [
-    `${config.matomo.url}/?module=API&method=VisitsSummary.getVisits&idSite=${
-      config.matomo.siteId
-    }&format=JSON&period=year&date=today&segment=${encodeURIComponent(`pageUrl=^${config.host}`)}`,
-    `${config.matomo.url}/?module=API&method=Actions.get&idSite=${
-      config.matomo.siteId
-    }&format=JSON&period=year&date=today&segment=${encodeURIComponent(`pageUrl=^${config.host}`)}`
+    `${url}/?module=API&method=VisitsSummary.getVisits&idSite=${
+      siteId
+    }&format=JSON&period=year&date=today&segment=${encodeURIComponent(`pageUrl=^${process.env.NEXT_PUBLIC_SITE_URL}`)}`,
+    `${url}/?module=API&method=Actions.get&idSite=${
+      siteId
+    }&format=JSON&period=year&date=today&segment=${encodeURIComponent(`pageUrl=^${process.env.NEXT_PUBLIC_SITE_URL}`)}`
   ];
   const promises = MATOMO_URL.map((url) =>
     fetch(url, {

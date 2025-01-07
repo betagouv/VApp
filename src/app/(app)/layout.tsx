@@ -1,17 +1,13 @@
 import { type PropsWithChildren } from 'react';
-import { type Metadata } from 'next';
 import { SkipLinks } from '@codegouvfr/react-dsfr/SkipLinks';
+import { fr } from '@codegouvfr/react-dsfr';
 import { headerFooterDisplayItem } from '@codegouvfr/react-dsfr/Display';
 import { Header } from '@codegouvfr/react-dsfr/Header';
-import { fr } from '@codegouvfr/react-dsfr';
-
-import { Footer } from '@codegouvfr/react-dsfr/Footer';
-import { config } from '@/config';
-import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
-
-import { sharedMetadata } from '@/app/shared-metadata';
-import pkg from 'package.json';
 import Badge from '@codegouvfr/react-dsfr/Badge';
+import { Footer } from '@codegouvfr/react-dsfr/Footer';
+
+import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
+import pkg from 'package.json';
 
 const brandTop = (
   <>
@@ -64,22 +60,6 @@ const bottomLinks = [
     }
   }
 ];
-
-export const metadata: Metadata = {
-  metadataBase: config.host ? new URL(config.host) : undefined,
-  ...sharedMetadata,
-  title: {
-    template: `%s - ${config.name}`,
-    default: config.name
-  },
-  openGraph: {
-    title: {
-      template: `${config.name} - %s`,
-      default: config.name
-    },
-    ...sharedMetadata.openGraph
-  }
-};
 
 const AppLayout = ({ children }: PropsWithChildren) => {
   return (

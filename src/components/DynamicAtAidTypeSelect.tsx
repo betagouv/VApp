@@ -1,20 +1,14 @@
 import * as React from 'react';
-import { Metadata } from 'next';
 
 import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
 import Select from '@codegouvfr/react-dsfr/SelectNext';
 import { unique } from '@/libs/utils/array';
 import { AtAidType } from '@/infra/at/aid-type';
-import { Dispatch } from 'react';
-
-export const metadata: Metadata = {
-  title: 'Projet | VApp | beta.gouv.fr'
-};
 
 type DynamicAtAideTypeSelectProps = {
   aidesEligibles: ViewAideEligible[];
   atAidType?: AtAidType;
-  setAtAidType: Dispatch<AtAidType>;
+  setAtAidType: React.Dispatch<AtAidType>;
   loading?: boolean;
 };
 

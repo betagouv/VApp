@@ -1,4 +1,4 @@
-import { ModelParameters } from '@/infra/model-parameters';
+import { ModelParameters } from '@/infra/ai/model-parameters';
 
 export type AiAssistantConfiguration = {
   model: string;

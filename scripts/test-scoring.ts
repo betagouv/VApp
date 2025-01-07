@@ -1,6 +1,6 @@
 import './loadEnv';
 import { aideRepository } from '@/infra/repositories/aide.repository';
-import { notationAideService } from '@/infra/services/notation-aide-service';
+import { notationAideService } from '@/infra/ai/services/notation-aide-service';
 import { Projet } from '@/domain/models/projet';
 import samples from '../data/project-description-sample.json';
 

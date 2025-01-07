@@ -1,9 +1,9 @@
 export enum AtAidDestination {
-  supply = 'Dépenses de fonctionnement',
-  investment = 'Dépenses d’investissement'
+  Fonctionnement = 'supply',
+  Investissement = 'investment'
 }
 
-export const atAidDestinationOptions = Object.keys(AtAidDestination).map((slug) => ({
-  label: AtAidDestination[slug as keyof typeof AtAidDestination] as string,
-  value: slug
-}));
+export const atAidDestinationLabels: Record<AtAidDestination, string> = {
+  [AtAidDestination.Fonctionnement]: 'Dépenses de fonctionnement',
+  [AtAidDestination.Investissement]: 'Dépenses d’investissement'
+} as const;

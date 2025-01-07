@@ -1,8 +1,8 @@
 import { Ollama } from 'ollama';
 import models from 'data/model-data.json';
 import assistants from 'data/ai-assistants.json';
-import { ModelParameters } from '@/infra/model-parameters';
-import { AiAssistantConfiguration, NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
+import { ModelParameters } from '@/infra/ai/model-parameters';
+import { AiAssistantConfiguration, NamedAssistantConfiguration } from '@/infra/ai/ai-assistant-configuration';
 
 const fetchWithHeaders = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
   const defaultHeaders = process.env.OLLAMA_JWT

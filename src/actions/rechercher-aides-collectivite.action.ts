@@ -9,6 +9,8 @@ import { Projet } from '@/domain/models/projet';
 import { Territoire } from '@/domain/models/territoire';
 import { territoireRepository } from '@/infra/repositories/territoire.repository';
 import { projetRepository } from '@/infra/repositories/projet.repository';
+import { AtAidTypeGroup } from '@/infra/at/aid-type-group';
+import { AtOrganizationType } from '@/infra/at/organization-type';
 
 export async function rechercherAidesCollectiviteAction({
   description,
@@ -18,8 +20,8 @@ export async function rechercherAidesCollectiviteAction({
   const projet = Projet.create(description, [], {
     payante: false,
     territoireId: territoire.aidesTerritoiresId,
-    aideNatures: ['financial-group'],
-    beneficiaire: 'commune'
+    aideNatures: [AtAidTypeGroup.Financiere],
+    beneficiaire: AtOrganizationType.Commune
   });
   await projetRepository.add(projet);
 
