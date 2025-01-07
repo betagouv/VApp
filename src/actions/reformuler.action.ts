@@ -3,7 +3,7 @@
 import { createStreamableValue } from 'ai/rsc';
 
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { reformulationService } from '@/infra/services/reformulation-service';
+import { reformulationService } from '@/infra/ai/services/reformulation-service';
 import { QuestionReponse } from '@/domain/models/question-reponse';
 
 export async function reformulerAction(projetId: string, questionsReponses: QuestionReponse[]) {

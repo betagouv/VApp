@@ -1,7 +1,9 @@
 # Proof Of Concept
 
 Il s'agit d'un retour sur les premiers développements de VApp, une application qui tente de répondre, à l'aide de la GenAI, au besoin d'identifier rapidement et sans grandes compétences techniques l'éligibilité des aides pour un projet.
-> La *PoC* à initialement été développée sur ces dépôts :
+
+> La _PoC_ à initialement été développée sur ces dépôts :
+>
 > - https://github.com/Acrend/vapi
 > - https://github.com/Acrend/vapp
 

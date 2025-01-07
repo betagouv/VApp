@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 
 import WidgetCollectivite from '@/components/WidgetCollectivite';
 import { projetRepository } from '@/infra/repositories/projet.repository';
@@ -8,7 +8,7 @@ import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapte
 import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
 
 export const metadata: Metadata = {
-  title: 'Projet | VApp | beta.gouv.fr'
+  title: 'Widget MEC'
 };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ code: string; description: string }> }) {

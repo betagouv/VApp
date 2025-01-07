@@ -1,3 +1,3 @@
-import { AtOrganisationTypeKey } from '@/infra/at/organization-type';
+import { AtOrganizationType } from '@/infra/at/organization-type';
 
-export type Beneficiaire = AtOrganisationTypeKey;
+export type Beneficiaire = AtOrganizationType;

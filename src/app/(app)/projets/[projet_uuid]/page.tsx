@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 import { useRemarkSync } from 'react-remark';
 import { fr } from '@codegouvfr/react-dsfr';
 import Tabs from '@codegouvfr/react-dsfr/Tabs';
@@ -10,7 +10,7 @@ import { AideEligiblesTabContent } from '@/components/AideEligiblesTabContent';
 import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
 
 export const metadata: Metadata = {
-  title: 'Projet | VApp | beta.gouv.fr'
+  title: 'Projet'
 };
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: string } }) {

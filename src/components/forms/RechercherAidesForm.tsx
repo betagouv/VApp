@@ -16,10 +16,10 @@ import RadioButtons from '@codegouvfr/react-dsfr/RadioButtons';
 import { SubmitButton } from '@/components/SubmitButton';
 import TerritoireAutocomplete, { TerritoireAutocompleteProps } from '@/components/TerritoireAutocomplete';
 import { toggleValueInStateArray } from '@/libs/utils/array';
-import { AtOrganisationTypeKey, AtOrganizationType } from '@/infra/at/organization-type';
-import { atAidTypeGroupOptions } from '@/infra/at/aid-type-group';
-import { atAidStepOptions } from '@/infra/at/aid-step';
-import { atAidDestinationOptions } from '@/infra/at/aid-destination';
+import { atOrganizationTypeLabels } from '@/infra/at/organization-type';
+import { atAidTypeGroupLabels } from '@/infra/at/aid-type-group';
+import { atAidStepLabels } from '@/infra/at/aid-step';
+import { atAidDestinationLabels } from '@/infra/at/aid-destination';
 import { demarrerProjetAction } from '@/actions/demarrer-projet.action';
 
 export type RechercherAidesFormState = {
@@ -67,9 +67,9 @@ export function RechercherAidesForm() {
           />
           <Select
             label="Type de structure"
-            options={Object.keys(AtOrganizationType).map((slug) => ({
-              label: AtOrganizationType[slug as AtOrganisationTypeKey] as string,
-              value: slug
+            options={Object.entries(atOrganizationTypeLabels).map(([value, label]) => ({
+              label,
+              value
             }))}
             nativeSelectProps={{
               name: 'audience',
@@ -113,7 +113,7 @@ export function RechercherAidesForm() {
           <Checkbox
             legend="Nature de l'aide"
             orientation="horizontal"
-            options={atAidTypeGroupOptions.map(({ label, value }) => ({
+            options={Object.entries(atAidTypeGroupLabels).map(([value, label]) => ({
               label,
               nativeInputProps: {
                 name: 'aideNatures',
@@ -126,7 +126,7 @@ export function RechercherAidesForm() {
           <Checkbox
             legend="Avancement du projet"
             orientation="horizontal"
-            options={atAidStepOptions.map(({ label, value }) => ({
+            options={Object.entries(atAidStepLabels).map(([value, label]) => ({
               label,
               nativeInputProps: {
                 name: 'etatsAvancements',
@@ -139,7 +139,7 @@ export function RechercherAidesForm() {
           <Checkbox
             legend="Actions concernées"
             orientation="horizontal"
-            options={atAidDestinationOptions.map(({ label, value }) => ({
+            options={Object.entries(atAidDestinationLabels).map(([value, label]) => ({
               label,
               nativeInputProps: {
                 name: 'actionsConcernees',

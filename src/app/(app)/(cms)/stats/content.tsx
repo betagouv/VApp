@@ -4,7 +4,7 @@ import { Grid, GridCol } from '@/components/dsfr/layout';
 import { fetchMatomoData } from '@/infra/matomo/matomo';
 
 export const StatsContent = async () => {
-  const matomoData = await fetchMatomoData();
+  const matomoData = await fetchMatomoData(process.env.NEXT_PUBLIC_MATOMO_URL, process.env.NEXT_PUBLIC_MATOMO_SITE_ID);
 
   return (
     <Grid haveGutters>

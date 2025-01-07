@@ -1,11 +1,9 @@
 export enum AtAidTypeGroup {
-  'financial-group' = 'Aide financière',
-  'technical-group' = 'Aide en ingénierie'
+  Financiere = 'financial-group',
+  Ingenierie = 'technical-group'
 }
 
-export type AtAidTypeGroupType = keyof typeof AtAidTypeGroup;
-
-export const atAidTypeGroupOptions = Object.keys(AtAidTypeGroup).map((slug) => ({
-  label: AtAidTypeGroup[slug as keyof typeof AtAidTypeGroup] as string,
-  value: slug
-}));
+export const atAidTypeGroupLabels: Record<AtAidTypeGroup, string> = {
+  [AtAidTypeGroup.Financiere]: 'Aide financière',
+  [AtAidTypeGroup.Ingenierie]: 'technical-group'
+} as const;

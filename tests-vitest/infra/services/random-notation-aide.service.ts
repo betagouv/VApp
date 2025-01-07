@@ -1,4 +1,4 @@
-import { NotationAideServiceInterface } from '@/domain/services/notation-aide.service.interface';
+import { NotationAideServiceInterface } from '@/domain/services/notation-aide-service.interface';
 import { NOTE_MAX, NOTE_MIN } from '@/domain/note';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';

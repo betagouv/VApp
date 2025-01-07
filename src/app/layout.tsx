@@ -8,27 +8,12 @@ import { DsfrHead } from '@codegouvfr/react-dsfr/next-appdir/DsfrHead';
 import { DsfrProvider } from '@codegouvfr/react-dsfr/next-appdir/DsfrProvider';
 import { getHtmlAttributes } from '@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes';
 import { Matomo } from '@/components/matomo/Matomo';
-import { config } from '@/config';
 
-import { defaultColorScheme } from '@/defaultColorScheme';
+import { defaultColorScheme } from '@/app/defaultColorScheme';
 import { StartDsfr } from '@/components/StartDsfr';
 import { sharedMetadata } from '@/app/shared-metadata';
 
-export const metadata: Metadata = {
-  metadataBase: config.host ? new URL(config.host) : undefined,
-  ...sharedMetadata,
-  title: {
-    template: `%s - ${config.name}`,
-    default: config.name
-  },
-  openGraph: {
-    title: {
-      template: `${config.name} - %s`,
-      default: config.name
-    },
-    ...sharedMetadata.openGraph
-  }
-};
+export const metadata: Metadata = sharedMetadata;
 
 type RootLayoutProps = PropsWithChildren;
 
@@ -48,13 +33,14 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             'Marianne-Medium_Italic',
             'Marianne-Bold',
             'Marianne-Bold_Italic'
-            //"Spectral-Regular",
-            //"Spectral-ExtraBold"
           ]}
         />
-
         <Suspense>
-          <Matomo env={config.env} />
+          <Matomo
+            url={process.env.NEXT_PUBLIC_MATOMO_URL}
+            siteId={process.env.NEXT_PUBLIC_MATOMO_SITE_ID}
+            env={process.env.NODE_ENV || 'development'}
+          />
         </Suspense>
         <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/child" type="text/javascript" async></script>
       </head>

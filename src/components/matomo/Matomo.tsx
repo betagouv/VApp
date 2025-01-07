@@ -1,20 +1,24 @@
 'use client';
 
-import { init, push } from '@socialgouv/matomo-next';
-import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { init, push } from '@socialgouv/matomo-next';
 
-import { config } from '@/config';
 import { useConsent } from '@/components/consentManagement';
 
-export type MatomoProps = Pick<typeof config, 'env'> & { nonce?: string };
+export type MatomoProps = {
+  env?: string;
+  siteId: string;
+  url: string;
+  nonce?: string;
+};
 
 /**
  * Handle Matomo init and consent.
  *
  * Uses `useSearchParams()` internally, must be Suspense-d in server component.
  */
-export const Matomo = ({ env, nonce }: MatomoProps) => {
+export const Matomo = ({ env, siteId, url, nonce }: MatomoProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { finalityConsent } = useConsent();
@@ -23,13 +27,14 @@ export const Matomo = ({ env, nonce }: MatomoProps) => {
   const [previousPath, setPreviousPath] = useState('');
 
   useEffect(() => {
-    if (env === 'dev') {
+    if (env === 'development') {
       return;
     }
 
     if (!initialized) {
       init({
-        ...config.matomo,
+        siteId,
+        url,
         nonce,
         onInitialization: () => {
           // Don't track by default.
@@ -45,10 +50,10 @@ export const Matomo = ({ env, nonce }: MatomoProps) => {
       });
       setInitialized(true);
     }
-  }, [env, initialized, nonce]);
+  }, [env, siteId, url, initialized, nonce]);
 
   useEffect(() => {
-    if (!initialized || env === 'dev') {
+    if (!initialized || env === 'development') {
       return;
     }
 

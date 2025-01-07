@@ -1,7 +1,7 @@
 import { UsecaseInterface } from './usecase.interface';
 import { Projet } from '../models/projet';
 import { AideRepositoryInterface } from '../repositories/aide.repository.interface';
-import { NotationAideServiceInterface } from '../services/notation-aide.service.interface';
+import { NotationAideServiceInterface } from '@/domain/services/notation-aide-service.interface';
 import { AideEligible } from '@/domain/models/aide-eligible';
 import { Aide } from '@/domain/models/aide';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';

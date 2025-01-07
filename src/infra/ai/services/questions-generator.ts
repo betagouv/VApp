@@ -1,31 +1,16 @@
-import { Ollama, Options } from 'ollama';
 import type { SafeParseReturnType } from 'zod';
 
-import { getAssistantConfiguration, ollama } from '@/infra/ollama';
-import { OllamaServiceInterface } from '@/infra/services/ollama-service.interface';
-import { OllamaQuestionsDto, ollamaQuestionsDtoSchema } from '@/infra/dtos/ollama-questions.dto';
-import { system, user } from '@/infra/prompts/questions';
+import { getAssistantConfiguration, ollama } from '@/infra/ai/ollama';
+import { OllamaQuestionsDto, ollamaQuestionsDtoSchema } from '@/infra/ai/ollama-questions.dto';
+import { system, user } from '@/infra/ai/prompts/questions';
 import { QuestionsGeneratorInterface } from '@/domain/services/questions-generator.interface';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { Question } from '@/domain/models/question';
-import { NamedAssistantConfiguration } from '@/infra/ai-assistant-configuration';
+import { AbstractOllamaService } from '@/infra/ai/services/abstract-ollama-service';
 
-export class QuestionsGenerator implements QuestionsGeneratorInterface, OllamaServiceInterface {
-  private initialized: boolean = false;
+export class QuestionsGenerator extends AbstractOllamaService implements QuestionsGeneratorInterface {
   static MAX_ATTEMPT = 3;
-
-  constructor(
-    private ollama: Ollama,
-    private assistantConfiguration: NamedAssistantConfiguration
-  ) {}
-
-  public async initialize() {
-    console.log(`Initializing ${this.assistantConfiguration.name} from ${this.assistantConfiguration.model}...`);
-    this.initialized = true;
-
-    return Promise.resolve();
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static safeJsonParse(malformedJsonResponse: string, reviver?: (this: any, key: string, value: any) => any): object {
@@ -91,14 +76,6 @@ ${ollamaResponse}`
       stream: false,
       format: 'json'
     });
-  }
-
-  getRequestOptions(options: Partial<Options> = {}): Partial<Options> {
-    return {
-      ...this.assistantConfiguration.model_parameters,
-      ...this.assistantConfiguration.request_parameters,
-      ...options
-    };
   }
 }
 
