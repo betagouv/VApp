@@ -48,7 +48,7 @@ export class QuestionsGenerator extends AbstractOllamaService implements Questio
 
     if (!validationResponse?.success && attemptSeed >= QuestionsGenerator.MAX_ATTEMPT) {
       throw new Error(
-        `Malgré ${attemptSeed} tentative(s), la génération des questions sur le projet ${projet.uuid} et pour les aides ${aides.map(Aide.getId).join(', ')} a échoué.
+        `Malgré ${attemptSeed} tentative(s), la génération des questions sur le projet ${projet.suuid} et pour les aides ${aides.map(Aide.getId).join(', ')} a échoué.
 La dernière réponse reçu était la suivante:
 ${ollamaResponse}`
       );

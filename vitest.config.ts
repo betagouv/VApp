@@ -11,6 +11,6 @@ export default defineConfig({
       '@/': new URL('./src/', import.meta.url).pathname
     },
     environment: 'jsdom',
-    exclude: ['node_modules', 'tests-playwright/*']
+    exclude: ['node_modules', 'tests-playwright']
   }
 });

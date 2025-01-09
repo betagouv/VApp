@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { SUUID } from 'short-uuid';
 import { fr } from '@codegouvfr/react-dsfr';
-import { QuestionsProjetForm } from '@/components/forms/QuestionsProjetForm';
+import { QuestionsProjetForm } from '@/presentation/ui/components/forms/QuestionsProjetForm';
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: SUUID } }) {
   return (

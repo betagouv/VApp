@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import { type Metadata } from 'next';
 import { Button } from '@codegouvfr/react-dsfr/Button';
 
-import { NombreAides } from '@/components/NombreAides';
-import { Loader } from '@/components/Loader';
+import { NombreAides } from '@/presentation/ui/components/NombreAides';
+import { Loader } from '@/presentation/ui/components/Loader';
 
 export const metadata: Metadata = {
   title: 'Accueil'

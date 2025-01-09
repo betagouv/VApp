@@ -1,22 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
 import { type Metadata } from 'next';
+import { SUUID } from 'short-uuid';
 import { fr } from '@codegouvfr/react-dsfr';
 import Tabs from '@codegouvfr/react-dsfr/Tabs';
 
+import { aideCompatibleAdapter } from '@/container';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { AideEligiblesTabContent } from '@/components/AideEligiblesTabContent';
-import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
-import { ProjetDescriptionForm } from '@/components/forms/ProjetDescriptionForm';
+import { AidesCompatiblesTabContent } from '@/presentation/ui/components/AidesCompatiblesTabContent';
+import { ProjetDescriptionForm } from '@/presentation/ui/components/forms/ProjetDescriptionForm';
 
 export const metadata: Metadata = {
   title: 'Projet'
 };
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: string } }) {
-  const projet = await projetRepository.fromUuid(projet_uuid);
-  const initialAidesEligibles = await Promise.all(
-    projet.aidesEligibles.map(aideEligibleAdapter.toViewAideEligible.bind(aideEligibleAdapter))
+  const projet = await projetRepository.fromSuuid(projet_uuid as SUUID);
+  const initialAidesCompatibles = await Promise.all(
+    projet.getSortedAideScores().map(aideCompatibleAdapter.toViewAideCompatible.bind(aideCompatibleAdapter))
   );
 
   return (
@@ -29,13 +30,16 @@ export default async function Page({ params: { projet_uuid } }: { params: { proj
               iconId: 'fr-icon-folder-2-line',
               isDefault: true,
               content: (
-                <AideEligiblesTabContent projetUuid={projet.uuid} initialAidesEligibles={initialAidesEligibles} />
+                <AidesCompatiblesTabContent
+                  projetSuuid={projet.suuid}
+                  initialAidesCompatibles={initialAidesCompatibles}
+                />
               )
             },
             {
               label: 'Description du projet',
               iconId: 'fr-icon-draft-line',
-              content: <ProjetDescriptionForm uuid={projet.uuid} description={projet.description} />
+              content: <ProjetDescriptionForm suuid={projet.suuid} description={projet.description} />
             }
           ]}
         />

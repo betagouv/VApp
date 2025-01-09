@@ -1,8 +1,9 @@
 import { AtAideTypeFull } from '@/infra/at/aid';
+import { UUID } from 'short-uuid';
 
 export class Aide {
   constructor(
-    public uuid: string,
+    public uuid: UUID,
     public atId: number,
     public nom: string,
     public description: string,

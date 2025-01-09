@@ -1,0 +1,8 @@
+export enum LesCommunsProjetStatuts {
+  IDEE = 'IDEE',
+  FAISABILITE = 'FAISABILITE',
+  EN_COURS = 'EN_COURS',
+  IMPACTE = 'IMPACTE',
+  ABANDONNE = 'ABANDONNE',
+  TERMINE = 'TERMINE'
+}
