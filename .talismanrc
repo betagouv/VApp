@@ -1,10 +1,10 @@
 fileignoreconfig:
 - filename: .env.production
-  checksum: 945eb66e4745d7024255008d92e8c9b591cda21b99f4f949369222ac4cd50d13
+  checksum: 9b844b740edc8d95c84a2790a974f9d1daa5ed73a451cb090ad330f3ddbcd1dc
+- filename: .env.staging
+  checksum: 91916da7195dfe49a9da00b3f54e5bc423cc3751729725d46b054eb91fcb93c1
 - filename: .env.test
   checksum: c74155496ad55caa91ba432e96d2a72bd25a883c0f553871cdaf58b9f9b7b4b7
-- filename: .env.staging
-  checksum: 070906165c5675d00973ed6e2f47101172bc66a45562cda7a2e524cc0459633e
 - filename: .github/workflows/lint.yml
   checksum: 8998c84b27a0d3e7953ffc78b4414190fef9e16f8cce5f485160234db1d7f9af
 - filename: .github/workflows/testing.yml
