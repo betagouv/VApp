@@ -6,7 +6,7 @@ import { Header } from '@codegouvfr/react-dsfr/Header';
 import Badge from '@codegouvfr/react-dsfr/Badge';
 import { Footer } from '@codegouvfr/react-dsfr/Footer';
 
-import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
+import { ConsentBannerAndConsentManagement } from '@/presentation/ui/components/consentManagement';
 import pkg from 'package.json';
 
 const brandTop = (

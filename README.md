@@ -96,3 +96,7 @@ curl -X 'GET' \
 
 - https://github.com/MTES-MCT/aides-territoires
 - https://github.com/betagouv/mon-espace-collectivite
+
+## Resources
+
+- https://jsonapi.org/recommendations/#asynchronous-processing

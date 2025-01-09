@@ -1,6 +1,6 @@
 import { GenerateResponse } from 'ollama';
 import { QuestionReponse } from '@/domain/models/question-reponse';
-import { AbortableAsyncIterator } from '@/libs/utils/types';
+import { AbortableAsyncIterator } from '@/presentation/types';
 import { Projet } from '../models/projet';
 
 export interface ReformulationServiceInterface {

@@ -2,10 +2,10 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
-import WidgetCollectivite from '@/components/WidgetCollectivite';
+import { aideCompatibleAdapter } from '@/container';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
-import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
+import WidgetCollectivite from '@/presentation/ui/components/WidgetCollectivite';
+import { ViewAideCompatibleDto } from '@/presentation/ui/dtos/view-aide-compatible.dto';
 
 export const metadata: Metadata = {
   title: 'Widget MEC'
@@ -21,13 +21,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ c
     throw new Error('La description du projet est vide.');
   }
 
-  let initialAidesEligibles: ViewAideEligible[] = [];
+  let initialAidesCompatibles: ViewAideCompatibleDto[] = [];
   const projet = await projetRepository.findForCommune(code, description);
   if (projet) {
-    initialAidesEligibles = await Promise.all(
-      projet.aidesEligibles.map(aideEligibleAdapter.toViewAideEligible.bind(aideEligibleAdapter))
+    initialAidesCompatibles = await Promise.all(
+      projet.getSortedAideScores().map(aideCompatibleAdapter.toViewAideCompatible.bind(aideCompatibleAdapter))
     );
   }
 
-  return <WidgetCollectivite code={code} description={description} initialAidesEligibles={initialAidesEligibles} />;
+  return <WidgetCollectivite code={code} description={description} initialAidesCompatibles={initialAidesCompatibles} />;
 }

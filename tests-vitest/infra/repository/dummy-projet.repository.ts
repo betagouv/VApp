@@ -1,5 +1,8 @@
+import short, { SUUID } from 'short-uuid';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
 import { Projet } from '@/domain/models/projet';
+
+const translator = short();
 
 export class DummyProjetRepository implements ProjetRepositoryInterface {
   constructor(public projets: Projet[] = []) {}
@@ -9,13 +12,7 @@ export class DummyProjetRepository implements ProjetRepositoryInterface {
   }
 
   public async fromUuid(uuid: string): Promise<Projet> {
-    const projets = await this.all();
-    const projet = projets.find((projet) => projet.uuid === uuid);
-    if (!projet) {
-      throw new Error(`Aucuns projets ne portent l'identifiant ${uuid}.`);
-    }
-
-    return projet;
+    return await this.fromUuid(translator.toUUID(uuid));
   }
 
   add(projet: Projet): Promise<void> {
@@ -26,6 +23,16 @@ export class DummyProjetRepository implements ProjetRepositoryInterface {
 
   save(): Promise<void> {
     return Promise.resolve();
+  }
+
+  async fromSuuid(suuid: SUUID): Promise<Projet> {
+    const projets = await this.all();
+    const projet = projets.find((projet) => projet.suuid === suuid);
+    if (!projet) {
+      throw new Error(`Aucuns projets ne portent l'identifiant ${suuid}.`);
+    }
+
+    return projet;
   }
 }
 
