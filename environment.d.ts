@@ -19,10 +19,15 @@ declare global {
       // @deprecated use NOTATION_MAX_SEED instead
       MIN_NB_NOTES_REQUIRED: number;
       NB_AIDE_HARD_LIMIT: number;
+      // @deprecated use SCORING_MAX_SEED instead
       NOTATION_MAX_SEED: number;
+      SCORING_MAX_SEED: number;
 
       AIDE_DESCRIPTION_MIN_TOKEN: number;
       AIDE_DESCRIPTION_MAX_TOKEN: number;
+
+      SECRET_PEPPER: string;
+      DOCUMENTATION_API_KEY?: string;
 
       REACT_EDITOR: string;
     }
