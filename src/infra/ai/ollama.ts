@@ -31,7 +31,7 @@ export const ollama = new Ollama({
 export const getModelDefaultParameters = (modelName: string): ModelParameters => {
   const modelExists = Object.hasOwnProperty.call(models, modelName);
   if (!modelExists) {
-    throw new Error(`Model "${modelName}" doesn't exist.`);
+    throw new Error(`Model "${modelName}" has no configuration.`);
   }
 
   // @ts-expect-error key existence is tested above

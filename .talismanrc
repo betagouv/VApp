@@ -1,10 +1,14 @@
 fileignoreconfig:
 - filename: .env.production
-  checksum: 9b844b740edc8d95c84a2790a974f9d1daa5ed73a451cb090ad330f3ddbcd1dc
+  checksum: 8f4a4e1449f7f60da6a4c18211e1ccda1be4904f7b5be358d808872f7f357374
 - filename: .env.staging
-  checksum: 91916da7195dfe49a9da00b3f54e5bc423cc3751729725d46b054eb91fcb93c1
+  checksum: bd72b559d98b02517efe8f809a486c8d8715fe55f1eb4d60c26de2d3a7b0f3f8
+- filename: .env.development
+  checksum: 715d6638081e5868d3721b9ee8d3d21be937c0168c0c6679fcb32c7133e99b9a
 - filename: .env.test
-  checksum: c74155496ad55caa91ba432e96d2a72bd25a883c0f553871cdaf58b9f9b7b4b7
+  checksum: 7ce7968e6582f11a70222d3575f96983afa086e76d0de0ca4dc9b883b0d99a42
+- filename: environment.d.ts
+  checksum: 15d2ff499a57d4f16e7c2de9e12bcb84122a5bfb95fa3ce39e656268cd4bf6a5
 - filename: .github/workflows/lint.yml
   checksum: 8998c84b27a0d3e7953ffc78b4414190fef9e16f8cce5f485160234db1d7f9af
 - filename: .github/workflows/testing.yml
@@ -47,12 +51,22 @@ fileignoreconfig:
   checksum: 2aba0a2679fb63abd69f85a0feb7db47601d4ffd461f98d67eb5960518503af1
 - filename: src/components/forms/RechercherAidesForm.tsx
   checksum: ab96e11f305778551f77d3a0798d4ec8d07e020329a00ede1c163933b33bf860
-- filename: .env.development
-  checksum: c2863ff0cac4724560f197b803abedf9e4a87ea4352b33b024e46ed294fb77b2
-- filename: environment.d.ts
-  checksum: 516cc4fd9457f64e4d4a213c6ad941198d9131b484f11feb673a793a8ec09691
 - filename: src/infra/database/migrations/1733321281571_projet_perimeter_relationship.ts
   checksum: 00e1e6b1ff1c32c50f37609b9efd14f7e90d8ee1f773132f58dd7ff29388a633
+- filename: scripts/create-client.ts
+  checksum: e845d54b6354fab465cfa6be7b93ee15e140a7b16d78d49f1fc8d3a001545479
+- filename: src/presentation/api/authorization-middleware.ts
+  checksum: 6935e24fcfd9323d616a6353a8e1600efa82adf6e71ec889cf2d8fefb02a404e
+- filename: src/domain/models/client.ts
+  checksum: 34f10d4e66f3397a872d1306d081d5d5b541603b1235ab4eefdb4e2532daf959
+- filename: src/infra/repositories/client.repository.ts
+  checksum: 973c8f2c44367427c9c2a432d48aea7eae9d582abc575c9f69899aa29fe4e00d
+- filename: src/infra/database/migrations/1738598093712_clients.ts
+  checksum: 6a646ce461cd278265fbc7a6c74739a498dabfbcb34cac324e68fc92a2a26e97
+- filename: src/infra/api/security.ts
+  checksum: fdfd082c09b2f321ead852630c7833de7a4b299953f68a0e4ed311862ffbd59a
+- filename: tests-vitest/infra/api/security.spec.ts
+  checksum: 94bab6edc69d88894edd31cd87e1d8c4371fc222a42887c07cd219fc2265d50f
 
 scopeconfig:
 - scope: node

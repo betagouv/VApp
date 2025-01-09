@@ -3,8 +3,8 @@
 import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 
-import { ErrorDisplay } from '@/components/ErrorDisplay';
-import { MatomoPush } from '@/components/matomo/MatomoPush';
+import { ErrorDisplay } from '@/presentation/ui/components/ErrorDisplay';
+import { MatomoPush } from '@/presentation/ui/components/matomo/MatomoPush';
 import { matomoCategory } from '@/infra/matomo/matomo-events';
 
 export default function Error({ error }: { error: Error & { digest?: string }; reset: () => void }) {

@@ -1,4 +1,4 @@
-export enum AtOrganizationType {
+export enum AtOrganizationTypeSlug {
   Association = 'association',
   Commune = 'commune',
   Recherche = 'researcher',
@@ -13,17 +13,17 @@ export enum AtOrganizationType {
   Particulier = 'private-person'
 }
 
-export const atOrganizationTypeLabels: Record<AtOrganizationType, string> = {
-  [AtOrganizationType.Association]: 'Association',
-  [AtOrganizationType.Commune]: 'Commune',
-  [AtOrganizationType.Recherche]: 'Recherche',
-  [AtOrganizationType.Agriculteur]: 'Agriculteur',
-  [AtOrganizationType.CSP]: 'Collectivité d’outre-mer à statut particulier',
-  [AtOrganizationType.EPCI]: 'Intercommunalité / Pays',
-  [AtOrganizationType.EPA]: "Etablissement public dont services de l'Etat",
-  [AtOrganizationType.Departement]: 'Département',
-  [AtOrganizationType.EPL]: 'Entreprise publique locale (Sem, Spl, SemOp)',
-  [AtOrganizationType.Privee]: 'Entreprise privée',
-  [AtOrganizationType.Region]: 'Région',
-  [AtOrganizationType.Particulier]: 'Particulier'
+export const atOrganizationTypeLabels: Record<AtOrganizationTypeSlug, string> = {
+  [AtOrganizationTypeSlug.Association]: 'Association',
+  [AtOrganizationTypeSlug.Commune]: 'Commune',
+  [AtOrganizationTypeSlug.Recherche]: 'Recherche',
+  [AtOrganizationTypeSlug.Agriculteur]: 'Agriculteur',
+  [AtOrganizationTypeSlug.CSP]: 'Collectivité d’outre-mer à statut particulier',
+  [AtOrganizationTypeSlug.EPCI]: 'Intercommunalité / Pays',
+  [AtOrganizationTypeSlug.EPA]: "Etablissement public dont services de l'Etat",
+  [AtOrganizationTypeSlug.Departement]: 'Département',
+  [AtOrganizationTypeSlug.EPL]: 'Entreprise publique locale (Sem, Spl, SemOp)',
+  [AtOrganizationTypeSlug.Privee]: 'Entreprise privée',
+  [AtOrganizationTypeSlug.Region]: 'Région',
+  [AtOrganizationTypeSlug.Particulier]: 'Particulier'
 } as const;

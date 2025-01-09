@@ -1,3 +1,3 @@
-import { AtOrganizationType } from '@/infra/at/organization-type';
+import { AtOrganizationTypeSlug } from '@/infra/at/organization-type';
 
-export type Beneficiaire = AtOrganizationType;
+export type Beneficiaire = AtOrganizationTypeSlug;

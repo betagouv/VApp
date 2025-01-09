@@ -64,19 +64,39 @@ export interface AtPerimeterTable {
   zipcodes: Generated<string[]>;
 }
 
+export interface ClientTable {
+  created_at: Generated<Timestamp>;
+  hashed_secret: string;
+  id: string;
+  iterations: number;
+  nom: string;
+  salt: string;
+}
+
 export interface ProjetTable {
   at_perimeter_id: string | null;
+  client_id: string | null;
   created_at: Generated<Timestamp>;
   criteres_recherche_aide: Generated<Json>;
   description: string;
+  etat_avancement: string | null;
   id: Generated<number>;
+  porteur: string;
   recommendations: Generated<Json>;
-  uuid: string;
+  suuid: string;
+  uuid: string | null;
+}
+
+export interface ProjetZoneGeographiqueTable {
+  at_perimeter_id: string;
+  projet_uuid: string;
 }
 
 export interface DB {
   agent_table: AgentTable;
   aide_table: AideTable;
   at_perimeter_table: AtPerimeterTable;
+  client_table: ClientTable;
   projet_table: ProjetTable;
+  projet_zone_geographique_table: ProjetZoneGeographiqueTable;
 }

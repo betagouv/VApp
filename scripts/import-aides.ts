@@ -1,7 +1,7 @@
 import './loadEnv';
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
-import { aideRepository } from '@/infra/repositories/aide.repository';
+import { aideRepository } from '@/infra/repositories/at-aide-repository';
 import { atAidSchema } from '@/infra/at/aid';
 
 // id

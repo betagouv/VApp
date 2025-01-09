@@ -71,23 +71,10 @@ export class AtApiClient implements AtApiClientInterface {
     };
   }
 
-  static appendIfDefined(searchParams: URLSearchParams, searchParam: string | boolean | number) {
-    if (typeof searchParams !== 'undefined') {
-      searchParams.append('perimeter_id', searchParam.toString());
-    }
-  }
-
   async searchAides(searchQuery: AtSearchAidsQuery): Promise<AtAid[]> {
-    const searchParams = new URLSearchParams();
-    appendArrayIfDefined(searchParams, 'organization_type_slugs')(searchQuery.organization_type_slugs);
-    appendArrayIfDefined(searchParams, 'aid_type_group_slug')(searchQuery.aid_type_group_slug);
-    appendArrayIfDefined(searchParams, 'aid_destination_slugs')(searchQuery.aid_destination_slugs);
-    appendArrayIfDefined(searchParams, 'aid_step_slugs')(searchQuery.aid_step_slugs);
-    appendIfDefined(searchParams, 'perimeter_id')(searchQuery?.perimeter_id);
-    appendIfDefined(searchParams, 'is_charged')(searchQuery.is_charged);
+    const searchParams = AtApiClient.buildSearchParams(searchQuery);
 
     const url = `${this.baseUrl}/aids/?${searchParams.toString()}`;
-    console.log(url);
 
     const response = await api
       .get<AtCollectionResponse<AtAid>>(url, {
@@ -99,8 +86,19 @@ export class AtApiClient implements AtApiClientInterface {
     return await this.fetchAllFromCollection<AtAid>(response);
   }
 
+  private static buildSearchParams(searchQuery: AtSearchAidsQuery): URLSearchParams {
+    const searchParams = new URLSearchParams();
+    appendArrayIfDefined(searchParams, 'organization_type_slugs')(searchQuery.organization_type_slugs);
+    appendArrayIfDefined(searchParams, 'aid_type_group_slug')(searchQuery.aid_type_group_slug);
+    appendArrayIfDefined(searchParams, 'aid_destination_slugs')(searchQuery.aid_destination_slugs);
+    appendArrayIfDefined(searchParams, 'aid_step_slugs')(searchQuery.aid_step_slugs);
+    appendIfDefined(searchParams, 'perimeter_id')(searchQuery?.perimeter_id);
+    appendIfDefined(searchParams, 'is_charged')(searchQuery.is_charged);
+
+    return searchParams;
+  }
+
   async fetchAllFromCollection<Type>({ next, count, results }: AtCollectionResponse<Type>): Promise<Type[]> {
-    console.log('next', next);
     let allResults: Type[] = results;
     let nextURL: string = next;
     while (allResults.length < count) {

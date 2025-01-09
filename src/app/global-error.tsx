@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import Error from 'next/error';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ErrorPage } from '@/components/ErrorPage';
+import { ErrorPage } from '@/presentation/ui/components/ErrorPage';
 import { push } from '@socialgouv/matomo-next';
 
 // eslint-disable-next-line import/no-default-export

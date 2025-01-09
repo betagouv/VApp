@@ -4,8 +4,8 @@ import { ReformulationServiceInterface } from '@/domain/services/reformulation-s
 import { QuestionReponse } from '@/domain/models/question-reponse';
 import { getAssistantConfiguration, ollama } from '@/infra/ai/ollama';
 import { user, system } from '@/infra/ai/prompts/reformulation';
-import { AbortableAsyncIterator } from '@/libs/utils/types';
 import { AbstractOllamaService } from '@/infra/ai/services/abstract-ollama-service';
+import { AbortableAsyncIterator } from '@/presentation/types';
 
 export class ReformulationService extends AbstractOllamaService implements ReformulationServiceInterface {
   public async reformuler(

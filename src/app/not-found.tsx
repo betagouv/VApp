@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 import { push } from '@socialgouv/matomo-next';
 
-import { ErrorPage } from '@/components/ErrorPage';
+import { ErrorPage } from '@/presentation/ui/components/ErrorPage';
 
 export default function NotFound() {
   useEffect(() => {

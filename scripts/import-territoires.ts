@@ -1,12 +1,12 @@
 import './loadEnv';
 import { atApiClient } from '@/infra/at/api-client';
-import { territoireRepository } from '@/infra/repositories/territoire.repository';
-import { msToMinutesAndSeconds } from '@/libs/utils/time';
+import { atZoneGeographiqueRepository } from '@/infra/repositories/at-zone-geographique.repository';
+import { msToMinutesAndSeconds } from '@/libs/time';
 
 const importTerritoires = async () => {
   const perimeters = await atApiClient.fetchAllPerimeters();
   for (const perimeter of perimeters) {
-    await territoireRepository.addFromPerimeter(perimeter);
+    await atZoneGeographiqueRepository.addFromPerimeter(perimeter);
   }
 };
 
