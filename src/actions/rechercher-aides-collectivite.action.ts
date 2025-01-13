@@ -34,8 +34,7 @@ export async function rechercherAidesCollectiviteAction({
       const viewAideEligible = await aideEligibleAdapter.toViewAideEligible(aideEligible);
       stream.update(viewAideEligible);
     }
-
-    stream.done();
+    projet.aidesEligibles = stream.done();
   })();
 
   return stream.value;

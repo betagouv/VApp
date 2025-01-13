@@ -3,20 +3,20 @@ import { Projet } from '../models/projet';
 import { QuestionReponse } from '@/domain/models/question-reponse';
 import { ReformulationServiceInterface } from '@/domain/services/reformulation-service.interface';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
-import { RechercherAidesEligiblesUsecase } from '@/domain/usecases/rechercher-aides-eligibles.usecase';
+import { RechercherAidesEligiblesService } from '@/domain/services/rechercher-aides-eligibles-service';
 
 export class RepondreQuestionsUsecase implements UsecaseInterface {
   public constructor(
     public projetRepository: ProjetRepositoryInterface,
     public reformulationService: ReformulationServiceInterface,
-    public rechercherAidesEligiblesUsecase: RechercherAidesEligiblesUsecase
+    public rechercherAidesEligiblesService: RechercherAidesEligiblesService
   ) {}
 
   public async execute(projet: Projet, questionsReponses: QuestionReponse[]): Promise<Projet['description']> {
     // ⚠ mutation du projet
     await this.reformulationService.reformuler(projet, questionsReponses);
     await this.projetRepository.save(projet);
-    await this.rechercherAidesEligiblesUsecase.execute(projet);
+    const aidesEligibles = await this.rechercherAidesEligiblesService.rechercher(projet);
 
     return projet.description;
   }

@@ -101,7 +101,16 @@ export class AideRepository implements AideRepositoryInterface {
 
     console.log(`${selectables.length}/${atAides.length} left after filtering on token number.`);
 
-    return selectables.map(AideRepository.toAide);
+    const aides = selectables.map(AideRepository.toAide);
+    if (process.env.NB_AIDE_HARD_LIMIT) {
+      console.log(`NB_AIDE_HARD_LIMIT a été fixé à ${process.env.NB_AIDE_HARD_LIMIT}.`);
+      console.log(`La recherche ne sera lancée que sur ${process.env.NB_AIDE_HARD_LIMIT} aides max.`);
+      const sliceArgs: [number, number] = [0, Number(process.env.NB_AIDE_HARD_LIMIT)];
+
+      return aides.slice(...sliceArgs);
+    }
+
+    return aides;
   }
 
   async size() {
