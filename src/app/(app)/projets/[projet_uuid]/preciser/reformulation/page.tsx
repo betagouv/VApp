@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SUUID } from 'short-uuid';
 import Grid from '@mui/material/Grid';
 
-import { ReformulationForm } from '@/components/forms/ReformulationForm';
+import { ReformulationForm } from '@/ui/components/forms/ReformulationForm';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 
 export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: SUUID } }) {

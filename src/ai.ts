@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { createAI } from 'ai/rsc';
 
-import { reformulerAction, poserQuestionsAction } from './actions';
+import { reformulerAction, poserQuestionsAction } from './application/actions';
 import { QuestionReponse } from '@/domain/models/question-reponse';
 
 export interface ClientMessage {

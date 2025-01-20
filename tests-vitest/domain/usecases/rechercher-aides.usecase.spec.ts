@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest';
-import { RechercherAidesEligiblesUsecase } from '@/domain/usecases/rechercher-aides-eligibles.usecase';
+import { RechercherAidesEligiblesUsecase } from 'application/usecases/rechercher-aides-eligibles.usecase';
 import { Projet } from '@/domain/models/projet';
 import { dummyAideRepository } from '../../infra/repository/dummy-aide.repository';
 import { randomNotationAideService } from '../../infra/services/random-notation-aide.service';

@@ -2,10 +2,10 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
-import WidgetCollectivite from '@/components/WidgetCollectivite';
+import WidgetCollectivite from '@/ui/components/WidgetCollectivite';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
-import { ViewAideEligible } from '@/presentation/dtos/view-aide-eligible';
+import { aideEligibleAdapter } from '@/ui/adapter/aide-eligible.adapter';
+import { ViewAideEligible } from '@/ui/dtos/view-aide-eligible';
 
 export const metadata: Metadata = {
   title: 'Widget MEC'

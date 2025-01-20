@@ -6,8 +6,8 @@ import { fr } from '@codegouvfr/react-dsfr';
 import Tabs from '@codegouvfr/react-dsfr/Tabs';
 
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { AideEligiblesTabContent } from '@/components/AideEligiblesTabContent';
-import { aideEligibleAdapter } from '@/presentation/adapter/aide-eligible.adapter';
+import { AideEligiblesTabContent } from '@/ui/components/AideEligiblesTabContent';
+import { aideEligibleAdapter } from '@/ui/adapter/aide-eligible.adapter';
 
 export const metadata: Metadata = {
   title: 'Projet'

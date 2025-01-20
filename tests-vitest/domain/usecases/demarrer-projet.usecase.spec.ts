@@ -1,5 +1,5 @@
 import { it } from 'vitest';
-import { DemarrerProjetUsecase } from '@/domain/usecases/demarrer-projet.usecase';
+import { DemarrerProjetUsecase } from 'application/usecases/demarrer-projet.usecase';
 import { Projet } from '@/domain/models/projet';
 import { dummyProjetRepository } from '../../infra/repository/dummy-projet.repository';
 

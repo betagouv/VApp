@@ -7,10 +7,10 @@ import MuiDsfrThemeProvider from '@codegouvfr/react-dsfr/mui';
 import { DsfrHead } from '@codegouvfr/react-dsfr/next-appdir/DsfrHead';
 import { DsfrProvider } from '@codegouvfr/react-dsfr/next-appdir/DsfrProvider';
 import { getHtmlAttributes } from '@codegouvfr/react-dsfr/next-appdir/getHtmlAttributes';
-import { Matomo } from '@/components/matomo/Matomo';
+import { Matomo } from '@/ui/components/matomo/Matomo';
 
 import { defaultColorScheme } from '@/app/defaultColorScheme';
-import { StartDsfr } from '@/components/StartDsfr';
+import { StartDsfr } from '@/ui/components/StartDsfr';
 import { sharedMetadata } from '@/app/shared-metadata';
 
 export const metadata: Metadata = sharedMetadata;

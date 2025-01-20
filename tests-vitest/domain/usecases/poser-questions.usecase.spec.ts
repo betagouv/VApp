@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest';
-import { PoserQuestionsUsecase } from '@/domain/usecases/poser-questions.usecase';
+import { PoserQuestionsUsecase } from 'application/usecases/poser-questions.usecase';
 import { Projet } from '@/domain/models/projet';
 import { dummyAideRepository } from '../../infra/repository/dummy-aide.repository';
 import { dummyQuestionsGenerator } from '../../infra/services/dummy-questions-generator';
