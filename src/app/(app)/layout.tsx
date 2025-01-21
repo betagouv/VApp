@@ -96,6 +96,13 @@ const AppLayout = ({ children }: PropsWithChildren) => {
         navigation={[]}
         quickAccessItems={[
           {
+            iconId: 'fr-icon-add-line',
+            text: 'Nouveau projet',
+            linkProps: {
+              href: '/nouvelle-recherche'
+            }
+          },
+          {
             iconId: 'fr-icon-chat-3-line',
             text: 'Retours utilisateurs',
             linkProps: {

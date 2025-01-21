@@ -25,7 +25,7 @@ export default async function Page({ params: { projet_uuid } }: { params: { proj
         <Tabs
           tabs={[
             {
-              label: 'Recommendations',
+              label: 'Aides recommandées',
               iconId: 'fr-icon-folder-2-line',
               isDefault: true,
               content: (
@@ -33,7 +33,7 @@ export default async function Page({ params: { projet_uuid } }: { params: { proj
               )
             },
             {
-              label: 'Description',
+              label: 'Description du projet',
               iconId: 'fr-icon-draft-line',
               content: <ProjetDescriptionForm uuid={projet.uuid} description={projet.description} />
             }
