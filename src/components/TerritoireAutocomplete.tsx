@@ -86,7 +86,8 @@ export default function TerritoireAutocomplete({ value, setValue }: TerritoireAu
             ref={InputProps.ref}
             nativeInputProps={{
               ...inputProps,
-              name: 'territoire'
+              name: 'territoire',
+              placeholder: 'Nom de votre commune, EPCI, départment, etc.'
             }}
           />
           <input type="hidden" name="territoireId" value={value?.aidesTerritoiresId} />
