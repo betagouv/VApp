@@ -7,6 +7,7 @@ import Badge from '@codegouvfr/react-dsfr/Badge';
 import { Footer } from '@codegouvfr/react-dsfr/Footer';
 
 import { ConsentBannerAndConsentManagement } from '@/components/consentManagement';
+import { AlerteDisponibiliteServeur } from '@/components/AlerteDisponibiliteServeur';
 import pkg from 'package.json';
 
 const brandTop = (
@@ -19,7 +20,7 @@ const brandTop = (
 
 const homeLinkPops = {
   href: '/',
-  title: "Accueil - Nom de l’entité (ministère, secrétariat d'état, gouvernement)"
+  title: 'Accueil'
 };
 
 const bottomLinks = [
@@ -113,6 +114,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
         ]}
       />
       <div className={fr.cx('fr-container', 'fr-container--fluid', 'fr-p-5w')} id="content">
+        <AlerteDisponibiliteServeur />
         {children}
       </div>
       <Footer

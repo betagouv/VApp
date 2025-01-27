@@ -28,6 +28,18 @@ export const ollama = new Ollama({
   fetch: fetchWithHeaders
 });
 
+export const healthCheck = async () => {
+  let serverUp = false;
+  try {
+    const { status } = await fetchWithHeaders(process.env.OLLAMA_HOST);
+    serverUp = status === 200;
+  } catch {
+    serverUp = false;
+  }
+
+  return serverUp;
+};
+
 export const getModelDefaultParameters = (modelName: string): ModelParameters => {
   const modelExists = Object.hasOwnProperty.call(models, modelName);
   if (!modelExists) {
