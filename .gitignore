@@ -64,8 +64,7 @@ robots.txt
 /.idea/modules.xml
 /.idea/VApp.iml
 /.idea/vcs.xml
-/tests-vitest/application/usecases/__snapshots__/demarrer-projet.usecase.spec.ts.snap
-/tests-vitest/application/usecases/__snapshots__/suggerer-aides.usecase.spec.ts.snap
+/tests-vitest/**/*.spec.ts.snap
 
 # Sentry Config File
 .env.sentry-build-plugin
