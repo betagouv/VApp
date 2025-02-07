@@ -5,8 +5,8 @@ import Grid from '@mui/material/Grid';
 import { ReformulationForm } from '@/presentation/ui/components/forms/ReformulationForm';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 
-export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: SUUID } }) {
-  const projet = await projetRepository.fromSuuid(projet_uuid);
+export default async function Page({ params: { projet_suuid } }: { params: { projet_suuid: SUUID } }) {
+  const projet = await projetRepository.fromSuuid(projet_suuid);
 
   return (
     <Grid
@@ -17,7 +17,7 @@ export default async function Page({ params: { projet_uuid } }: { params: { proj
       }}
     >
       <Grid item xs={8}>
-        <ReformulationForm projet={{ ...projet, uuid: projet.uuid }} />
+        <ReformulationForm projet={{ ...projet, suuid: projet.suuid }} />
       </Grid>
     </Grid>
   );

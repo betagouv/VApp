@@ -9,7 +9,7 @@ const translator = short();
 
 export class Projet {
   constructor(
-    public suuid: SUUID,
+    public uuid: UUID,
     public description: string,
     public porteur: Porteur,
     public etatAvancement: LesCommunsProjetStatuts = LesCommunsProjetStatuts.IDEE,
@@ -31,7 +31,7 @@ export class Projet {
     }
 
     return new Projet(
-      short.generate(),
+      translator.toUUID(short.generate()),
       description,
       porteur,
       etatAvancement,
@@ -41,8 +41,8 @@ export class Projet {
     );
   }
 
-  public get uuid(): UUID {
-    return translator.toUUID(this.suuid);
+  public get suuid(): SUUID {
+    return translator.fromUUID(this.uuid);
   }
 
   public reformuler(description: Projet['description']) {

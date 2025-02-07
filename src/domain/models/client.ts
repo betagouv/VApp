@@ -1,9 +1,9 @@
 import { encodeApiKey, hashSecret } from '@/presentation/api/security';
-import { uuid } from 'short-uuid';
+import { UUID, uuid } from 'short-uuid';
 
 export class Client {
   constructor(
-    public id: string,
+    public id: UUID,
     public iterations: number,
     public hashedSecret: string,
     public nom: string,
