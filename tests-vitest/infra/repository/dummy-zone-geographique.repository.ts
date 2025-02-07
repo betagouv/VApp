@@ -28,6 +28,16 @@ export class DummyZoneGeographiqueRepository implements ZoneGeographiqueReposito
   size(): Promise<number> {
     return Promise.resolve(0);
   }
+
+  findCommuneByCode(code: string): Promise<ZoneGeographique> {
+    return Promise.resolve({
+      id: '1',
+      nom: 'test',
+      description: 'string',
+      code,
+      type: AtPerimeterScale.commune
+    });
+  }
 }
 
 // @ts-ignore

@@ -1,14 +1,14 @@
 fileignoreconfig:
-- filename: .env.production
-  checksum: 8f4a4e1449f7f60da6a4c18211e1ccda1be4904f7b5be358d808872f7f357374
-- filename: .env.staging
-  checksum: bd72b559d98b02517efe8f809a486c8d8715fe55f1eb4d60c26de2d3a7b0f3f8
 - filename: .env.development
-  checksum: 715d6638081e5868d3721b9ee8d3d21be937c0168c0c6679fcb32c7133e99b9a
+  checksum: 2e2406564e4dc86ffc83da672f823926e1addafeff98f727a21c5e9edac633f7
+- filename: .env.production
+  checksum: 3812ed2885e1cca8df1f9dc15dad935075f7d558bbed4b767d11b76f279fc3af
+- filename: .env.staging
+  checksum: cafedad5dc2895872f9486923825df9384463886e1b2e430fc798728f4296a5e
 - filename: .env.test
-  checksum: 7ce7968e6582f11a70222d3575f96983afa086e76d0de0ca4dc9b883b0d99a42
+  checksum: 2bb057aa7c226f38be2c45750ff36b5744a1611111900304b38585736e812ac4
 - filename: environment.d.ts
-  checksum: 15d2ff499a57d4f16e7c2de9e12bcb84122a5bfb95fa3ce39e656268cd4bf6a5
+  checksum: 27be02594e98677d62b960723477c5ba3c622c81107e0854c8814aaf97e4b002
 - filename: .github/workflows/lint.yml
   checksum: 8998c84b27a0d3e7953ffc78b4414190fef9e16f8cce5f485160234db1d7f9af
 - filename: .github/workflows/testing.yml
@@ -60,7 +60,7 @@ fileignoreconfig:
 - filename: src/domain/models/client.ts
   checksum: 34f10d4e66f3397a872d1306d081d5d5b541603b1235ab4eefdb4e2532daf959
 - filename: src/infra/repositories/client.repository.ts
-  checksum: 973c8f2c44367427c9c2a432d48aea7eae9d582abc575c9f69899aa29fe4e00d
+  checksum: 1f9adff393fa8167cec984cf2b1296006bb99659e6d00c1a0ba224da357a477e
 - filename: src/infra/database/migrations/1738598093712_clients.ts
   checksum: 6a646ce461cd278265fbc7a6c74739a498dabfbcb34cac324e68fc92a2a26e97
 - filename: src/infra/api/security.ts

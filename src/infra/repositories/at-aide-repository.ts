@@ -82,21 +82,31 @@ export class AtAideRepository implements AideRepositoryInterface {
     etatAvancement
   }: Pick<Projet, 'porteur' | 'zonesGeographiques' | 'etatAvancement'>) {
     let atAidesIds: number[] = [];
-    for (const zoneGeographique of zonesGeographiques) {
-      const atApiAidesForProjet = await this.atApiClient.searchAides({
-        organization_type_slugs: porteur ? [porteur] : [],
-        perimeter_id: zoneGeographique.id,
-        aid_step_slugs: etatAvancement ? [EtatAvancementMapper.fromLesCommunsToAt(etatAvancement)] : []
-      });
+    const atCriteria = {
+      organization_type_slugs: porteur ? [porteur] : [],
+      aid_step_slugs: etatAvancement ? [EtatAvancementMapper.fromLesCommunsToAt(etatAvancement)] : []
+    };
+    if (zonesGeographiques?.length > 0) {
+      for (const zoneGeographique of zonesGeographiques) {
+        const atApiAidesForProjet = await this.atApiClient.searchAides({
+          ...atCriteria,
+          perimeter_id: zoneGeographique.id
+        });
 
+        atAidesIds = atAidesIds.concat(atApiAidesForProjet.map(({ id }) => id));
+      }
+    } else {
+      const atApiAidesForProjet = await this.atApiClient.searchAides({
+        ...atCriteria
+      });
       atAidesIds = atAidesIds.concat(atApiAidesForProjet.map(({ id }) => id));
     }
+
     return atAidesIds.filter(unique);
   }
 
   async findAllForProjet({ porteur, zonesGeographiques, etatAvancement }: Projet, { payante }: CriteresRechercheAide) {
     const atAidesIds: number[] = await this.findAtAidesIdsForProjet({ porteur, zonesGeographiques, etatAvancement });
-
     const selectables = await this.select()
       .where('a.id', 'in', atAidesIds)
       .where(this.numberOfTokenIsValid)

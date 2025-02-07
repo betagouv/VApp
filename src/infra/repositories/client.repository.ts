@@ -26,6 +26,20 @@ export class ClientRepository implements ClientRepositoryInterface {
     return await this.toClient(rows[0]);
   }
 
+  async fromNom(nom: string): Promise<Client> {
+    const rows = await this.db
+      .selectFrom('client_table as c')
+      .select(['c.id', 'c.nom', 'c.hashed_secret', 'c.salt', 'c.iterations'])
+      .where('c.nom', '=', nom)
+      .execute();
+
+    if (rows.length === 0) {
+      throw new Error(`Aucun client portant le nom "${nom}" trouvé."`);
+    }
+
+    return await this.toClient(rows[0]);
+  }
+
   static toInsertable(client: Client): Insertable<ClientTable> {
     return {
       id: client.id,
@@ -37,7 +51,13 @@ export class ClientRepository implements ClientRepositoryInterface {
   }
 
   async toClient(selectable: Omit<Selectable<ClientTable>, 'created_at'>): Promise<Client> {
-    return new Client(selectable.id, selectable.iterations, selectable.hashed_secret, selectable.nom, selectable.salt);
+    return new Client(
+      selectable.id as UUID,
+      selectable.iterations,
+      selectable.hashed_secret,
+      selectable.nom,
+      selectable.salt
+    );
   }
 }
 
