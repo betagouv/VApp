@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   title: 'Projet'
 };
 
-export default async function Page({ params: { projet_uuid } }: { params: { projet_uuid: string } }) {
-  const projet = await projetRepository.fromSuuid(projet_uuid as SUUID);
+export default async function Page({ params: { projet_suuid } }: { params: { projet_suuid: string } }) {
+  const projet = await projetRepository.fromSuuid(projet_suuid as SUUID);
   const initialAidesCompatibles = await Promise.all(
     projet.getSortedAideScores().map(aideCompatibleAdapter.toViewAideCompatible.bind(aideCompatibleAdapter))
   );

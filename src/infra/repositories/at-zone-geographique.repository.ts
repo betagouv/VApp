@@ -2,7 +2,7 @@ import type { Kysely, Selectable } from 'kysely';
 import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
 import { ZoneGeographique } from '@/domain/models/zone-geographique';
 import { AtPerimeter, AtPerimeterScale } from '@/infra/at/perimeter';
-import { DB, AtPerimeterTable } from '../database/types';
+import { AtPerimeterTable, DB } from '../database/types';
 import { db } from '../database';
 
 export class AtZoneGeographiqueRepository implements ZoneGeographiqueRepositoryInterface {
@@ -49,18 +49,12 @@ export class AtZoneGeographiqueRepository implements ZoneGeographiqueRepositoryI
   }
 
   async findCommuneByCode(code: string) {
-    const selectables = await this.db
-      .selectFrom('at_perimeter_table as p')
-      .select(['p.uuid', 'p.name', 'p.text', 'p.id', 'p.code', 'p.scale'])
-      .where('p.code', '=', code)
-      .where('p.scale', '=', AtPerimeterScale.commune)
-      .execute();
-
-    if (selectables.length === 0) {
+    const zoneGeographique = await this.findOneByTypeAndCode(AtPerimeterScale.commune, code);
+    if (!zoneGeographique) {
       throw new Error(`Aucuns commune portant le code INSEE ${code} n'a été trouvée.`);
     }
 
-    return AtZoneGeographiqueRepository.fromSelectable(selectables[0]);
+    return zoneGeographique;
   }
 
   async findOneByTypeAndCode(type: AtPerimeterScale, code: string) {

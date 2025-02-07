@@ -9,6 +9,7 @@ import { AideCompatibleAdapter } from '@/presentation/ui/adapters/aide-compatibl
 import { CreerNouveauProjetUsecase } from '@/application/usecases/creer-nouveau-projet.usecase';
 import { AideScoreRepository } from '@/infra/repositories/aide-score.repository';
 import { aideScoringService } from '@/infra/ai/services/aide-scoring-service';
+import { ProjetMapper } from '@/infra/mappers/projet.mapper';
 
 export const aideCompatibleRepository = new AideScoreRepository(aideScoringService, aideRepository);
 
@@ -21,3 +22,5 @@ export const creerNouveauProjetUsecase = new CreerNouveauProjetUsecase(projetRep
 export const poserQuestionUsecase = new PoserQuestionsUsecase(questionsGenerator);
 
 export const aideCompatibleAdapter = new AideCompatibleAdapter(aideRepository);
+
+export const projetMapper = new ProjetMapper(atZoneGeographiqueRepository);

@@ -12,6 +12,8 @@ declare global {
       NEXT_PUBLIC_BASE_PATH: string;
 
       AT_API_JWT: string;
+      LC_API_BASE_URL: string;
+      LC_API_BEARER_TOKEN: string;
       DATABASE_URL: string;
       OLLAMA_HOST: string;
       OLLAMA_JWT: string;

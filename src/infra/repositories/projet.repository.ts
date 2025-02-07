@@ -110,7 +110,6 @@ export class ProjetRepository implements ProjetRepositoryInterface {
 
     // Insère les nouvelles associations si des zones sont définies
     if (projet.zonesGeographiques.length > 0) {
-      console.log('projet.zonesGeographiques', projet.zonesGeographiques);
       const values = projet.zonesGeographiques.map(({ id }) => ({
         projet_uuid: projet.uuid,
         at_perimeter_id: id
@@ -165,7 +164,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
 
   async toProjet(row: ProjetRow): Promise<Projet> {
     return new Projet(
-      row.suuid as SUUID,
+      row.uuid as UUID,
       row.description,
       row.porteur as AtOrganizationTypeSlug,
       row.etat_avancement as LesCommunsProjetStatuts,
