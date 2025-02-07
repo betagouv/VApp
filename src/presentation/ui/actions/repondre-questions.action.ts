@@ -13,7 +13,7 @@ export async function repondreQuestionAction(prevState: QuestionsProjetFormState
 
     return {
       message: 'La description du projet a été reformulée.',
-      uuid: projet.suuid,
+      suuid: projet.suuid,
       questionsReponses: data.questionsReponses
     };
   } catch (e) {

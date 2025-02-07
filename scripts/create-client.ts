@@ -28,6 +28,6 @@ const argv = yargs(hideBin(process.argv))
   .parse();
 
 // @ts-expect-error probably an issue with the lib typings
-const nom = argv._;
+const [nom] = argv._;
 
 createClient(nom);

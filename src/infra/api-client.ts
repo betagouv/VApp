@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-export const api = ky.extend({
+export const apiClient = ky.extend({
   hooks: {
     beforeRequest: [
       (request) => {

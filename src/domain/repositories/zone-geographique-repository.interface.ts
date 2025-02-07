@@ -7,4 +7,5 @@ export interface ZoneGeographiqueRepositoryInterface {
   fromId(atId: ZoneGeographique['id']): Promise<ZoneGeographique>;
   size(): Promise<number>;
   findOneByTypeAndCode(type: AtPerimeterScale, code: string): Promise<ZoneGeographique | null>;
+  findCommuneByCode(code: string): Promise<ZoneGeographique>;
 }

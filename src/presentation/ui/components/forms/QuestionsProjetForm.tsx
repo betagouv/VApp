@@ -32,29 +32,29 @@ export const responseUpdater =
 
 export type QuestionsProjetFormState = {
   message: string;
-  uuid?: string;
+  suuid?: string;
   questionsReponses?: QuestionReponse[];
 };
 
 const initialState: QuestionsProjetFormState = {
   message: '',
-  uuid: undefined,
+  suuid: undefined,
   questionsReponses: []
 };
 
 export interface QuestionsProjetFormProps {
-  projetUuid: Projet['suuid'];
+  projetSuuid: Projet['suuid'];
   aideUuid?: Aide['uuid'];
 }
 
-export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
+export function QuestionsProjetForm({ projetSuuid }: QuestionsProjetFormProps) {
   // loading questions & reponses
   const [uiState, setUIState] = useUIState<typeof QuestionsReponsesProvider>();
   const { poserQuestionsAction } = useActions<typeof QuestionsReponsesProvider>();
   useMountEffect(() => {
     let ignoreActionResult = false;
     async function triggerAction() {
-      const uiState = await poserQuestionsAction(projetUuid);
+      const uiState = await poserQuestionsAction(projetSuuid);
       if (!ignoreActionResult) {
         setUIState(() => uiState);
       }
@@ -69,18 +69,18 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
 
   // form
   const [formState, formAction] = useFormState(repondreQuestionAction, initialState);
-  const [, saveData] = useLocalStorage<QuestionReponse[]>(`questionsReponses[${projetUuid}]`, []);
+  const [, saveData] = useLocalStorage<QuestionReponse[]>(`questionsReponses[${projetSuuid}]`, []);
   const form = useRef<HTMLFormElement>(null);
   const { pending } = useFormStatus();
   useEffect(() => {
-    if (formState?.uuid) {
+    if (formState?.suuid) {
       if (formState?.questionsReponses?.length === 3) {
         saveData(formState?.questionsReponses || []);
       } else {
         throw new Error('Impossible de retrouver les réponses aux questions.');
       }
 
-      redirect(`/projets/${formState?.uuid}/preciser/reformulation`);
+      redirect(`/projets/${formState?.suuid}/preciser/reformulation`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState]);
@@ -89,7 +89,7 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         {formState?.message && !pending && (
-          <Alert severity={formState?.uuid ? 'success' : 'error'} title={formState?.message} />
+          <Alert severity={formState?.suuid ? 'success' : 'error'} title={formState?.message} />
         )}
 
         {uiState.error && (
@@ -102,7 +102,7 @@ export function QuestionsProjetForm({ projetUuid }: QuestionsProjetFormProps) {
       <GridItemLoader loading={uiState.loading} />
       <Grid item xs={12}>
         <form action={formAction} ref={form}>
-          <input type="hidden" name="projetId" value={projetUuid} />
+          <input type="hidden" name="projetId" value={projetSuuid} />
           {uiState.questionsReponses.map(({ question, reponse }, i) => (
             <fieldset key={`question_${i}`}>
               <input type="hidden" name={`questionsReponses[${i}].question`} value={question} />
