@@ -112,6 +112,11 @@ export class AtAideRepository implements AideRepositoryInterface {
       .where(this.numberOfTokenIsValid)
       .$if(payante !== undefined, (qb) => qb.where('a.is_charged', '=', payante === true))
       .execute();
+    if (atAidesIds.length !== selectables.length) {
+      console.error(
+        `Something went wrong, ${atAidesIds.length} were found in AT database but only ${selectables.length} were found int VApp. VApp database must be out of sync.`
+      );
+    }
 
     const aides = selectables.map(AtAideRepository.toAide);
     if (process.env.NB_AIDE_HARD_LIMIT) {
