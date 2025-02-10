@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import * as React from 'react';
 import { type Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { UUID } from 'short-uuid';
 
 import { projetRepository } from '@/infra/repositories/projet.repository';
@@ -21,7 +22,11 @@ export default async function Page({
   params: { projetId: string };
   searchParams: Promise<{ payante?: string; natures?: string; actionsConcernees?: string }>;
 }) {
-  const projet = await projetRepository.fromUuid(projetId as UUID);
+  const projet = await projetRepository.findOneById(projetId as UUID);
+  if (!projet) {
+    return notFound();
+  }
+
   const criteres: CriteresRechercheAide = criteresRechercheAidesDtoSchema.parse(searchParams);
   const initialAidesCompatibles = await Promise.all(
     Array.from(projet.aidesScores, ([, aideScore]) => aideCompatibleAdapter.toViewAideCompatible(aideScore))
