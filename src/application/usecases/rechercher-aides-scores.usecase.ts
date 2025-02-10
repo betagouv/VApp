@@ -8,6 +8,6 @@ export class RechercherAidesScoresUsecase implements UsecaseInterface {
   public constructor(private readonly aideCompatibleRepository: AideScoreRepositoryInterface) {}
 
   public async *execute(projet: Projet, criteres?: CriteresRechercheAide): AsyncGenerator<AideScore> {
-    yield* this.aideCompatibleRepository.findAllAsyncForProjet(projet, criteres);
+    yield* this.aideCompatibleRepository.findAllAsyncForProjet(projet, criteres || {});
   }
 }
