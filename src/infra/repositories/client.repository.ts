@@ -15,7 +15,7 @@ export class ClientRepository implements ClientRepositoryInterface {
   async fromId(id: UUID): Promise<Client> {
     const rows = await this.db
       .selectFrom('client_table as c')
-      .select(['c.id', 'c.nom', 'c.hashed_secret', 'c.salt', 'c.iterations'])
+      .select(['c.id', 'c.nom', 'c.hashed_secret', 'c.salt', 'c.iterations', 'c.active'])
       .where('c.id', '=', id)
       .execute();
 
@@ -29,7 +29,7 @@ export class ClientRepository implements ClientRepositoryInterface {
   async fromNom(nom: string): Promise<Client> {
     const rows = await this.db
       .selectFrom('client_table as c')
-      .select(['c.id', 'c.nom', 'c.hashed_secret', 'c.salt', 'c.iterations'])
+      .select(['c.id', 'c.nom', 'c.hashed_secret', 'c.salt', 'c.iterations', 'c.active'])
       .where('c.nom', '=', nom)
       .execute();
 

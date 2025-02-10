@@ -44,7 +44,7 @@ export default function WidgetProjetAides({
 
         if (aideCompatible) {
           setAidesCompatibles((previousAidesCompatibles) => {
-            if (!previousAidesCompatibles.find(({ aide: { uuid } }) => uuid === aideCompatible.aide.uuid)) {
+            if (!previousAidesCompatibles.find(({ aide: { id } }) => id === aideCompatible.aide.id)) {
               return previousAidesCompatibles.concat(aideCompatible).sort(AideScore.compare);
             }
             return previousAidesCompatibles;

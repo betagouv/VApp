@@ -14,8 +14,8 @@ import { ClassProperties } from '@/presentation/types';
 import { QuestionsReponsesProvider } from '@/presentation/ui/ai';
 import { useMountEffect } from '@/presentation/ui/hooks/useMountEffect';
 
-import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
+import { AideId } from '@/domain/models/aide.interface';
 
 export type ReformulationFormState = {
   message: string;
@@ -29,7 +29,7 @@ const initialState: ReformulationFormState = {
 
 export interface ReformulationFormProps {
   projet: ClassProperties<Projet>;
-  aideUuid?: Aide['uuid'];
+  aideId?: AideId;
 }
 
 export function ReformulationForm({ projet }: ReformulationFormProps) {

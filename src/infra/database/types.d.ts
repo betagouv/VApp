@@ -33,13 +33,14 @@ export interface AideTable {
   aid_types_full: Generated<Json>;
   categories: Generated<string[]>;
   created_at: Generated<Timestamp>;
+  data_provider: Generated<string>;
   description: string;
   description_md: string;
   destinations: Generated<string[]>;
   eligibility_md: string;
   financers: Generated<string[]>;
   financers_full: Generated<Json>;
-  id: number;
+  id: string;
   is_charged: Generated<boolean>;
   mobilization_steps: Generated<string[]>;
   name: string;
@@ -65,6 +66,7 @@ export interface AtPerimeterTable {
 }
 
 export interface ClientTable {
+  active: Generated<boolean>;
   created_at: Generated<Timestamp>;
   hashed_secret: string;
   id: string;
@@ -74,6 +76,7 @@ export interface ClientTable {
 }
 
 export interface ProjetTable {
+  aides_scores: Generated<Json>;
   at_perimeter_id: string | null;
   client_id: string | null;
   created_at: Generated<Timestamp>;

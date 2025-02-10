@@ -16,9 +16,9 @@ import { useMountEffect } from '@/presentation/ui/hooks/useMountEffect';
 import { repondreQuestionAction } from '@/presentation/ui/actions/repondre-questions.action';
 import type { QuestionsReponsesProvider, UIState } from '@/presentation/ui/ai';
 
-import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { QuestionReponse } from '@/domain/models/question-reponse';
+import { AideId } from '@/domain/models/aide.interface';
 
 export const responseUpdater =
   (questionReponseIndex: number, reponse: string = '') =>
@@ -44,7 +44,7 @@ const initialState: QuestionsProjetFormState = {
 
 export interface QuestionsProjetFormProps {
   projetSuuid: Projet['suuid'];
-  aideUuid?: Aide['uuid'];
+  aideId?: AideId;
 }
 
 export function QuestionsProjetForm({ projetSuuid }: QuestionsProjetFormProps) {

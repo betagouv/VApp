@@ -12,7 +12,7 @@ export type AidesCompatiblesProps = {
 
 export const AidesCompatibles = ({ aidesCompatibles }: AidesCompatiblesProps) => {
   return aidesCompatibles.map(({ scoreCompatibilite, aide }) => (
-    <Grid item xs={12} md={6} lg={6} xl={4} key={`aide_${aide.uuid}`}>
+    <Grid item xs={12} md={6} lg={6} xl={4} key={`aide_${aide.id}_${aide.fournisseurDonnees}`}>
       <AideCompatibleCard aide={aide} compatibilite={scoreCompatibilite} />
     </Grid>
   ));
