@@ -114,7 +114,7 @@ export class AtAideRepository implements AideRepositoryInterface {
       .execute();
     if (atAidesIds.length !== selectables.length) {
       console.error(
-        `Something went wrong, ${atAidesIds.length} were found in AT database but only ${selectables.length} were found int VApp. VApp database must be out of sync.`
+        `${atAidesIds.length} were found in AT database but only were selected ${selectables.length} in VApp. Token range ${getNbTokenRange().join('-')} Payante: ${(payante === true).toString()}`
       );
     }
 
