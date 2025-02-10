@@ -1,26 +1,41 @@
 import { AtAideTypeFull } from '@/infra/at/aid';
-import { UUID } from 'short-uuid';
+import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
+import { AideId, AideInterface } from '@/domain/models/aide.interface';
 
-export class Aide {
+export class Aide implements AideInterface {
   constructor(
-    public uuid: UUID,
-    public atId: number,
+    public id: AideId,
     public nom: string,
     public description: string,
-    public url: string,
     public types: AtAideTypeFull[],
-    public programmes: string[]
-  ) {}
+    public programmes: string[],
+    public url?: string,
+    public fournisseurDonnees?: FournisseurDonneesAides
+  ) {
+    if (id && !fournisseurDonnees) {
+      console.warn(`L'aide "${nom}" possède un externalId mais n'a pas identifié le fournisseur de données.`);
+    }
+
+    this.nom = nom;
+    this.description = description;
+    this.fournisseurDonnees = fournisseurDonnees;
+    this.url = url;
+    this.types = types;
+    this.programmes = programmes;
+  }
 
   public static getAidesTerritoiresUrl({ url }: Pick<Aide, 'url'>) {
     return `https://aides-territoires.beta.gouv.fr${url}`;
   }
 
-  public getAidesTerritoiresUrl() {
-    return Aide.getAidesTerritoiresUrl(this);
+  public getUrl() {
+    if (this.fournisseurDonnees === FournisseurDonneesAides.AideTerritoires) {
+      return Aide.getAidesTerritoiresUrl(this);
+    }
+    return;
   }
 
-  public static getId({ uuid }: Aide) {
-    return uuid;
+  public static getId({ id }: Aide) {
+    return id;
   }
 }

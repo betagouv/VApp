@@ -9,10 +9,11 @@ import { LesCommunsProjetStatuts } from '@/domain/models/les-communs/projet-stat
 import { AideScoreMap } from '@/domain/models/aide-score.map';
 import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
 import { atZoneGeographiqueRepository } from '@/infra/repositories/at-zone-geographique.repository';
+import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 
 type ProjetRow = Pick<
   Selectable<ProjetTable>,
-  'suuid' | 'uuid' | 'description' | 'recommendations' | 'etat_avancement' | 'porteur' | 'client_id'
+  'suuid' | 'uuid' | 'description' | 'aides_scores' | 'etat_avancement' | 'porteur' | 'client_id'
 > & { territoire_ids: string[] };
 
 export class ProjetRepository implements ProjetRepositoryInterface {
@@ -25,21 +26,13 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return this.db
       .selectFrom('projet_table as p')
       .leftJoin('projet_zone_geographique_table as pzg', 'pzg.projet_uuid', 'p.uuid')
-      .select([
-        'p.uuid',
-        'p.suuid',
-        'p.description',
-        'p.recommendations',
-        'p.porteur',
-        'p.etat_avancement',
-        'p.client_id'
-      ])
+      .select(['p.uuid', 'p.suuid', 'p.description', 'p.aides_scores', 'p.porteur', 'p.etat_avancement', 'p.client_id'])
       .select(sql<string[]>`array_remove(array_agg(pzg.at_perimeter_id), null)`.as('territoire_ids'))
       .groupBy([
         'p.uuid',
         'p.suuid',
         'p.description',
-        'p.recommendations',
+        'p.aides_scores',
         'p.porteur',
         'p.etat_avancement',
         'p.client_id'
@@ -130,7 +123,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   static toUpdateable(projet: Projet): Updateable<ProjetTable> {
     return {
       description: projet.description,
-      recommendations: JSON.stringify(projet.getSortedAideScores()),
+      aides_scores: JSON.stringify(projet.getSortedAideScores()),
       porteur: projet.porteur,
       etat_avancement: projet.etatAvancement,
       client_id: projet.clientId,
@@ -151,18 +144,21 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     };
   }
 
-  toAideScoreMap(recommendations: JsonValue) {
+  toAideScoreMap(jsonAidesScores: JsonValue) {
     const aideScoreMap: AideScoreMap = new Map();
-    if (Array.isArray(recommendations)) {
-      recommendations.forEach((recommendation: JsonValue) => {
+    if (Array.isArray(jsonAidesScores)) {
+      jsonAidesScores.forEach((jsonAideScore: JsonValue) => {
         // @ts-expect-error I know...
-        const aideId = recommendation?.aideId;
+        const id = jsonAideScore?.id;
         // @ts-expect-error I know...
-        const scoreCompatibilite = recommendation?.eligibilite || recommendation?.scoreCompatibilite;
-        if (aideId && scoreCompatibilite !== undefined) {
-          aideScoreMap.set(aideId, {
-            aideId: aideId as UUID,
-            scoreCompatibilite: scoreCompatibilite as number
+        const score = jsonAideScore?.score;
+        // @ts-expect-error I know...
+        const source = jsonAideScore?.source;
+        if (id && score !== undefined) {
+          aideScoreMap.set(id, {
+            aideId: id,
+            scoreCompatibilite: score as number,
+            fournisseurDonnees: source ? (source as FournisseurDonneesAides) : undefined
           });
         }
       });
@@ -177,7 +173,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       row.porteur as AtOrganizationTypeSlug,
       row.etat_avancement as LesCommunsProjetStatuts,
       await Promise.all(row.territoire_ids.map(atZoneGeographiqueRepository.fromId.bind(atZoneGeographiqueRepository))),
-      this.toAideScoreMap(row.recommendations),
+      this.toAideScoreMap(row.aides_scores),
       row.client_id ? (row.client_id as UUID) : undefined
     );
   }

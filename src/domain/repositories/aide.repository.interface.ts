@@ -1,13 +1,10 @@
-import { SUUID, UUID } from 'short-uuid';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
-import { Aide } from '@/domain/models/aide';
+import { AideId, AideInterface } from '@/domain/models/aide.interface';
 import { Projet } from '@/domain/models/projet';
 
 export interface AideRepositoryInterface {
-  all(): Promise<Aide[]>;
-  findAllForProjet(projet: Projet, criteresRechercheAide: CriteresRechercheAide): Promise<Aide[]>;
-  fromId(atId: Aide['atId']): Promise<Aide>; // AT id
-  fromUuid(uuid: UUID): Promise<Aide>;
-  fromSuuid(suuid: SUUID): Promise<Aide>;
+  all(): Promise<AideInterface[]>;
+  findAllForProjet(projet: Projet, criteresRechercheAide: CriteresRechercheAide): Promise<AideInterface[]>;
+  fromId(id: AideId): Promise<AideInterface>;
   size(): Promise<number>;
 }

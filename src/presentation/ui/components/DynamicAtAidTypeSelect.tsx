@@ -24,7 +24,7 @@ export const DynamicAtAidTypeSelect = ({
       disabled={loading !== false}
       options={[{ label: "nature de l'aide", value: '' }].concat(
         aidesCompatibles
-          .map(({ aide: { types } }) => types.map(({ name }) => name))
+          .map(({ aide: { types } }) => (types ? types.map(({ name }) => name) : []))
           .flat(2)
           .filter(unique)
           .map((type) => ({

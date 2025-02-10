@@ -9,7 +9,7 @@ import samples from '../data/project-description-sample.json';
   const projets = Object.keys(samples).map((nom) => Projet.create(samples[nom] as string));
 
   for (const projet of projets) {
-    const aide = await aideRepository.fromId(1094);
+    const aide = await aideRepository.fromId('1094');
     const note = await aideScoringService.attribuerScore(aide, projet);
 
     console.log(note);
