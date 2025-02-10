@@ -83,9 +83,17 @@ export class ProjetRepository implements ProjetRepositoryInterface {
   }
 
   async fromUuid(uuid: UUID): Promise<Projet> {
-    const rows = await this.selectProjet().where('p.uuid', '=', uuid).execute();
-    if (rows.length === 0) {
+    const projet = await this.findOneById(uuid);
+    if (!projet) {
       throw new Error(`Aucun projet trouvé pour l'identifiant ${uuid}`);
+    }
+    return projet;
+  }
+
+  async findOneById(id: string): Promise<Projet | null> {
+    const rows = await this.selectProjet().where('p.uuid', '=', id).execute();
+    if (rows.length === 0) {
+      return null;
     }
     return await this.toProjet(rows[0]);
   }
