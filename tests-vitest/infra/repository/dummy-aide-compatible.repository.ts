@@ -10,7 +10,7 @@ export class DummyAideCompatibleRepository implements AideScoreRepositoryInterfa
   constructor(public aides: Aide[] = []) {}
 
   public all() {
-    return Promise.resolve(this.aides.map(({ uuid }, i) => new AideScore(i, uuid)));
+    return Promise.resolve(this.aides.map(({ id }, i) => new AideScore(i, id)));
   }
 
   public size() {

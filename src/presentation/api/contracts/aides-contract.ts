@@ -1,6 +1,6 @@
 import { z } from '@/libs/validation';
 import { initContract } from '@ts-rest/core';
-import { pathPrefix } from '@/presentation/api/contracts/index';
+import { pathPrefix } from '@/presentation/api/path-prefix';
 import { criteresRechercheAidesPagineesDtoSchema } from '@/presentation/api/dtos/criteres-recherche-aides.dto';
 import { aidesResponseDtoSchema } from '@/presentation/api/dtos/aides-response.dto';
 import { JsonApiErrorsSchema } from '@/presentation/api/json-api/errors';

@@ -1,4 +1,6 @@
-export class ProjetIntrouvableError extends Error {
+import { ApplicationErrorInterface } from '@/application/errors/apllication-error.interface';
+
+export class ProjetIntrouvableError extends Error implements ApplicationErrorInterface {
   constructor(message: string) {
     super(message);
     this.name = 'ProjetIntrouvableError';

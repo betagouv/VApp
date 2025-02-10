@@ -1,21 +1,23 @@
 import { createNextHandler } from '@ts-rest/serverless/next';
 import * as Sentry from '@sentry/nextjs';
 
-import { creerNouveauProjetUsecase } from '@/container';
+import { aidesScoringUsecase, creerNouveauProjetUsecase } from '@/container';
 import { aideEvalueeRepository } from '@/infra/repositories';
 import { projetRepository } from '@/infra/repositories/projet.repository';
-import { contract } from '@/presentation/api/contracts';
-import { JsonApiErrorResponse } from '@/presentation/api/json-api/error-response';
-import { getProjetAidesRelativeLink } from '@/presentation/api/contracts/aides-contract';
 
 import { RechercherProjetAidesPagineesUsecase } from '@/application/usecases/rechercher-projet-aides-paginees.usecase';
 import { AidesEvalueesPagineesHttpAdapter } from '@/presentation/api/adapters/aides-evaluees-paginees-http.adapter';
 import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geographique-introuvable.error';
-import { CreerNouveauProjetHttpAdapter } from '@/presentation/api/adapters/creer-nouveau-projet-http.adapter';
 
+import { CreerNouveauProjetHttpAdapter } from '@/presentation/api/adapters/creer-nouveau-projet-http.adapter';
+import { contract } from '@/presentation/api/contracts';
+import { getProjetAidesRelativeLink } from '@/presentation/api/contracts/aides-contract';
 import { authorizationMiddleware } from '@/presentation/api/authorization-middleware';
 import { errorHandler } from '@/presentation/api/error-handler';
 import { PageOutOfRangeError } from '@/application/errors/page-out-of-range.error';
+import { AidesScoringHttpAdapter } from '@/presentation/api/adapters/aides-scoring-http.adapter';
+import { UnauthorizedError } from '@/application/errors/unauthorized.error';
+import { ApiRouteErrorResponse } from '@/presentation/api/api-route-error-response';
 
 type GlobalRequestContext = {
   time: Date;
@@ -38,18 +40,32 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
         };
       } catch (e) {
         if (e instanceof ZoneGeographiqueIntrouvableError) {
-          return {
-            status: 404,
-            body: JsonApiErrorResponse.fromStatus(404, e.message)
-          };
+          return ApiRouteErrorResponse.fromApplicationError(e, 404);
         }
 
         console.error(e);
         Sentry.captureException(e);
+        return ApiRouteErrorResponse.fromMessage('Internal server error.');
+      }
+    },
+    scoringAides: async ({ params: { projetId }, body }, { request }) => {
+      try {
+        const aidesScores = await aidesScoringUsecase.execute(
+          AidesScoringHttpAdapter.toInput(projetId, body.data, request.clientId)
+        );
+
         return {
-          status: 500,
-          body: JsonApiErrorResponse.fromStatus(500, 'Internal server error.')
+          status: 200,
+          body: AidesScoringHttpAdapter.toJsonApiResponse(aidesScores)
         };
+      } catch (e) {
+        if (e instanceof UnauthorizedError) {
+          return ApiRouteErrorResponse.fromApplicationError(e, 401);
+        }
+
+        console.error(e);
+        Sentry.captureException(e);
+        return ApiRouteErrorResponse.fromMessage('Internal server error.', 500);
       }
     },
     rechercherAides: async ({ query, params: { projetId } }, { request }) => {
@@ -68,18 +84,12 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
         };
       } catch (e) {
         if (PageOutOfRangeError.is(e)) {
-          return {
-            status: 500,
-            body: JsonApiErrorResponse.fromStatus(404, e.message)
-          };
+          return ApiRouteErrorResponse.fromApplicationError(e, 404);
         }
 
         console.error(e);
         Sentry.captureException(e);
-        return {
-          status: 500,
-          body: JsonApiErrorResponse.fromStatus(500, 'Internal server error.')
-        };
+        return ApiRouteErrorResponse.fromMessage('Internal server error.');
       }
     }
   },

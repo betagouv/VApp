@@ -1,4 +1,5 @@
-import { UUID } from 'short-uuid';
+import { AideId } from '@/domain/models/aide.interface';
+import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 
 export class AideScore {
   static SELECTION = 30;
@@ -7,12 +8,14 @@ export class AideScore {
 
   constructor(
     public scoreCompatibilite: number,
-    public aideId: UUID
+    public aideId: AideId,
+    public fournisseurDonnees?: FournisseurDonneesAides
   ) {
     AideScore.assertValid(scoreCompatibilite);
 
     this.scoreCompatibilite = scoreCompatibilite;
     this.aideId = aideId;
+    this.fournisseurDonnees = fournisseurDonnees;
   }
 
   static compare(a: Pick<AideScore, 'scoreCompatibilite'>, b: Pick<AideScore, 'scoreCompatibilite'>) {

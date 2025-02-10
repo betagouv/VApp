@@ -11,7 +11,7 @@ import { AIState, QuestionsReponsesProvider } from '@/presentation/ui/ai';
 
 export async function poserQuestionsAction(projetId: Projet['suuid']) {
   const projet = await projetRepository.fromSuuid(projetId);
-  const aides = await Promise.all(projet.getSortedAideScores().map(({ aideId }) => aideRepository.fromUuid(aideId)));
+  const aides = await Promise.all(projet.getSortedAideScores().map(({ aideId }) => aideRepository.fromId(aideId)));
 
   const mutableAIState = getMutableAIState<typeof QuestionsReponsesProvider>();
 

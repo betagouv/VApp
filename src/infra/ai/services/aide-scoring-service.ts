@@ -19,7 +19,7 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   static EXTRACT_SCORE_REGEX = /(-? ?[0-9]+).*/;
 
   public async attribuerScore(aide: Aide, projet: Projet): Promise<number> {
-    const aideScore = projet.aidesScores.get(aide.uuid);
+    const aideScore = projet.aidesScores.get(aide.id);
     if (aideScore !== undefined) {
       return Promise.resolve(aideScore.scoreCompatibilite);
     }
@@ -43,7 +43,7 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
 
     if (scores.length < AideScoringService.SCORING_MAX_SEED) {
       throw new Error(
-        `Malgrès ${attempt} tentatives, seulement ${scores.length} scores sur les ${AideScoringService.SCORING_MAX_SEED} requises pour l'aide "${aide.nom}" portant l'uuid ${aide.uuid}.`
+        `Malgrès ${attempt} tentatives, seulement ${scores.length} scores sur les ${AideScoringService.SCORING_MAX_SEED} requises pour l'aide "${aide.nom}" portant l'uuid ${aide.id}.`
       );
     }
 
@@ -77,7 +77,7 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   }
 
   public async aideScore(aide: Aide, projet: Projet): Promise<AideScore> {
-    return new AideScore(await this.attribuerScore(aide, projet), aide.uuid);
+    return new AideScore(await this.attribuerScore(aide, projet), aide.id);
   }
 
   public aidesScores(aides: Aide[], projet: Projet): Promise<AideScore[]> {

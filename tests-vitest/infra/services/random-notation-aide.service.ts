@@ -14,7 +14,7 @@ export class RandomNotationAideService implements AideScoringServiceInterface {
   }
 
   public async aideScore(aide: Aide, projet: Projet): Promise<AideScore> {
-    return new AideScore(await this.attribuerScore(aide, projet), aide.uuid);
+    return new AideScore(await this.attribuerScore(aide, projet), aide.id);
   }
 
   public aidesScores(aides: Aide[], projet: Projet): Promise<AideScore[]> {
