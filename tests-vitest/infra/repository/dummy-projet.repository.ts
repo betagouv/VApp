@@ -1,4 +1,4 @@
-import short, { SUUID } from 'short-uuid';
+import short, { SUUID, UUID } from 'short-uuid';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
 import { Projet } from '@/domain/models/projet';
 
@@ -13,6 +13,10 @@ export class DummyProjetRepository implements ProjetRepositoryInterface {
 
   public async fromUuid(uuid: string): Promise<Projet> {
     return await this.fromUuid(translator.toUUID(uuid));
+  }
+
+  async findOneById(id: UUID): Promise<Projet | null> {
+    return await this.fromUuid(translator.toUUID(id));
   }
 
   add(projet: Projet): Promise<void> {
