@@ -67,7 +67,7 @@ export const AidesCompatiblesTabContent = ({
       aidesCompatibles
         .sort(AideScore.compare)
         .filter(({ aide: { types } }: ViewAideCompatibleDto) =>
-          atAidType ? types.map(({ name }) => name).includes(atAidType) : true
+          atAidType ? (types || []).map(({ name }) => name).includes(atAidType) : true
         )
         .slice(0, AideScore.SELECTION)
     );

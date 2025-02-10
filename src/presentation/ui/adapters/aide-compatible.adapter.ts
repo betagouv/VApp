@@ -6,7 +6,7 @@ export class AideCompatibleAdapter {
   public constructor(public aideRepository: AideRepositoryInterface) {}
 
   async toViewAideCompatible({ aideId, scoreCompatibilite }: AideScore): Promise<ViewAideCompatibleDto> {
-    const aide = await this.aideRepository.fromUuid(aideId);
+    const aide = await this.aideRepository.fromId(aideId);
     return {
       aide: { ...aide },
       scoreCompatibilite: scoreCompatibilite

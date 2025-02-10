@@ -59,8 +59,10 @@ fileignoreconfig:
   checksum: 6935e24fcfd9323d616a6353a8e1600efa82adf6e71ec889cf2d8fefb02a404e
 - filename: src/domain/models/client.ts
   checksum: 34f10d4e66f3397a872d1306d081d5d5b541603b1235ab4eefdb4e2532daf959
+- filename: src/presentation/ui/components/AidesCompatibles.tsx
+  checksum: 58d27497388fd253ddddfdbd354adb40d7a1a7c68e17e570bac80ffffeaf93ca
 - filename: src/infra/repositories/client.repository.ts
-  checksum: 1f9adff393fa8167cec984cf2b1296006bb99659e6d00c1a0ba224da357a477e
+  checksum: 6ffac6806d6c55d5020b3adf79cde33aff93f094aa00382aebdfcf1d7f0831f8
 - filename: src/infra/database/migrations/1738598093712_clients.ts
   checksum: 6a646ce461cd278265fbc7a6c74739a498dabfbcb34cac324e68fc92a2a26e97
 - filename: src/infra/api/security.ts

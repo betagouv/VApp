@@ -1,4 +1,6 @@
-export class PageOutOfRangeError extends Error {
+import { ApplicationErrorInterface } from '@/application/errors/apllication-error.interface';
+
+export class PageOutOfRangeError extends Error implements ApplicationErrorInterface {
   constructor(message: string) {
     super(message);
     this.name = 'PageOutOfRangeError';
