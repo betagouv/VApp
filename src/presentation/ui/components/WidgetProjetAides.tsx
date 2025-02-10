@@ -74,6 +74,15 @@ export default function WidgetProjetAides({
             small
           />
         )}
+        {!loading && aidesCompatibles.length === 0 && (
+          <Alert
+            title={`Aucune aide n'a été trouvée pour votre projet. Quelque chose à du mal se passer...`}
+            description=""
+            severity="error"
+            small
+          />
+        )}
+
         {!loading && aidesCompatibles.length > 0 && (
           <Alert
             closable
