@@ -6,17 +6,18 @@ import { aideEvalueeRepository } from '@/infra/repositories';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 
 import { RechercherProjetAidesPagineesUsecase } from '@/application/usecases/rechercher-projet-aides-paginees.usecase';
-import { AidesEvalueesPagineesHttpAdapter } from '@/presentation/api/adapters/aides-evaluees-paginees-http.adapter';
 import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geographique-introuvable.error';
+import { UnauthorizedError } from '@/application/errors/unauthorized.error';
+import { PageOutOfRangeError } from '@/application/errors/page-out-of-range.error';
+import { ProjetIntrouvableError } from '@/application/errors/projet-introuvable.error';
 
-import { CreerNouveauProjetHttpAdapter } from '@/presentation/api/adapters/creer-nouveau-projet-http.adapter';
 import { contract } from '@/presentation/api/contracts';
+import { AidesEvalueesPagineesHttpAdapter } from '@/presentation/api/adapters/aides-evaluees-paginees-http.adapter';
+import { CreerNouveauProjetHttpAdapter } from '@/presentation/api/adapters/creer-nouveau-projet-http.adapter';
 import { getProjetAidesRelativeLink } from '@/presentation/api/contracts/aides-contract';
 import { authorizationMiddleware } from '@/presentation/api/authorization-middleware';
 import { errorHandler } from '@/presentation/api/error-handler';
-import { PageOutOfRangeError } from '@/application/errors/page-out-of-range.error';
 import { AidesScoringHttpAdapter } from '@/presentation/api/adapters/aides-scoring-http.adapter';
-import { UnauthorizedError } from '@/application/errors/unauthorized.error';
 import { ApiRouteErrorResponse } from '@/presentation/api/api-route-error-response';
 
 type GlobalRequestContext = {
@@ -61,6 +62,10 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
       } catch (e) {
         if (e instanceof UnauthorizedError) {
           return ApiRouteErrorResponse.fromApplicationError(e, 401);
+        }
+
+        if (e instanceof ProjetIntrouvableError) {
+          return ApiRouteErrorResponse.fromApplicationError(e, 404);
         }
 
         console.error(e);
