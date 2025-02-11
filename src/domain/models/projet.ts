@@ -27,14 +27,15 @@ export class Projet {
     etatAvancement: LesCommunsProjetStatuts = LesCommunsProjetStatuts.IDEE,
     zonesGeographiques: ZoneGeographique[] = [],
     aidesScores: AideScoreMap = new Map(),
-    clientId?: UUID
+    clientId?: UUID,
+    uuid?: UUID
   ): Projet {
     if (!description || description.length === 0) {
       throw new Error('La description du projet est vide.');
     }
 
     return new Projet(
-      translator.toUUID(short.generate()),
+      uuid || translator.uuid(),
       description,
       porteur,
       etatAvancement,

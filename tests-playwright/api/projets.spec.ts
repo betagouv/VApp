@@ -47,3 +47,25 @@ test('Creer projet with all fields', async ({ page }) => {
   console.dir(await response.json(), { depth: null });
   expect(response.status()).toBe(201);
 });
+
+test("Ne peut pas créer un projet avec un id qui n'est pas un uuid.", async ({ page }) => {
+  const creerProjetDto: CreerProjetDto = {
+    id: 'e859d5bb-f1f0-4076-9453-ecbd9e003b5',
+    description: 'description',
+    porteur: AtOrganizationTypeSlug.Association,
+    zonesGeographiques: [
+      {
+        type: AtPerimeterScale.commune,
+        code: 69266
+      }
+    ],
+    etatAvancement: LesCommunsProjetStatuts.IDEE
+  };
+  const response = await page.request.post(url, {
+    data: {
+      data: creerProjetDto
+    }
+  });
+  console.dir(await response.json(), { depth: null });
+  expect(response.status()).toBe(400);
+});
