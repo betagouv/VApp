@@ -5,6 +5,7 @@ import { ProjetRepositoryInterface } from '@/domain/repositories/projet.reposito
 import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
 import { LesCommunsProjetStatuts } from '@/domain/models/les-communs/projet-statuts';
 import { ZoneGeographique } from '@/domain/models/zone-geographique';
+import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 
 import { UsecaseInterface } from '@/application/usecases/usecase.interface';
 import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geographique-introuvable.error';
@@ -14,6 +15,7 @@ export type DemarrerProjetUsecaseInput = {
   porteur: AtOrganizationTypeSlug;
   etatAvancement?: LesCommunsProjetStatuts;
   zoneGeographiqueIds: ZoneGeographique['id'][];
+  criteresRechercheAide: CriteresRechercheAide;
 };
 
 export class DemarrerProjetUsecase implements UsecaseInterface {
@@ -26,7 +28,8 @@ export class DemarrerProjetUsecase implements UsecaseInterface {
     description,
     porteur,
     etatAvancement,
-    zoneGeographiqueIds
+    zoneGeographiqueIds,
+    criteresRechercheAide
   }: DemarrerProjetUsecaseInput): Promise<Projet> {
     const zoneGeographiques = await Promise.all(
       zoneGeographiqueIds.map(async (id) => {
@@ -39,7 +42,7 @@ export class DemarrerProjetUsecase implements UsecaseInterface {
     );
 
     const projet = Projet.create(description, porteur, etatAvancement, zoneGeographiques, new Map());
-
+    projet.criteresRechercheAide = criteresRechercheAide;
     await this.projetRepository.add(projet);
 
     return projet;

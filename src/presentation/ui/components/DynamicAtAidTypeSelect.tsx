@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Select from '@codegouvfr/react-dsfr/SelectNext';
 
-import { ViewAideCompatibleDto } from '@/presentation/ui/dtos/view-aide-compatible.dto';
+import { ViewAideEvalueeDto } from '@/presentation/ui/dtos/view-aide-evaluee.dto';
 import { unique } from '@/presentation/ui/utils/array';
 import { AtAidType } from '@/infra/at/aid-type';
 
 type DynamicAtAideTypeSelectProps = {
-  aidesCompatibles: ViewAideCompatibleDto[];
+  aidesCompatibles: ViewAideEvalueeDto[];
   atAidType?: AtAidType;
   setAtAidType: React.Dispatch<AtAidType>;
   loading?: boolean;

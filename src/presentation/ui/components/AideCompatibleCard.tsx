@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Card from '@codegouvfr/react-dsfr/Card';
 import Tag from '@codegouvfr/react-dsfr/Tag';
-import Tooltip from '@codegouvfr/react-dsfr/Tooltip';
 import { ClassProperties } from '@/presentation/types';
 
 import { AideScore } from '@/domain/models/aide-score';
@@ -32,11 +31,9 @@ export const AideCompatibleCard = ({ aide, compatibilite }: AideCompatibleCard) 
       start={
         <ul className="fr-tags-group">
           <li>
-            <Tooltip title="Score d'éligibilité" kind="hover">
-              <Tag style={{ backgroundColor: getColor(AideScore.toPercent(compatibilite)) }}>
-                {AideScore.format(compatibilite)}
-              </Tag>
-            </Tooltip>
+            <Tag style={{ backgroundColor: getColor(AideScore.toPercent(compatibilite)) }}>
+              {AideScore.format(compatibilite)}
+            </Tag>
           </li>
           {aide.types.map(({ id, name }) => (
             <li key={`aide-type-${id}`}>

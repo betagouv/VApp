@@ -8,7 +8,7 @@ import { AtOrganizationTypeSlug } from '@/infra/at/organization-type';
 export const nouveauProjetFormDtoSchema = zfd.formData({
   uuid: z.string().optional(),
   description: z.string().min(1, 'Vous devez décrire votre projet.'),
-  audience: z.nativeEnum(AtOrganizationTypeSlug),
+  porteur: z.nativeEnum(AtOrganizationTypeSlug),
   territoireId: z.string().optional(),
   etatAvancement: z.nativeEnum(AtAidStep),
 

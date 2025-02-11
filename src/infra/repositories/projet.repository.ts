@@ -1,19 +1,38 @@
 import { Insertable, Kysely, Selectable, sql, Updateable } from 'kysely';
 import { SUUID, UUID } from 'short-uuid';
-import { db } from '../database';
-import { DB, JsonValue, ProjetTable } from '../database/types';
-import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
-import { Projet } from '@/domain/models/projet';
+
+import { db } from '@/infra/database';
+import { DB, JsonObject, JsonValue, ProjetTable } from '@/infra/database/types';
+import { atZoneGeographiqueRepository } from '@/infra/repositories/at-zone-geographique.repository';
+import { AtAidTypeGroup } from '@/infra/at/aid-type-group';
+import { AtAidDestination } from '@/infra/at/aid-destination';
 import { AtOrganizationTypeSlug } from '@/infra/at/organization-type';
+
+import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
+import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
+import { Projet } from '@/domain/models/projet';
 import { LesCommunsProjetStatuts } from '@/domain/models/les-communs/projet-statuts';
 import { AideScoreMap } from '@/domain/models/aide-score.map';
-import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
-import { atZoneGeographiqueRepository } from '@/infra/repositories/at-zone-geographique.repository';
+import { Payante } from '@/domain/models/payante';
+import { AideScore } from '@/domain/models/aide-score';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
+import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
+import { unique } from '@/presentation/ui/utils/array';
+
+function isJsonObject(value: JsonValue): value is JsonObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
 
 type ProjetRow = Pick<
   Selectable<ProjetTable>,
-  'suuid' | 'uuid' | 'description' | 'aides_scores' | 'etat_avancement' | 'porteur' | 'client_id'
+  | 'suuid'
+  | 'uuid'
+  | 'description'
+  | 'aides_scores'
+  | 'etat_avancement'
+  | 'porteur'
+  | 'client_id'
+  | 'criteres_recherche_aide'
 > & { territoire_ids: string[] };
 
 export class ProjetRepository implements ProjetRepositoryInterface {
@@ -26,7 +45,16 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     return this.db
       .selectFrom('projet_table as p')
       .leftJoin('projet_zone_geographique_table as pzg', 'pzg.projet_uuid', 'p.uuid')
-      .select(['p.uuid', 'p.suuid', 'p.description', 'p.aides_scores', 'p.porteur', 'p.etat_avancement', 'p.client_id'])
+      .select([
+        'p.uuid',
+        'p.suuid',
+        'p.description',
+        'p.aides_scores',
+        'p.porteur',
+        'p.etat_avancement',
+        'p.client_id',
+        'p.criteres_recherche_aide'
+      ])
       .select(sql<string[]>`array_remove(array_agg(pzg.at_perimeter_id), null)`.as('territoire_ids'))
       .groupBy([
         'p.uuid',
@@ -35,7 +63,8 @@ export class ProjetRepository implements ProjetRepositoryInterface {
         'p.aides_scores',
         'p.porteur',
         'p.etat_avancement',
-        'p.client_id'
+        'p.client_id',
+        'p.criteres_recherche_aide'
       ]);
   }
 
@@ -129,7 +158,8 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       client_id: projet.clientId,
       criteres_recherche_aide: JSON.stringify({
         beneficiaire: projet.porteur,
-        etatsAvancements: [projet.etatAvancement]
+        etatsAvancements: [projet.etatAvancement],
+        ...projet.criteresRechercheAide
       })
     };
   }
@@ -148,34 +178,56 @@ export class ProjetRepository implements ProjetRepositoryInterface {
     const aideScoreMap: AideScoreMap = new Map();
     if (Array.isArray(jsonAidesScores)) {
       jsonAidesScores.forEach((jsonAideScore: JsonValue) => {
-        // @ts-expect-error I know...
-        const id = jsonAideScore?.id;
-        // @ts-expect-error I know...
-        const score = jsonAideScore?.score;
-        // @ts-expect-error I know...
-        const source = jsonAideScore?.source;
-        if (id && score !== undefined) {
-          aideScoreMap.set(id, {
-            aideId: id,
-            scoreCompatibilite: score as number,
-            fournisseurDonnees: source ? (source as FournisseurDonneesAides) : undefined
-          });
+        if (isJsonObject(jsonAideScore)) {
+          const { aideId, scoreCompatibilite, fournisseurDonnees } = jsonAideScore;
+          if (aideId && scoreCompatibilite !== undefined) {
+            aideScoreMap.set(
+              aideId as string,
+              new AideScore(
+                scoreCompatibilite as number,
+                aideId as string,
+                fournisseurDonnees ? (fournisseurDonnees as FournisseurDonneesAides) : undefined
+              )
+            );
+          }
         }
       });
     }
     return aideScoreMap;
   }
 
+  toCriteresRechercheAide(jsonCriteresRechercheAide: JsonValue) {
+    const criteresRechercheAide: CriteresRechercheAide = {};
+    if (isJsonObject(jsonCriteresRechercheAide)) {
+      if (jsonCriteresRechercheAide?.payante) {
+        criteresRechercheAide.payante = jsonCriteresRechercheAide?.payante as Payante;
+      }
+      if (jsonCriteresRechercheAide?.natures) {
+        criteresRechercheAide.natures = jsonCriteresRechercheAide?.natures as AtAidTypeGroup[];
+      }
+      if (jsonCriteresRechercheAide?.actionsConcernees) {
+        criteresRechercheAide.actionsConcernees = jsonCriteresRechercheAide?.actionsConcernees as AtAidDestination[];
+      }
+    }
+
+    return criteresRechercheAide;
+  }
+
   async toProjet(row: ProjetRow): Promise<Projet> {
-    return new Projet(
+    const projet = new Projet(
       row.uuid as UUID,
       row.description,
       row.porteur as AtOrganizationTypeSlug,
       row.etat_avancement as LesCommunsProjetStatuts,
-      await Promise.all(row.territoire_ids.map(atZoneGeographiqueRepository.fromId.bind(atZoneGeographiqueRepository))),
+      await Promise.all(
+        row.territoire_ids.filter(unique).map(atZoneGeographiqueRepository.fromId.bind(atZoneGeographiqueRepository))
+      ),
       this.toAideScoreMap(row.aides_scores),
       row.client_id ? (row.client_id as UUID) : undefined
     );
+    projet.criteresRechercheAide = this.toCriteresRechercheAide(row.criteres_recherche_aide);
+
+    return projet;
   }
 }
 
