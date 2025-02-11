@@ -10,7 +10,7 @@ import { ProjetResponseDto } from '@/presentation/api/dtos/projet-response.dto';
 
 export class CreerNouveauProjetHttpAdapter {
   static toInput(
-    { description, zonesGeographiques, porteur, etatAvancement }: CreerProjetDto,
+    { id, description, zonesGeographiques, porteur, etatAvancement }: CreerProjetDto,
     clientId: string
   ): CreerNouveauProjetUsecaseInput {
     const zoneGeographiqueQueries: ZoneGeographiqueQuery[] = zonesGeographiques
@@ -18,6 +18,7 @@ export class CreerNouveauProjetHttpAdapter {
       : [];
 
     return {
+      uuid: id ? (id as UUID) : undefined,
       description,
       zoneGeographiqueQueries,
       porteur,

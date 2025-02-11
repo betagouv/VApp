@@ -14,6 +14,7 @@ export type ZoneGeographiqueQuery = {
 };
 
 export type CreerNouveauProjetUsecaseInput = {
+  uuid?: UUID;
   description: string;
   porteur: AtOrganizationTypeSlug;
   etatAvancement?: LesCommunsProjetStatuts;
@@ -28,6 +29,7 @@ export class CreerNouveauProjetUsecase implements UsecaseInterface {
   ) {}
 
   public async execute({
+    uuid,
     description,
     porteur,
     etatAvancement,
@@ -44,7 +46,7 @@ export class CreerNouveauProjetUsecase implements UsecaseInterface {
       })
     );
 
-    const projet = Projet.create(description, porteur, etatAvancement, zoneGeographiques, new Map(), clientId);
+    const projet = Projet.create(description, porteur, etatAvancement, zoneGeographiques, new Map(), clientId, uuid);
     await this.projetRepository.add(projet);
 
     return projet;
