@@ -3,12 +3,12 @@ import { PaginatedResult } from '@/libs/pagination';
 
 export const JsonAPICollectionLinksSchema = z
   .object({
-    first: z.string().url().optional().describe('Link to the first page'),
-    last: z.string().url().optional().describe('Link to the last page'),
-    prev: z.string().url().optional().describe('Link to the previous page'),
-    next: z.string().url().optional().describe('Link to the next page')
+    first: z.string().url().optional().describe('Lien vers la première page'),
+    last: z.string().url().optional().describe('Lien vers la dernière page'),
+    prev: z.string().url().optional().describe('Lien vers la page précédente'),
+    next: z.string().url().optional().describe('Lien vers la page suivante')
   })
-  .describe('JSON:API "links" object for paging');
+  .describe('Objet "links" JSON:API pour la pagination');
 
 export type JsonAPICollectionLinksInterface = z.infer<typeof JsonAPICollectionLinksSchema>;
 

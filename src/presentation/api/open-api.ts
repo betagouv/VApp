@@ -23,14 +23,28 @@ export const generateOpenApi = (version: string = 'v1') =>
           name: 'Johan Dufour',
           email: 'johan.dufour@beta.gouv.fr'
         },
-        description: `L'API **VApp** expose des point d'entrés permettant d'attribuer un **score de comptabilité** à des **aides** par rapport à un **projet**.
-Si non spécifié autrement, les aides proviennent d'**[Aides Territoires](https://aides-territoires.beta.gouv.fr/)**.
+        description: `L'API **VApp** expose des points d'entrée permettant d'attribuer un **score de compatibilité** à des **aides** par rapport à un **projet**.
+Lors d'une recherche d'aides, les aides suggérées proviennent d'**[Aides Territoires](https://aides-territoires.beta.gouv.fr/)**.
+D'autres **fournisseurs de données** pourraient être proposés à l'avenir.
+
+### Attribuer un score à mes aides
+
+Grâce au point d'entrée de *scoring*
+\`POST /api/v1/projets/{projetId}/aides/scoring\`,
+vous pouvez déjà attribuer un score à vos propres aides par rapport à un projet.
 
 ### Score de compatibilité
 ${criteres}
 
 ### JSON:API
 Le format de cette API s'appuie sur la spécification [JSON:API](https://jsonapi.org/).
+
+### Clé d'API et autres demandes
+Pour toute demande, vous pouvez [créer un nouveau ticket sur **GitHub**](https://github.com/betagouv/VApp/issues/new) ou nous contacter sur **Tchap** ou **Mattermost**.
+
+### Liens
+- https://beta.gouv.fr/startups/vapp.html
+- https://github.com/betagouv/VApp
 `
       },
       components: {

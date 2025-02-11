@@ -77,7 +77,7 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   }
 
   public async aideScore(aide: Aide, projet: Projet): Promise<AideScore> {
-    return new AideScore(await this.attribuerScore(aide, projet), aide.id);
+    return new AideScore(await this.attribuerScore(aide, projet), aide.id, aide.fournisseurDonnees);
   }
 
   public aidesScores(aides: Aide[], projet: Projet): Promise<AideScore[]> {

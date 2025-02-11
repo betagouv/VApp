@@ -10,7 +10,7 @@ import Alert from '@codegouvfr/react-dsfr/Alert';
 import { GridItemLoader } from '@/presentation/ui/components/GridItemLoader';
 import { AidesCompatibles } from '@/presentation/ui/components/AidesCompatibles';
 import { useMountEffect } from '@/presentation/ui/hooks/useMountEffect';
-import { ViewAideCompatibleDto } from '@/presentation/ui/dtos/view-aide-compatible.dto';
+import { ViewAideEvalueeDto } from '@/presentation/ui/dtos/view-aide-evaluee.dto';
 import { rechercherAidesProjetAction } from '@/presentation/ui/actions/rechercher-aides-projet.action';
 
 import { AideScore } from '@/domain/models/aide-score';
@@ -21,7 +21,7 @@ const WIDGET_SELECTION = 6;
 
 export interface WidgetProjetAidesProps {
   projetId: Projet['uuid'];
-  initialAidesCompatibles: ViewAideCompatibleDto[];
+  initialAidesCompatibles: ViewAideEvalueeDto[];
   criteres?: CriteresRechercheAide;
 }
 
@@ -30,14 +30,14 @@ export default function WidgetProjetAides({
   initialAidesCompatibles = [],
   criteres
 }: WidgetProjetAidesProps) {
-  const [aidesCompatibles, setAidesCompatibles] = useState<ViewAideCompatibleDto[]>(initialAidesCompatibles);
+  const [aidesCompatibles, setAidesCompatibles] = useState<ViewAideEvalueeDto[]>(initialAidesCompatibles);
   const [loading, setLoading] = useState<boolean>(false);
   useMountEffect(() => {
     let ignoreActionResult = false;
     async function triggerNouvelleRecherche() {
       setLoading(true);
       const response = await rechercherAidesProjetAction(projetId, criteres);
-      for await (const aideCompatible of readStreamableValue<ViewAideCompatibleDto>(response)) {
+      for await (const aideCompatible of readStreamableValue<ViewAideEvalueeDto>(response)) {
         if (ignoreActionResult) {
           continue;
         }
@@ -54,9 +54,7 @@ export default function WidgetProjetAides({
       setLoading(false);
     }
 
-    // if (aidesCompatibles.length === 0) {
     triggerNouvelleRecherche();
-    // }
 
     return () => {
       ignoreActionResult = true;

@@ -16,13 +16,11 @@ export const metadata: Metadata = {
 
 export default async function Page({ params: { projet_suuid } }: { params: { projet_suuid: string } }) {
   const projet = await projetRepository.fromSuuid(projet_suuid as SUUID);
-  const initialAidesCompatibles = await Promise.all(
-    projet.getSortedAideScores().map(aideCompatibleAdapter.toViewAideCompatible.bind(aideCompatibleAdapter))
-  );
+  const initialAidesCompatibles = await aideCompatibleAdapter.toViewAidesEvalues(projet.getSortedAideScores());
 
   return (
     <div className={fr.cx('fr-grid-row', 'fr-grid-row--center')}>
-      <main className={fr.cx()}>
+      <main>
         <Tabs
           tabs={[
             {
