@@ -28,9 +28,7 @@ export default async function Page({
   }
 
   const criteres: CriteresRechercheAide = criteresRechercheAidesDtoSchema.parse(searchParams);
-  const initialAidesCompatibles = await Promise.all(
-    Array.from(projet.aidesScores, ([, aideScore]) => aideCompatibleAdapter.toViewAideCompatible(aideScore))
-  );
+  const initialAidesCompatibles = await aideCompatibleAdapter.toViewAidesEvalues(projet.getSortedAideScores());
 
   return (
     <WidgetProjetAides

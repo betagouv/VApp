@@ -5,5 +5,5 @@ export enum AtAidTypeGroup {
 
 export const atAidTypeGroupLabels: Record<AtAidTypeGroup, string> = {
   [AtAidTypeGroup.Financiere]: 'Aide financière',
-  [AtAidTypeGroup.Ingenierie]: 'technical-group'
+  [AtAidTypeGroup.Ingenierie]: 'Aide en ingénierie'
 } as const;

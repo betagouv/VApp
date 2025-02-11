@@ -80,7 +80,7 @@ export default function TerritoireAutocomplete({ value, setValue }: TerritoireAu
       renderInput={({ id, disabled, InputProps, inputProps }) => (
         <>
           <Input
-            label="Territoire"
+            label="Zone géographique"
             id={id}
             disabled={disabled}
             ref={InputProps.ref}

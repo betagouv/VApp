@@ -2,16 +2,19 @@ import { ExpressionBuilder, Kysely, Selectable } from 'kysely';
 import { AtAid, AtAideTypeFull } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
 import { atApiClient } from '@/infra/at/api-client';
+import { AtSearchAidsQuery } from '@/infra/at/search-aids-query';
+import { EtatAvancementMapper } from '@/infra/mappers/etat-avancement.mapper';
+import { db } from '@/infra/database';
+import { AideTable, DB } from '@/infra/database/types';
+
 import { Aide } from '@/domain/models/aide';
 import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 import { Projet } from '@/domain/models/projet';
-import { unique } from '@/presentation/ui/utils/array';
-import { EtatAvancementMapper } from '@/infra/mappers/etat-avancement.mapper';
-import { AideTable, DB } from '../database/types';
-import { db } from '../database';
 import { AideId } from '@/domain/models/aide.interface';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
+
+import { unique } from '@/presentation/ui/utils/array';
 
 export const envNumber = (envString?: string | number, defaultValue = 0): number =>
   envString ? Number(envString) : defaultValue;
@@ -81,12 +84,15 @@ export class AtAideRepository implements AideRepositoryInterface {
   async findAtAidesIdsForProjet({
     porteur,
     zonesGeographiques,
-    etatAvancement
-  }: Pick<Projet, 'porteur' | 'zonesGeographiques' | 'etatAvancement'>) {
+    etatAvancement,
+    criteresRechercheAide
+  }: Pick<Projet, 'porteur' | 'zonesGeographiques' | 'etatAvancement' | 'criteresRechercheAide'>) {
     let atAidesIds: number[] = [];
-    const atCriteria = {
+    const atCriteria: AtSearchAidsQuery = {
       organization_type_slugs: porteur ? [porteur] : [],
-      aid_step_slugs: etatAvancement ? [EtatAvancementMapper.fromLesCommunsToAt(etatAvancement)] : []
+      aid_step_slugs: etatAvancement ? [EtatAvancementMapper.fromLesCommunsToAt(etatAvancement)] : [],
+      aid_destination_slugs: criteresRechercheAide?.actionsConcernees,
+      aid_type_group_slug: criteresRechercheAide?.natures
     };
     if (zonesGeographiques?.length > 0) {
       for (const zoneGeographique of zonesGeographiques) {
@@ -107,8 +113,9 @@ export class AtAideRepository implements AideRepositoryInterface {
     return atAidesIds.filter(unique);
   }
 
-  async findAllForProjet({ porteur, zonesGeographiques, etatAvancement }: Projet, { payante }: CriteresRechercheAide) {
-    const atAidesIds: number[] = await this.findAtAidesIdsForProjet({ porteur, zonesGeographiques, etatAvancement });
+  async findAllForProjet(projet: Projet, { payante }: CriteresRechercheAide) {
+    const atAidesIds: number[] = await this.findAtAidesIdsForProjet(projet);
+    console.log(atAidesIds);
     const selectables = await this.select()
       .where(
         'a.id',
@@ -120,7 +127,7 @@ export class AtAideRepository implements AideRepositoryInterface {
       .execute();
     if (atAidesIds.length !== selectables.length) {
       console.error(
-        `${atAidesIds.length} were found in AT database but only were selected ${selectables.length} in VApp. Token range ${getNbTokenRange().join('-')} Payante: ${(payante === true).toString()}`
+        `${atAidesIds.length} were found in AT database but only ${selectables.length} were selected in VApp. Token range ${getNbTokenRange().join('-')} Payante: ${(payante === true).toString()}`
       );
     }
 
@@ -147,6 +154,16 @@ export class AtAideRepository implements AideRepositoryInterface {
   }
 
   async fromId(id: AideId): Promise<Aide> {
+    const aide = await this.findOneById(id);
+
+    if (!aide) {
+      throw new Error(`Aucune aide trouvée pour l'identifiant AT ${id}`);
+    }
+
+    return aide;
+  }
+
+  async findOneById(id: AideId): Promise<Aide | null> {
     const selectableAides = await this.db
       .selectFrom('aide_table as a')
       .select([
@@ -165,7 +182,7 @@ export class AtAideRepository implements AideRepositoryInterface {
       .execute();
 
     if (selectableAides.length === 0) {
-      throw new Error(`Aucune aide trouvée pour l'identifiant AT ${id}`);
+      return null;
     }
 
     return AtAideRepository.toAide(selectableAides[0]);

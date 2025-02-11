@@ -11,29 +11,29 @@ import SearchIcon from '@mui/icons-material/Search';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
 
+import { AtAidType } from '@/infra/at/aid-type';
+import { AideScore } from '@/domain/models/aide-score';
 import { AidesCompatibles } from '@/presentation/ui/components/AidesCompatibles';
 import { GridItemLoader } from '@/presentation/ui/components/GridItemLoader';
 import { DynamicAtAidTypeSelect } from '@/presentation/ui/components/DynamicAtAidTypeSelect';
-import { ViewAideCompatibleDto } from '@/presentation/ui/dtos/view-aide-compatible.dto';
+import { ViewAideEvalueeDto } from '@/presentation/ui/dtos/view-aide-evaluee.dto';
 import { useMountEffect } from '@/presentation/ui/hooks/useMountEffect';
 import { rechercherAidesProjetAction } from '@/presentation/ui/actions/rechercher-aides-projet.action';
-import { AtAidType } from '@/infra/at/aid-type';
-import { AideScore } from '@/domain/models/aide-score';
 
 const translator = short();
 
 type AideCompatiblesTabContentProps = {
   projetSuuid: SUUID;
-  initialAidesCompatibles: ViewAideCompatibleDto[];
+  initialAidesCompatibles: ViewAideEvalueeDto[];
 };
 export const AidesCompatiblesTabContent = ({
   projetSuuid,
   initialAidesCompatibles = []
 }: AideCompatiblesTabContentProps) => {
-  const [aidesCompatibles, setAidesCompatibles] = useState<ViewAideCompatibleDto[]>(initialAidesCompatibles);
-  const [filteredAidesCompatibles, setFilteredAidesCompatibles] = useState<ViewAideCompatibleDto[]>(aidesCompatibles);
-  const [atAidType, setAtAidType] = useState<AtAidType>();
+  const [aidesCompatibles, setAidesCompatibles] = useState<ViewAideEvalueeDto[]>(initialAidesCompatibles);
   const [loading, setLoading] = useState<boolean>(false);
+  const [filteredAidesCompatibles, setFilteredAidesCompatibles] = useState<ViewAideEvalueeDto[]>(aidesCompatibles);
+  const [atAidType, setAtAidType] = useState<AtAidType>();
   const router = useRouter();
   useMountEffect(() => {
     let ignoreActionResult = false;
@@ -41,21 +41,24 @@ export const AidesCompatiblesTabContent = ({
       setLoading(true);
       // The `response` is updated regularly with newly scored `Aide`.
       const response = await rechercherAidesProjetAction(translator.toUUID(projetSuuid));
-      for await (const aideCompatible of readStreamableValue<ViewAideCompatibleDto>(response)) {
+      for await (const aideCompatible of readStreamableValue<ViewAideEvalueeDto>(response)) {
         if (ignoreActionResult) {
           continue;
         }
 
         if (aideCompatible) {
-          setAidesCompatibles((previousAidesCompatibles) => previousAidesCompatibles.concat(aideCompatible));
+          setAidesCompatibles((previousAidesCompatibles) => {
+            if (!previousAidesCompatibles.find(({ aide: { id } }) => id === aideCompatible.aide.id)) {
+              return previousAidesCompatibles.concat(aideCompatible);
+            }
+            return previousAidesCompatibles;
+          });
         }
       }
       setLoading(false);
     }
 
-    if (aidesCompatibles.length === 0) {
-      triggerNouvelleRecherche();
-    }
+    triggerNouvelleRecherche();
 
     return () => {
       ignoreActionResult = true;
@@ -66,7 +69,7 @@ export const AidesCompatiblesTabContent = ({
     setFilteredAidesCompatibles(() =>
       aidesCompatibles
         .sort(AideScore.compare)
-        .filter(({ aide: { types } }: ViewAideCompatibleDto) =>
+        .filter(({ aide: { types } }: ViewAideEvalueeDto) =>
           atAidType ? (types || []).map(({ name }) => name).includes(atAidType) : true
         )
         .slice(0, AideScore.SELECTION)
@@ -84,10 +87,18 @@ export const AidesCompatiblesTabContent = ({
             small
           />
         )}
+        {!loading && aidesCompatibles.length === 0 && (
+          <Alert
+            title={`Aucune aide n'a été trouvée pour votre projet. Quelque chose à du mal se passer...`}
+            description=""
+            severity="error"
+            small
+          />
+        )}
         {!loading && aidesCompatibles.length > 0 && (
           <Alert
             closable
-            title={`Voici les ${aidesCompatibles.length} aides qui correspondent le mieux à votre projet`}
+            title={`Voici les aides qui correspondent le mieux à votre projet`}
             description=""
             severity="success"
             small
