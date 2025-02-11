@@ -22,10 +22,19 @@ export class DummyAideRepository implements AideRepositoryInterface {
   }
 
   async fromId(aideId: AideId): Promise<Aide> {
+    const aide = await this.findOneById(aideId);
+    if (!aide) {
+      throw new Error(`Aucunes aides ne portent l'identifiant ${aideId}.`);
+    }
+
+    return aide;
+  }
+
+  async findOneById(aideId: AideId): Promise<Aide | null> {
     const aides = await this.all();
     const aide = aides.find((aide) => aide.id === aideId);
     if (!aide) {
-      throw new Error(`Aucunes aides ne portent l'identifiant ${aideId}.`);
+      return null;
     }
 
     return aide;

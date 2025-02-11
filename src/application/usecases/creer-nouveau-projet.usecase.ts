@@ -36,7 +36,6 @@ export class CreerNouveauProjetUsecase implements UsecaseInterface {
   }: CreerNouveauProjetUsecaseInput): Promise<Projet> {
     const zoneGeographiques = await Promise.all(
       zoneGeographiqueQueries.map(async ({ code, type }) => {
-        console.dir(code);
         const zoneGeographique = await this.zoneGeographiqueRepository.findOneByTypeAndCode(type, code);
         if (!zoneGeographique) {
           throw new ZoneGeographiqueIntrouvableError(`Aucun(e)s ${type} portant le code ${code} n'a été trouvée.`);

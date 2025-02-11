@@ -26,9 +26,9 @@ export async function up(db: Kysely<any>): Promise<void> {
         p.id AS projet_id,
         jsonb_agg(
           jsonb_build_object(
-            'id', COALESCE(a.id, elem->>'aideId'),
-            'source', 'AidesTerritoires',
-            'score', elem->>'scoreCompatibilite'
+            'aideId', COALESCE(a.id, elem->>'aideId'),
+            'fournisseurDonnees', 'AidesTerritoires',
+            'scoreCompatibilite', elem->>'scoreCompatibilite'
           )
         ) AS new_scores
       FROM projet_table p

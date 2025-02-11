@@ -4,10 +4,10 @@ import * as React from 'react';
 import { Grid } from '@mui/material';
 
 import { AideCompatibleCard } from '@/presentation/ui/components/AideCompatibleCard';
-import { ViewAideCompatibleDto } from '@/presentation/ui/dtos/view-aide-compatible.dto';
+import { ViewAideEvalueeDto } from '@/presentation/ui/dtos/view-aide-evaluee.dto';
 
 export type AidesCompatiblesProps = {
-  aidesCompatibles: ViewAideCompatibleDto[];
+  aidesCompatibles: ViewAideEvalueeDto[];
 };
 
 export const AidesCompatibles = ({ aidesCompatibles }: AidesCompatiblesProps) => {
