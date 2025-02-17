@@ -10,6 +10,7 @@ import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geog
 import { UnauthorizedError } from '@/application/errors/unauthorized.error';
 import { PageOutOfRangeError } from '@/application/errors/page-out-of-range.error';
 import { ProjetIntrouvableError } from '@/application/errors/projet-introuvable.error';
+import { ProjetExisteDejaError } from '@/application/errors/projet-existe-deja.error';
 
 import { contract } from '@/presentation/api/contracts';
 import { AidesEvalueesPagineesHttpAdapter } from '@/presentation/api/adapters/aides-evaluees-paginees-http.adapter';
@@ -42,6 +43,10 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
       } catch (e) {
         if (e instanceof ZoneGeographiqueIntrouvableError) {
           return ApiRouteErrorResponse.fromApplicationError(e, 404);
+        }
+
+        if (e instanceof ProjetExisteDejaError) {
+          return ApiRouteErrorResponse.fromApplicationError(e, 409);
         }
 
         console.error(e);
