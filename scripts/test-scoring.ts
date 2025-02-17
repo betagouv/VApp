@@ -1,4 +1,4 @@
-import './loadEnv';
+import 'scripts/load-env-config';
 import { aideRepository } from '@/infra/repositories/at-aide-repository';
 import { aideScoringService } from '@/infra/ai/services/aide-scoring-service';
 import { Projet } from '@/domain/models/projet';

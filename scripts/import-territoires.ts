@@ -1,4 +1,4 @@
-import './loadEnv';
+import 'scripts/load-env-config';
 import { atApiClient } from '@/infra/at/api-client';
 import { atZoneGeographiqueRepository } from '@/infra/repositories/at-zone-geographique.repository';
 import { msToMinutesAndSeconds } from '@/libs/time';

@@ -1,4 +1,4 @@
-import './loadEnv';
+import 'scripts/load-env-config';
 import { sql } from 'kysely';
 import { db } from '@/infra/database';
 

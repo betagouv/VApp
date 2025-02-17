@@ -1,4 +1,4 @@
-import './loadEnv';
+import 'scripts/load-env-config';
 import fs from 'node:fs';
 import { parse } from 'csv-parse';
 import { aideRepository } from '@/infra/repositories/at-aide-repository';
