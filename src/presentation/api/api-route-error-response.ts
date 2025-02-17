@@ -1,6 +1,6 @@
 // @ts-expect-error lib typings issue
 import type { HTTPStatusCode } from '@ts-rest/core/src/lib/status-codes';
-import { ApplicationErrorInterface } from '@/application/errors/apllication-error.interface';
+import { ErrorInterface } from '@/libs/error.interface';
 import { JsonApiErrorResponse } from '@/presentation/api/json-api/error-response';
 
 export class ApiRouteErrorResponse {
@@ -9,7 +9,7 @@ export class ApiRouteErrorResponse {
     public readonly status: HTTPStatusCode
   ) {}
 
-  static fromApplicationError(e: ApplicationErrorInterface, status: HTTPStatusCode = 400) {
+  static fromError(e: ErrorInterface, status: HTTPStatusCode = 400) {
     return new ApiRouteErrorResponse(JsonApiErrorResponse.fromStatus(status, e.message), status);
   }
 
