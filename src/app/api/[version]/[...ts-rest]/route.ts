@@ -4,14 +4,15 @@ import * as Sentry from '@sentry/nextjs';
 import { aidesScoringUsecase, creerNouveauProjetUsecase } from '@/container';
 import { aideEvalueeRepository } from '@/infra/repositories';
 import { projetRepository } from '@/infra/repositories/projet.repository';
+import { ComputeServiceNotAvailableError } from '@/infra/ai/compute-service-not-available.error';
 
 import { RechercherProjetAidesPagineesUsecase } from '@/application/usecases/rechercher-projet-aides-paginees.usecase';
 import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geographique-introuvable.error';
 import { UnauthorizedError } from '@/application/errors/unauthorized.error';
 import { PageOutOfRangeError } from '@/application/errors/page-out-of-range.error';
 import { ProjetIntrouvableError } from '@/application/errors/projet-introuvable.error';
-import { ProjetExisteDejaError } from '@/application/errors/projet-existe-deja.error';
 
+import { ProjetExisteDejaError } from '@/application/errors/projet-existe-deja.error';
 import { contract } from '@/presentation/api/contracts';
 import { AidesEvalueesPagineesHttpAdapter } from '@/presentation/api/adapters/aides-evaluees-paginees-http.adapter';
 import { CreerNouveauProjetHttpAdapter } from '@/presentation/api/adapters/creer-nouveau-projet-http.adapter';
@@ -42,11 +43,15 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
         };
       } catch (e) {
         if (e instanceof ZoneGeographiqueIntrouvableError) {
-          return ApiRouteErrorResponse.fromApplicationError(e, 404);
+          return ApiRouteErrorResponse.fromError(e, 404);
         }
 
         if (e instanceof ProjetExisteDejaError) {
-          return ApiRouteErrorResponse.fromApplicationError(e, 409);
+          return ApiRouteErrorResponse.fromError(e, 409);
+        }
+
+        if (e instanceof ComputeServiceNotAvailableError) {
+          return ApiRouteErrorResponse.fromError(e, 503);
         }
 
         console.error(e);
@@ -66,11 +71,15 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
         };
       } catch (e) {
         if (e instanceof UnauthorizedError) {
-          return ApiRouteErrorResponse.fromApplicationError(e, 401);
+          return ApiRouteErrorResponse.fromError(e, 401);
         }
 
         if (e instanceof ProjetIntrouvableError) {
-          return ApiRouteErrorResponse.fromApplicationError(e, 404);
+          return ApiRouteErrorResponse.fromError(e, 404);
+        }
+
+        if (e instanceof ComputeServiceNotAvailableError) {
+          return ApiRouteErrorResponse.fromError(e, 503);
         }
 
         console.error(e);
@@ -93,8 +102,12 @@ const handler = createNextHandler<typeof contract, GlobalRequestContext>(
           body: AidesEvalueesPagineesHttpAdapter.toJsonAPICollection(aidesEvalueesPaginees, new URL(request.url))
         };
       } catch (e) {
-        if (PageOutOfRangeError.is(e)) {
-          return ApiRouteErrorResponse.fromApplicationError(e, 404);
+        if (e instanceof PageOutOfRangeError) {
+          return ApiRouteErrorResponse.fromError(e, 404);
+        }
+
+        if (e instanceof ComputeServiceNotAvailableError) {
+          return ApiRouteErrorResponse.fromError(e, 503);
         }
 
         console.error(e);
