@@ -23,7 +23,7 @@ export type TerritoireDto = z.infer<typeof territoireDtoSchema>;
 
 export const creerProjetDtoSchema = z.object({
   id: z.string().uuid().optional().openapi({
-    description: 'Un `uuid` généré par le client pour identifier le projet.'
+    description: 'Un `uuid` optionnel fourni par le client pour identifier son projet.'
   }),
   description: z.string().openapi({
     example: "Revitalisation d'une zone humide",
