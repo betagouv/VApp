@@ -48,7 +48,7 @@ export const aidesContract = c.router({
     },
     query: criteresRechercheAidesPagineesDtoSchema,
     pathParams: z.object({
-      projetId: z.string()
+      projetId: z.string().uuid()
     }),
     summary: 'Rechercher des aides',
     description: `Recherche des **aides** pour l'identifiant **projet** (\`uuid\`) spécifié.

@@ -19,7 +19,7 @@ export const aidesScoringContract = c.router({
       500: JsonApiErrorsSchema
     },
     pathParams: z.object({
-      projetId: z.string()
+      projetId: z.string().uuid()
     }),
     body: aidesScoringRequestDtoSchema,
     summary: 'Attribuer des scores',
