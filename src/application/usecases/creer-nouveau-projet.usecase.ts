@@ -7,6 +7,7 @@ import { LesCommunsProjetStatuts } from '@/domain/models/les-communs/projet-stat
 import { ZoneGeographiqueRepositoryInterface } from '@/domain/repositories/zone-geographique-repository.interface';
 import { ZoneGeographiqueIntrouvableError } from '@/application/errors/zone-geographique-introuvable.error';
 import { AtPerimeterScale } from '@/infra/at/perimeter';
+import { ProjetExisteDejaError } from '@/application/errors/projet-existe-deja.error';
 
 export type ZoneGeographiqueQuery = {
   type: AtPerimeterScale;
@@ -36,6 +37,13 @@ export class CreerNouveauProjetUsecase implements UsecaseInterface {
     zoneGeographiqueQueries,
     clientId
   }: CreerNouveauProjetUsecaseInput): Promise<Projet> {
+    if (uuid) {
+      const existingProjet = await this.projetRepository.findOneById(uuid);
+      if (existingProjet !== null) {
+        throw new ProjetExisteDejaError(`Un projet portant l'identifiant ${uuid} existe déjà.`);
+      }
+    }
+
     const zoneGeographiques = await Promise.all(
       zoneGeographiqueQueries.map(async ({ code, type }) => {
         const zoneGeographique = await this.zoneGeographiqueRepository.findOneByTypeAndCode(type, code);
