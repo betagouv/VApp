@@ -3,7 +3,7 @@ import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aid
 import { AideInterface } from '@/domain/models/aide.interface';
 import { getNbTokenRange } from '@/infra/repositories/at-aide-repository';
 
-export const RequiredScoringFieldsDtoSchema = z.object({
+export const requiredScoringFieldsDtoSchema = z.object({
   id: z.string().min(1).openapi({
     example: 'd7b9efbf-2181-42e2-966c-a65527c14ee7',
     description:
@@ -24,13 +24,13 @@ export const RequiredScoringFieldsDtoSchema = z.object({
   })
 });
 
-export type RequiredScoringFieldsDto = z.infer<typeof RequiredScoringFieldsDtoSchema>;
+export type RequiredScoringFieldsDto = z.infer<typeof requiredScoringFieldsDtoSchema>;
 
-RequiredScoringFieldsDtoSchema._output satisfies Pick<
+requiredScoringFieldsDtoSchema._output satisfies Pick<
   AideInterface,
   'id' | 'description' | 'nom' | 'fournisseurDonnees'
 >;
 
 export const aidesScoringRequestDtoSchema = z.object({
-  data: z.array(RequiredScoringFieldsDtoSchema)
+  data: z.array(requiredScoringFieldsDtoSchema)
 });
