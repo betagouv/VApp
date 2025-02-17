@@ -115,7 +115,6 @@ export class AtAideRepository implements AideRepositoryInterface {
 
   async findAllForProjet(projet: Projet, { payante }: CriteresRechercheAide) {
     const atAidesIds: number[] = await this.findAtAidesIdsForProjet(projet);
-    console.log(atAidesIds);
     const selectables = await this.select()
       .where(
         'a.id',

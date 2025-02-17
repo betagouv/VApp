@@ -27,8 +27,6 @@ export class AidesScoringUsecase implements UsecaseInterface {
       throw new ProjetIntrouvableError(`Aucun projet trouvé pour l'identifiant ${projetId}.`);
     }
 
-    console.log(projet.clientId);
-    console.log(clientId);
     if (projet.clientId && projet.clientId !== clientId) {
       throw new UnauthorizedError(`Vous n'êtes pas autorisé a accéder au projet ${projetId}.`);
     }
