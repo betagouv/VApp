@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import './loadEnv';
+import 'scripts/load-env-config';
 import { generateSecret } from '@/presentation/api/security';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';

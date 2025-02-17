@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import './loadEnv';
+import 'scripts/load-env-config';
 import { lesCommunsApiClient } from '@/infra/les-communs/api-client';
 import { projetRepository } from '@/infra/repositories/projet.repository';
 import { clientRepository } from '@/infra/repositories/client.repository';
