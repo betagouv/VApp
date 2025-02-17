@@ -1,4 +1,4 @@
-import '../scripts/loadEnv';
+import 'scripts/load-env-config';
 import { defineConfig } from 'kysely-ctl';
 import { db } from '../src/infra/database';
 

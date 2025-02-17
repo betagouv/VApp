@@ -26,7 +26,7 @@
     "build-storybook": "storybook build",
     "kysely": "kysely",
     "migrate": "kysely migrate latest",
-    "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts --env-file .env.local",
+    "kysely-codegen": "kysely-codegen --out-file ./src/infra/database/types.d.ts --env-file .env.development.local",
     "prepare": "husky",
     "prettier": "prettier . --write",
     "empty-deps": "jq 'del(.dependencies, .devDependencies)' package.json > package.nodeps.json && mv package.nodeps.json package.json -b",
@@ -41,7 +41,8 @@
     "lint:openapi": "node -r esbuild-register scripts/lint-openapi.ts",
     "update-at-interfaces": "find . -name 'src/infra/at/interfaces/*.ts' -delete && create-client https://aides-territoires.beta.gouv.fr/api src/infra/at --generator typescript --format hydra",
     "test-scoring": "node -r esbuild-register scripts/test-scoring.ts",
-    "client:create": "node -r esbuild-register scripts/create-client.ts"
+    "client:create": "node -r esbuild-register scripts/create-client.ts",
+    "env:dump-config": "node -r esbuild-register scripts/dump-env-config.ts"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -68,6 +69,7 @@
     "@ts-rest/serverless": "^3.51.0",
     "ai": "4.0.0-canary.9",
     "autosuggest-highlight": "^3.3.4",
+    "dotenv": "^16.4.7",
     "esbuild-register": "^3.6.0",
     "is-ci": "^3.0.1",
     "ky": "^1.7.2",
