@@ -71,6 +71,8 @@ fileignoreconfig:
   checksum: 0609c9686e865820869a12cd7528d942ec08aed12146ee7ef2e3a9cf31933999
 - filename: scripts/load-env-config.ts
   checksum: 03850246e1c61a271793e43cec729f56a9daf2ece52744dd656769780659545e
+- filename: src/libs/env.ts
+  checksum: 18710067f7b5d37afafeec226ea664efd7ff2e8774281189af11b2caf0d572ed
 
 scopeconfig:
 - scope: node

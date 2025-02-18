@@ -5,7 +5,7 @@ import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
 import { getAssistantConfiguration, ollama } from '@/infra/ai/ollama';
 import { system, user } from '@/infra/ai/prompts/scoring';
-import { envNumber } from '@/infra/repositories/at-aide-repository';
+import { envNumber } from '@/libs/env';
 import { AbstractOllamaService } from '@/infra/ai/services/abstract-ollama-service';
 import { AideScore } from '@/domain/models/aide-score';
 import { AideEvaluee } from '@/domain/models/aide/aide-evaluee';
@@ -21,10 +21,8 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   public async attribuerScore(aide: Aide, projet: Projet): Promise<number> {
     const aideScore = projet.aidesScores.get(aide.id);
     if (aideScore !== undefined) {
-      console.log(`${aide.id} already scored`);
       return Promise.resolve(aideScore.scoreCompatibilite);
     }
-    console.log(`${aide.id} not scored yet`);
 
     if (!this.initialized) {
       await this.initialize();

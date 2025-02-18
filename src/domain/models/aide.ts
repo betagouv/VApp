@@ -1,7 +1,6 @@
 import { AtAideTypeFull } from '@/infra/at/aid';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 import { AideId, AideInterface } from '@/domain/models/aide.interface';
-import { getNbTokenRange } from '@/infra/repositories/at-aide-repository';
 
 export class Aide implements AideInterface {
   constructor(
@@ -40,8 +39,7 @@ export class Aide implements AideInterface {
     return id;
   }
 
-  public isScorable() {
-    const [MIN, MAX] = getNbTokenRange();
-    return this.description.length > MIN && this.description.length < MAX;
+  public isScorable(min: number, max: number): boolean {
+    return this.description.length > min && this.description.length < max;
   }
 }
