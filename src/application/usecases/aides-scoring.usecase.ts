@@ -31,6 +31,8 @@ export class AidesScoringUsecase implements UsecaseInterface {
       throw new UnauthorizedError(`Vous n'êtes pas autorisé a accéder au projet ${projetId}.`);
     }
 
+    console.log(`Scoring ${aides.length} for projet ${projetId} and client ${clientId}.`);
+
     return this.aideScoringService.aidesScores(aides, projet);
   }
 }

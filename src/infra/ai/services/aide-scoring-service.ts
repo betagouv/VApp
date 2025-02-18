@@ -21,8 +21,10 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   public async attribuerScore(aide: Aide, projet: Projet): Promise<number> {
     const aideScore = projet.aidesScores.get(aide.id);
     if (aideScore !== undefined) {
+      console.log(`${aide.id} already scored`);
       return Promise.resolve(aideScore.scoreCompatibilite);
     }
+    console.log(`${aide.id} not scored yet`);
 
     if (!this.initialized) {
       await this.initialize();
