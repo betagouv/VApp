@@ -33,6 +33,9 @@ export class AidesScoringUsecase implements UsecaseInterface {
 
     console.log(`Scoring ${aides.length} for projet ${projetId} and client ${clientId}.`);
 
-    return this.aideScoringService.aidesScores(aides, projet);
+    return this.aideScoringService.aidesScores(
+      aides.filter((aide) => aide.isScorable()),
+      projet
+    );
   }
 }
