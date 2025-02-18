@@ -38,4 +38,8 @@ export class Aide implements AideInterface {
   public static getId({ id }: Aide) {
     return id;
   }
+
+  public isScorable(min: number, max: number): boolean {
+    return this.description.length > min && this.description.length < max;
+  }
 }
