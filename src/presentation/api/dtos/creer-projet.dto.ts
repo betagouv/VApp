@@ -25,7 +25,7 @@ export const creerProjetDtoSchema = z.object({
   id: z.string().uuid().optional().openapi({
     description: 'Un `uuid` optionnel fourni par le client pour identifier son projet.'
   }),
-  description: z.string().openapi({
+  description: z.string().min(1).openapi({
     example: "Revitalisation d'une zone humide",
     description: 'Brève description du projet.'
   }),
