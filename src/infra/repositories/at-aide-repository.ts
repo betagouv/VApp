@@ -1,4 +1,5 @@
 import { ExpressionBuilder, Kysely, Selectable } from 'kysely';
+import { getNbTokenRange } from '@/libs/env';
 import { AtAid, AtAideTypeFull } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
 import { atApiClient } from '@/infra/at/api-client';
@@ -6,23 +7,13 @@ import { AtSearchAidsQuery } from '@/infra/at/search-aids-query';
 import { EtatAvancementMapper } from '@/infra/mappers/etat-avancement.mapper';
 import { db } from '@/infra/database';
 import { AideTable, DB } from '@/infra/database/types';
-
 import { Aide } from '@/domain/models/aide';
 import { AideRepositoryInterface } from '@/domain/repositories/aide.repository.interface';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 import { Projet } from '@/domain/models/projet';
 import { AideId } from '@/domain/models/aide.interface';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
-
 import { unique } from '@/presentation/ui/utils/array';
-
-export const envNumber = (envString?: string | number, defaultValue = 0): number =>
-  envString ? Number(envString) : defaultValue;
-
-export const getNbTokenRange = (): [number, number] => [
-  envNumber(process.env.AIDE_DESCRIPTION_MIN_TOKEN, 200),
-  envNumber(process.env.AIDE_DESCRIPTION_MAX_TOKEN, 5000)
-];
 
 export class AtAideRepository implements AideRepositoryInterface {
   constructor(

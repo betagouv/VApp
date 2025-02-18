@@ -1,7 +1,7 @@
 import { z } from '@/libs/validation';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 import { AideInterface } from '@/domain/models/aide.interface';
-import { getNbTokenRange } from '@/infra/repositories/at-aide-repository';
+import { getNbTokenRange } from '@/libs/env';
 
 export const requiredScoringFieldsDtoSchema = z.object({
   id: z.string().min(1).openapi({
