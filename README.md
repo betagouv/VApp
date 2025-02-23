@@ -81,6 +81,12 @@ Watch GPU usage:
 watch -n 1 nvidia-smi
 ```
 
+Pull a model:
+
+```sh
+curl http://localhost:11434/api/pull -d '{"model": "mistral-small:latest"}'
+```
+
 ## AT
 
 Get token:

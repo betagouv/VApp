@@ -1,8 +1,8 @@
 fileignoreconfig:
 - filename: .env.development
-  checksum: 4effa3bb9b84bd395eccf8f0d613ea974f580b63344bcd1cc55ac348d9ac83f3
+  checksum: 285b42e0da5b3ae595be4e2ea4bbcac994c81fca2012e6c5df6adfe4296d1291
 - filename: .env.production
-  checksum: f42aca49e8f7f3e4d2318d2fda1d75fd01fcd3c1844522229e3d7fd66cf64c76
+  checksum: 170607bbfd495c905a265a3231c4dd3fec3b6952be25e757ab2a5cdb65d233d9
 - filename: .env.test
   checksum: 2bb057aa7c226f38be2c45750ff36b5744a1611111900304b38585736e812ac4
 - filename: environment.d.ts
