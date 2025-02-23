@@ -1,7 +1,7 @@
 import { Hooks } from 'ky';
 import { AtAid } from '@/infra/at/aid';
 import { AtPerimeter } from '@/infra/at/perimeter';
-import { apiClient } from '@/infra/api-client';
+import { fetch } from '@/infra/fetch';
 import { AtSearchAidsQuery } from '@/infra/at/search-aids-query';
 import { AtCollectionResponse } from '@/infra/at/collection-response';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
@@ -34,7 +34,7 @@ export class AtApiClient implements AtApiClientInterface {
   ) {}
 
   async renewBearerToken(): Promise<void> {
-    const { token } = await apiClient
+    const { token } = await fetch
       .post<{ token: string }>(`${this.baseUrl}/connexion/`, {
         headers: {
           'X-AUTH-TOKEN': this.jwt
@@ -64,7 +64,7 @@ export class AtApiClient implements AtApiClientInterface {
             // Retry with the token
             await this.renewBearerToken();
             request.headers.set('Authorization', `Bearer ${this.bearerToken}`);
-            return apiClient(request);
+            return fetch(request);
           }
         }
       ]
@@ -76,7 +76,7 @@ export class AtApiClient implements AtApiClientInterface {
 
     const url = `${this.baseUrl}/aids/?${searchParams.toString()}`;
 
-    const response = await apiClient
+    const response = await fetch
       .get<AtCollectionResponse<AtAid>>(url, {
         hooks: this.hooks(),
         headers: this.headers()
@@ -102,7 +102,7 @@ export class AtApiClient implements AtApiClientInterface {
     let allResults: Type[] = results;
     let nextURL: string = next;
     while (allResults.length < count) {
-      const { results, next } = await apiClient
+      const { results, next } = await fetch
         .get<
           AtCollectionResponse<Type>
         >(nextURL, { hooks: this.hooks(), headers: this.headers(), timeout: AtApiClient.TIMEOUT })
@@ -115,7 +115,7 @@ export class AtApiClient implements AtApiClientInterface {
   }
 
   async fetchAllPerimeters() {
-    const response = await apiClient
+    const response = await fetch
       .get<AtCollectionResponse<AtPerimeter>>(`${this.baseUrl}/perimeters/`, {
         hooks: this.hooks(),
         headers: this.headers(),
@@ -131,7 +131,7 @@ export class AtApiClient implements AtApiClientInterface {
       return [];
     }
 
-    const { results } = await apiClient
+    const { results } = await fetch
       .get<AtCollectionResponse<AtPerimeter>>(`${this.baseUrl}/perimeters?q=${searchQuery?.q}`, {
         hooks: this.hooks(),
         headers: this.headers()

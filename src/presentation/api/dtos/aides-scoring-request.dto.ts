@@ -14,8 +14,10 @@ export const requiredScoringFieldsDtoSchema = z.object({
     description: 'Nom ou titre de l’aide'
   }),
   description: z.string().openapi({
-    example:
-      "Pleinement engagées à créer du lien entre les citoyens, la mixité sociale et de l'inclusion, les collectivités locales renforcent leurs actions par un financement dédié, le prêt social...",
+    example: `Pleinement engagées à créer du lien entre les citoyens, la mixité sociale et de l'inclusion, les collectivités locales renforcent leurs actions par un financement dédié, le prêt social.
+Le prêt social est affecté à des projets en faveur de la cohésion sociale, accessible à toute taille de collectivités.
+Adoptez une démarche responsable cohérente pour l'ensemble du projet, y compris depuis sa source de financement
+Valorisez votre action et communiquez sur les projets à finalité sociale auprès des citoyens`,
     description: `La description de l'aide (au format **markdown** de préférence). Pour obtenir un **score de compatibilité fiable** la description doit-être comprise entre ${getNbTokenRange().join(' et ')} caractères.`
   }),
   fournisseurDonnees: z.nativeEnum(FournisseurDonneesAides).optional().openapi({
