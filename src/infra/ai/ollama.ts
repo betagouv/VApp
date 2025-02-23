@@ -1,31 +1,20 @@
 import { Ollama } from 'ollama';
 import models from 'data/model-data.json';
 import assistants from 'data/ai-assistants.json';
+import { fetch } from '@/infra/fetch';
 import { ModelParameters } from '@/infra/ai/model-parameters';
 import { AiAssistantConfiguration, NamedAssistantConfiguration } from '@/infra/ai/ai-assistant-configuration';
 
-const fetchWithHeaders = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
-  const defaultHeaders = process.env.OLLAMA_JWT
-    ? {
-        Authorization: `Bearer ${Buffer.from(process.env.OLLAMA_JWT, 'utf8')}  `
-      }
-    : {};
-
-  const enhancedInit: RequestInit = {
-    ...init,
-    // @ts-expect-error dunno
-    headers: {
-      ...defaultHeaders,
-      ...init?.headers
-    }
-  };
-
-  return fetch(input, enhancedInit);
-};
-
 export const ollama = new Ollama({
   host: process.env.OLLAMA_HOST,
-  fetch: fetchWithHeaders
+  fetch: fetch.extend({
+    headers: process.env.OLLAMA_JWT
+      ? {
+          Authorization: `Bearer ${Buffer.from(process.env.OLLAMA_JWT, 'utf8')}  `
+        }
+      : {},
+    timeout: 60_000
+  })
 });
 
 export const getModelDefaultParameters = (modelName: string): ModelParameters => {
