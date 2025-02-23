@@ -1,5 +1,6 @@
-import ky, { HTTPError } from 'ky';
+import { HTTPError } from 'ky';
 import { Ollama, Options } from 'ollama';
+import { fetch } from '@/infra/fetch';
 import { OllamaServiceInterface } from '@/infra/ai/services/ollama-service.interface';
 import { NamedAssistantConfiguration } from '@/infra/ai/ai-assistant-configuration';
 import { ComputeServiceNotAvailableError } from '@/infra/ai/compute-service-not-available.error';
@@ -16,7 +17,7 @@ export abstract class AbstractOllamaService implements OllamaServiceInterface {
     console.log(`Initializing ${this.assistantConfiguration.name} from ${this.assistantConfiguration.model}...`);
 
     try {
-      await ky.get(process.env.OLLAMA_HOST);
+      await fetch.get(process.env.OLLAMA_HOST, { timeout: 5_000 });
     } catch (e) {
       if (e instanceof HTTPError) {
         throw new ComputeServiceNotAvailableError(`Couldn't reach compute service: ${e.response.status} ${e.message}`);

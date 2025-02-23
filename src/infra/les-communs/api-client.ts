@@ -1,7 +1,7 @@
 import { KyInstance } from 'ky';
 import { LesCommunsApiClientInterface } from '@/infra/les-communs/api-client.interface';
 import { LcProjectDto, lcProjectDtoSchema } from '@/infra/les-communs/dtos/lc-project.dto';
-import { apiClient } from '@/infra/api-client';
+import { fetch } from '@/infra/fetch';
 
 export class LesCommunsApiClient implements LesCommunsApiClientInterface {
   constructor(
@@ -34,7 +34,7 @@ export class LesCommunsApiClient implements LesCommunsApiClientInterface {
 }
 
 export const lesCommunsApiClient = new LesCommunsApiClient(
-  apiClient,
+  fetch,
   lcProjectDtoSchema,
   process.env.LC_API_BASE_URL,
   process.env.LC_API_BEARER_TOKEN
