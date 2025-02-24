@@ -46,6 +46,7 @@ const sentryConfig = {
   org: 'betagouv',
   project: 'vapp',
   sentryUrl: 'https://sentry.incubateur.net/',
+  instrumentation: {},
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
