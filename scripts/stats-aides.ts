@@ -1,5 +1,5 @@
 import './load-env-config';
-import { getNbTokenRange } from '@/libs/env';
+import { getTokenRange } from '@/libs/env';
 import { aideRepository } from '@/infra/repositories/at-aide-repository';
 import { AtOrganizationTypeSlug } from '@/infra/at/organization-type';
 import { AtPerimeterScale } from '@/infra/at/perimeter';
@@ -9,7 +9,7 @@ import { ZoneGeographique } from '@/domain/models/zone-geographique';
 import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 
 (async () => {
-  const nbToken = getNbTokenRange();
+  const nbToken = getTokenRange();
   const zoneGeographique: ZoneGeographique = {
     type: AtPerimeterScale.commune,
     code: '69266',

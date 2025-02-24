@@ -1,5 +1,5 @@
 import { ExpressionBuilder, Kysely, Selectable } from 'kysely';
-import { getNbTokenRange } from '@/libs/env';
+import { getTokenRange } from '@/libs/env';
 import { AtAid, AtAideTypeFull } from '@/infra/at/aid';
 import { AtApiClientInterface } from '@/infra/at/at-api-client.interface';
 import { atApiClient } from '@/infra/at/api-client';
@@ -13,12 +13,14 @@ import { CriteresRechercheAide } from '@/domain/models/criteres-recherche-aide';
 import { Projet } from '@/domain/models/projet';
 import { AideId } from '@/domain/models/aide.interface';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
+import { TokenRange } from '@/domain/models/token-range';
 import { unique } from '@/presentation/ui/utils/array';
 
 export class AtAideRepository implements AideRepositoryInterface {
   constructor(
     public db: Kysely<DB>,
-    public atApiClient: AtApiClientInterface
+    public atApiClient: AtApiClientInterface,
+    public tokenRange: TokenRange
   ) {}
 
   async addFromAideTerritoires(atAid: AtAid) {
@@ -55,15 +57,12 @@ export class AtAideRepository implements AideRepositoryInterface {
         'a.programs',
         'a.data_provider'
       ])
-      .where(this.numberOfTokenIsValid);
+      .where(this.numberOfTokenIsValid.bind(this));
   }
 
   private numberOfTokenIsValid({ eb, and }: ExpressionBuilder<DB & { a: AideTable }, 'a'>) {
-    const tokenRange = getNbTokenRange();
-    return and([
-      eb('a.token_numb_description', '>', tokenRange[0]),
-      eb('a.token_numb_description', '<', tokenRange[1])
-    ]);
+    const [min, max] = this.tokenRange;
+    return and([eb('a.token_numb_description', '>', min), eb('a.token_numb_description', '<', max)]);
   }
 
   async all() {
@@ -112,11 +111,11 @@ export class AtAideRepository implements AideRepositoryInterface {
         'in',
         atAidesIds.map((id) => id.toString())
       )
-      .where(this.numberOfTokenIsValid)
+      .where(this.numberOfTokenIsValid.bind(this))
       .$if(payante !== undefined, (qb) => qb.where('a.is_charged', '=', payante === true))
       .execute();
 
-    const aides = selectables.map(AtAideRepository.toAide);
+    const aides = selectables.map(AtAideRepository.toAide).filter(Aide.isScorable(this.tokenRange));
     if (process.env.NB_AIDE_HARD_LIMIT) {
       console.log(`NB_AIDE_HARD_LIMIT a été fixé à ${process.env.NB_AIDE_HARD_LIMIT}.`);
       console.log(`La recherche ne sera lancée que sur ${process.env.NB_AIDE_HARD_LIMIT} aides max.`);
@@ -132,7 +131,7 @@ export class AtAideRepository implements AideRepositoryInterface {
     const { size } = await this.db
       .selectFrom('aide_table as a')
       .select(db.fn.countAll().as('size'))
-      .where(this.numberOfTokenIsValid)
+      .where(this.numberOfTokenIsValid.bind(this))
       .executeTakeFirstOrThrow();
 
     return size as number;
@@ -191,4 +190,4 @@ export class AtAideRepository implements AideRepositoryInterface {
   }
 }
 
-export const aideRepository = new AtAideRepository(db, atApiClient);
+export const aideRepository = new AtAideRepository(db, atApiClient, getTokenRange());

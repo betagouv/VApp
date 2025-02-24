@@ -1,14 +1,16 @@
 import * as console from 'node:console';
-import { GenerateRequest } from 'ollama';
+import { GenerateRequest, Ollama } from 'ollama';
 import { AideScoringServiceInterface } from '@/domain/services/aide-scoring-service.interface';
+import { envNumber, getTokenRange } from '@/libs/env';
+import { system, user } from '@/infra/ai/prompts/scoring';
+import { AbstractOllamaService } from '@/infra/ai/services/abstract-ollama-service';
+import { NamedAssistantConfiguration } from '@/infra/ai/ai-assistant-configuration';
+import { getAssistantConfiguration, ollama } from '@/infra/ai/ollama';
 import { Aide } from '@/domain/models/aide';
 import { Projet } from '@/domain/models/projet';
-import { getAssistantConfiguration, ollama } from '@/infra/ai/ollama';
-import { system, user } from '@/infra/ai/prompts/scoring';
-import { envNumber } from '@/libs/env';
-import { AbstractOllamaService } from '@/infra/ai/services/abstract-ollama-service';
 import { AideScore } from '@/domain/models/aide-score';
 import { AideEvaluee } from '@/domain/models/aide/aide-evaluee';
+import { TokenRange } from '@/domain/models/token-range';
 
 export class AideScoringService extends AbstractOllamaService implements AideScoringServiceInterface {
   static SCORING_MAX_SEED = envNumber(
@@ -18,7 +20,18 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   static MAX_ATTEMPT = 6;
   static EXTRACT_SCORE_REGEX = /(-? ?[0-9]+).*/;
 
+  constructor(
+    protected ollama: Ollama,
+    protected assistantConfiguration: NamedAssistantConfiguration,
+    protected tokenRange: TokenRange
+  ) {
+    super(ollama, assistantConfiguration);
+    this.tokenRange = tokenRange;
+  }
+
   public async attribuerScore(aide: Aide, projet: Projet): Promise<number> {
+    aide.assertScorable(this.tokenRange);
+
     const aideScore = projet.aidesScores.get(aide.id);
     if (aideScore !== undefined) {
       return Promise.resolve(aideScore.scoreCompatibilite);
@@ -91,4 +104,8 @@ export class AideScoringService extends AbstractOllamaService implements AideSco
   }
 }
 
-export const aideScoringService = new AideScoringService(ollama, getAssistantConfiguration('score-assistant'));
+export const aideScoringService = new AideScoringService(
+  ollama,
+  getAssistantConfiguration('score-assistant'),
+  getTokenRange()
+);

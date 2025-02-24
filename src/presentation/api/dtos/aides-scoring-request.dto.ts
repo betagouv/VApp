@@ -1,7 +1,7 @@
 import { z } from '@/libs/validation';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 import { AideInterface } from '@/domain/models/aide.interface';
-import { getNbTokenRange } from '@/libs/env';
+import { getTokenRange } from '@/libs/env';
 
 export const requiredScoringFieldsDtoSchema = z.object({
   id: z.string().min(1).openapi({
@@ -18,7 +18,7 @@ export const requiredScoringFieldsDtoSchema = z.object({
 Le prêt social est affecté à des projets en faveur de la cohésion sociale, accessible à toute taille de collectivités.
 Adoptez une démarche responsable cohérente pour l'ensemble du projet, y compris depuis sa source de financement
 Valorisez votre action et communiquez sur les projets à finalité sociale auprès des citoyens`,
-    description: `La description de l'aide (au format **markdown** de préférence). Pour obtenir un **score de compatibilité fiable** la description doit-être comprise entre ${getNbTokenRange().join(' et ')} caractères.`
+    description: `La description de l'aide (au format **markdown** de préférence). Pour obtenir un **score de compatibilité fiable** la description doit-être comprise entre ${getTokenRange().join(' et ')} caractères.`
   }),
   fournisseurDonnees: z.nativeEnum(FournisseurDonneesAides).optional().openapi({
     example: FournisseurDonneesAides.AideTerritoires,

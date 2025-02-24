@@ -1,6 +1,8 @@
 import { AtAideTypeFull } from '@/infra/at/aid';
 import { FournisseurDonneesAides } from '@/domain/models/fournisseur-donnees-aides';
 import { AideId, AideInterface } from '@/domain/models/aide.interface';
+import { TokenRange } from '@/domain/models/token-range';
+import { UnscorableAideError } from '@/domain/models/aide/unscorable-aide.error';
 
 export class Aide implements AideInterface {
   constructor(
@@ -39,7 +41,19 @@ export class Aide implements AideInterface {
     return id;
   }
 
-  public isScorable(min: number, max: number): boolean {
-    return this.description.length > min && this.description.length < max;
+  public isScorable(tokenRange: TokenRange): boolean {
+    return Aide.isScorable(tokenRange)(this);
+  }
+
+  public static isScorable([min, max]: TokenRange) {
+    return (aide: Aide) => aide.description.length > min && aide.description.length < max;
+  }
+
+  public assertScorable(tokenRange: TokenRange): void {
+    if (!this.isScorable(tokenRange)) {
+      throw new UnscorableAideError(
+        `Impossible d'attribuer un score à cette aide, la longueur de sa description doit-être entre ${tokenRange.join('-')} alors qu'elle est de la longueur de la description est de ${this.description.length}.`
+      );
+    }
   }
 }
