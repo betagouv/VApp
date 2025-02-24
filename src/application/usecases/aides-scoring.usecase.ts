@@ -1,5 +1,4 @@
 import { UUID } from 'short-uuid';
-import { getNbTokenRange } from '@/libs/env';
 import { AideScoringService } from '@/infra/ai/services/aide-scoring-service';
 import { UsecaseInterface } from '@/application/usecases/usecase.interface';
 import { ProjetIntrouvableError } from '@/application/errors/projet-introuvable.error';
@@ -8,6 +7,7 @@ import { Projet } from '@/domain/models/projet';
 import { AideScore } from '@/domain/models/aide-score';
 import { Aide } from '@/domain/models/aide';
 import { ProjetRepositoryInterface } from '@/domain/repositories/projet.repository.interface';
+import { TokenRange } from '@/domain/models/token-range';
 
 export type AidesScoringUsecaseInput = {
   projetId: Projet['uuid'];
@@ -18,7 +18,8 @@ export type AidesScoringUsecaseInput = {
 export class AidesScoringUsecase implements UsecaseInterface {
   public constructor(
     private readonly projetRepository: ProjetRepositoryInterface,
-    private readonly aideScoringService: AideScoringService
+    private readonly aideScoringService: AideScoringService,
+    private readonly tokenRange: TokenRange
   ) {}
 
   public async execute({ projetId, aides, clientId }: AidesScoringUsecaseInput): Promise<AideScore[]> {
@@ -32,9 +33,6 @@ export class AidesScoringUsecase implements UsecaseInterface {
       throw new UnauthorizedError(`Vous n'êtes pas autorisé a accéder au projet ${projetId}.`);
     }
 
-    return this.aideScoringService.aidesScores(
-      aides.filter((aide) => aide.isScorable(...getNbTokenRange())),
-      projet
-    );
+    return this.aideScoringService.aidesScores(aides.filter(Aide.isScorable(this.tokenRange)), projet);
   }
 }

@@ -11,6 +11,7 @@ import { AideScoreRepository } from '@/infra/repositories/aide-score.repository'
 import { aideScoringService } from '@/infra/ai/services/aide-scoring-service';
 import { ProjetMapper } from '@/infra/mappers/projet.mapper';
 import { AidesScoringUsecase } from '@/application/usecases/aides-scoring.usecase';
+import { getTokenRange } from '@/libs/env';
 
 export const aideCompatibleRepository = new AideScoreRepository(aideScoringService, aideRepository);
 
@@ -20,7 +21,7 @@ export const demarrerProjetUsecase = new DemarrerProjetUsecase(projetRepository,
 
 export const creerNouveauProjetUsecase = new CreerNouveauProjetUsecase(projetRepository, atZoneGeographiqueRepository);
 
-export const aidesScoringUsecase = new AidesScoringUsecase(projetRepository, aideScoringService);
+export const aidesScoringUsecase = new AidesScoringUsecase(projetRepository, aideScoringService, getTokenRange());
 
 export const poserQuestionUsecase = new PoserQuestionsUsecase(questionsGenerator);
 
