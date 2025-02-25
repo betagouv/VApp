@@ -9,7 +9,7 @@ export const nouveauProjetFormDtoSchema = zfd.formData({
   uuid: z.string().optional(),
   description: z.string().min(1, 'Vous devez décrire votre projet.'),
   porteur: z.nativeEnum(AtOrganizationTypeSlug),
-  territoireId: z.string().min(1, 'Vous devez renseignez la zone géographique de votre projet.'),
+  territoireId: z.string().min(1, 'Vous devez renseigner la zone géographique de votre projet.'),
   etatAvancement: z.nativeEnum(AtAidStep),
 
   payante: z.coerce.boolean().optional(),
