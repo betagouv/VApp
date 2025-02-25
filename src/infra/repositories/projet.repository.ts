@@ -180,7 +180,7 @@ export class ProjetRepository implements ProjetRepositoryInterface {
       jsonAidesScores.forEach((jsonAideScore: JsonValue) => {
         if (isJsonObject(jsonAideScore)) {
           const { aideId, scoreCompatibilite, fournisseurDonnees } = jsonAideScore;
-          if (aideId && scoreCompatibilite !== undefined) {
+          if (aideId && scoreCompatibilite != null) {
             aideScoreMap.set(
               aideId as string,
               new AideScore(
