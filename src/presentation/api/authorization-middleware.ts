@@ -1,4 +1,5 @@
 import { UUID } from 'short-uuid';
+import * as Sentry from '@sentry/nextjs';
 import { tsr } from '@ts-rest/serverless/next';
 import { TsRestResponse } from '@ts-rest/serverless';
 import { JsonApiErrorResponse } from '@/presentation/api/json-api/error-response';
@@ -21,6 +22,11 @@ export const authorizationMiddleware = tsr.middleware<{ clientId: string }>(asyn
       }
 
       request.clientId = clientId;
+
+      Sentry.setContext('client', {
+        id: clientId
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       return TsRestResponse.fromJson(JsonApiErrorResponse.fromStatus(401, 'Unauthorized'), { status: 401 });
