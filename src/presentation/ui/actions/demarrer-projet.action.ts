@@ -1,6 +1,6 @@
 'use server';
 
-import { isValidationError } from '@/libs/validation';
+import { isValidationError, zodErrorToMessage } from '@/libs/validation';
 import { demarrerProjetUsecase } from '@/container';
 import { TypedFormData } from '@/presentation/types';
 import { NouveauProjetFormDto } from '@/presentation/ui/dtos/nouveau-projet-form.dto';
@@ -21,7 +21,7 @@ export async function demarrerProjetAction(prevState: RechercherAidesFormState, 
     console.error(e);
     let message = 'Impossible de créer le projet.';
     if (isValidationError(e)) {
-      message = e.message;
+      message = zodErrorToMessage(e);
     }
 
     return { message };
