@@ -5,11 +5,12 @@ import short, { SUUID } from 'short-uuid';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { readStreamableValue } from 'ai/rsc';
-import { useRouter } from 'next/navigation';
 import { Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import Alert from '@codegouvfr/react-dsfr/Alert';
 import { Button } from '@codegouvfr/react-dsfr/Button';
+import Tooltip from '@codegouvfr/react-dsfr/Tooltip';
+import { push } from '@socialgouv/matomo-next';
 
 import { AtAidType } from '@/infra/at/aid-type';
 import { AideScore } from '@/domain/models/aide-score';
@@ -34,7 +35,6 @@ export const AidesCompatiblesTabContent = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [filteredAidesCompatibles, setFilteredAidesCompatibles] = useState<ViewAideEvalueeDto[]>(aidesCompatibles);
   const [atAidType, setAtAidType] = useState<AtAidType>();
-  const router = useRouter();
   useMountEffect(() => {
     let ignoreActionResult = false;
     async function triggerNouvelleRecherche() {
@@ -106,15 +106,19 @@ export const AidesCompatiblesTabContent = ({
         )}
       </Grid>
       <Grid item xs={6}>
-        <Button
-          onClick={() => router.push(`/projets/${projetSuuid}/preciser/questions`)}
-          priority="primary"
-          size="large"
-          disabled={loading || aidesCompatibles.length === 0}
-        >
-          Préciser mon projet{'\u00A0'}
-          <SearchIcon />
-        </Button>
+        <Tooltip kind="hover" title={'Cette fonctionnalité a été désactivée.'}>
+          <Button
+            onClick={() =>
+              push(['trackEvent', 'reformuler', 'click sur le bouton de reformulation', translator.toUUID(projetSuuid)])
+            }
+            priority="primary"
+            size="large"
+            disabled={true}
+          >
+            Préciser mon projet{'\u00A0'}
+            <SearchIcon />
+          </Button>
+        </Tooltip>
       </Grid>
       <Grid item xs={6}>
         <DynamicAtAidTypeSelect

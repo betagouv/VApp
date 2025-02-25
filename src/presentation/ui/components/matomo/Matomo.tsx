@@ -102,7 +102,6 @@ export const Matomo = ({ env, siteId, url, nonce }: MatomoProps) => {
       if (pathname.startsWith('/recherche')) {
         push(['trackSiteSearch', searchParams?.get('keyword') ?? searchParams?.get('query') ?? '']);
       } else {
-        console.debug('Matomo tracking', { pathname, previousPath });
         push(['trackPageView']);
       }
     });
