@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-import 'scripts/load-env-config';
-import { generateSecret } from '@/presentation/api/security';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { Client } from '@/domain/models/client';
+import 'scripts/load-env-config';
 import { clientRepository } from '@/infra/repositories/client.repository';
+import { Client } from '@/domain/models/client';
+import { generateSecret } from '@/presentation/api/security';
+import { getApiBaseUrl } from '@/presentation/api/path-prefix';
 
 async function createClient(nom: string) {
   try {
@@ -12,9 +13,12 @@ async function createClient(nom: string) {
     const client = await Client.fromSecretAndNom(secret, nom);
     await clientRepository.add(client);
 
-    console.log(`You may provide "${client.nom}" with the following API key:`);
+    console.log(`${process.env.NEXT_PUBLIC_APP_NAME} ${process.env.NODE_ENV} API Key for "${client.nom}":`);
     const apiKey = client.createApiKey(secret);
     console.log(apiKey);
+
+    console.log(`API base URL:
+${getApiBaseUrl()}`);
   } catch (e) {
     console.error(e);
     process.exit(1);
