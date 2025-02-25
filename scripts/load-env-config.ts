@@ -17,4 +17,4 @@ if (process.env.NODE_ENV === 'staging') {
   }
 }
 
-loadEnvConfig(dir);
+loadEnvConfig(dir, process.env.NODE_ENV === 'development');
