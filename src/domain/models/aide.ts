@@ -27,7 +27,7 @@ export class Aide implements AideInterface {
   }
 
   public static getAidesTerritoiresUrl({ url }: Pick<Aide, 'url'>) {
-    return `https://aides-territoires.beta.gouv.fr${url}`;
+    return `https://aides-territoires.beta.gouv.fr${url}?utm_source=${process.env.NEXT_PUBLIC_APP_NAME}`;
   }
 
   public getUrl() {
