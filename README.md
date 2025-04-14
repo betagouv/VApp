@@ -110,6 +110,10 @@ curl -X 'GET' \
   -H 'X-AUTH-TOKEN: myAidesTerritoiresToken'
 ```
 
+## Prompts
+
+> _Se référer au [dossier des prompts](./src/infra/ai/prompts/)._
+
 ## Infrastructure
 
 > _Voir [Documentation des Services d'IA Externes](./external-ai-services/)._
