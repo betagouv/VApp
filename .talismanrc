@@ -68,7 +68,7 @@ fileignoreconfig:
 - filename: tests-vitest/infra/api/security.spec.ts
   checksum: 94bab6edc69d88894edd31cd87e1d8c4371fc222a42887c07cd219fc2265d50f
 - filename: scripts/dump-env-config.ts
-  checksum: 0609c9686e865820869a12cd7528d942ec08aed12146ee7ef2e3a9cf31933999
+  checksum: fe1ad487af1ac7357b34339a14dc7e6421e7e7fce647f3f3b09f190dc0bd3b86
 - filename: scripts/load-env-config.ts
   checksum: 58d5e32f4e121038fef7d3feef7bb30a7422e4667ab16cc1fa38dbdbd2af641c
 - filename: src/libs/env.ts
